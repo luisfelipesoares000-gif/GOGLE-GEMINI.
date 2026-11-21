@@ -48,7 +48,6 @@
     }
     .sidebar-overlay.active { display: block; }
 
-    /* Sidebar estilo Gemini Pro (Cinza claro) */
     .sidebar {
       width: 300px;
       max-width: 86vw;
@@ -164,7 +163,6 @@
       justify-content: space-between;
     }
 
-    /* Toggle Switch */
     .toggle-row {
       display: flex;
       align-items: center;
@@ -230,7 +228,7 @@
       font-weight: 500;
     }
 
-    select, textarea.sys-prompt {
+    select, textarea.sys-prompt, input.api-input {
       width: 100%;
       background: var(--bg-gray-card);
       border: 1px solid var(--border);
@@ -240,7 +238,15 @@
       font-size: 0.82rem;
       outline: none;
     }
-    select:focus, textarea.sys-prompt:focus { border-color: var(--accent-black); }
+    select:focus, textarea.sys-prompt:focus, input.api-input:focus { border-color: var(--accent-black); }
+
+    .api-status {
+      font-size: 0.74rem;
+      line-height: 1.35;
+      color: var(--text-muted);
+    }
+    .api-status.ok { color: #137333; font-weight: 600; }
+    .api-status.err { color: #b3261e; font-weight: 600; }
 
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
@@ -255,6 +261,12 @@
       cursor: pointer;
     }
     .btn-mini:hover { background: var(--bg-gray-hover); }
+    .btn-mini.dark {
+      background: var(--accent-black);
+      border-color: var(--accent-black);
+      color: #fff;
+    }
+    .btn-mini.dark:hover { background: var(--accent-dark); }
 
     .prompt-chip {
       background: var(--bg-gray-card);
@@ -293,7 +305,6 @@
     .del-chat { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.82rem; padding: 2px 4px; }
     .del-chat:hover { color: var(--text-black); }
 
-    /* Área Principal Branca (Gemini Pro) */
     .main {
       flex: 1;
       display: flex;
@@ -316,7 +327,6 @@
 
     .topbar-left { display: flex; align-items: center; gap: 14px; }
 
-    /* As 3 Barrinhas */
     .hamburger-btn {
       width: 40px;
       height: 40px;
@@ -364,7 +374,6 @@
       border-color: var(--accent-black);
     }
 
-    /* Chat */
     .chat-scroll {
       flex: 1;
       overflow-y: auto;
@@ -424,7 +433,6 @@
     .quick-card strong { display: block; margin-bottom: 6px; color: var(--text-black); font-size: 0.92rem; }
     .quick-card span { color: var(--text-gray); font-size: 0.8rem; line-height: 1.4; display: block; }
 
-    /* Mensagens */
     .msg {
       display: flex;
       gap: 14px;
@@ -539,7 +547,6 @@
       border-color: var(--accent-black);
     }
 
-    /* Composer estilo Gemini Pro */
     .composer-wrap {
       padding: 8px 16px 20px;
       display: flex;
@@ -659,7 +666,6 @@
 
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-  <!-- MENU LATERAL (ABRE NAS 3 BARRINHAS) -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <div class="brand">
@@ -673,7 +679,19 @@
         <span>＋</span> Nova conversa
       </button>
 
-      <!-- Chat Temporal -->
+      <div class="section-box">
+        <div class="section-title">
+          Chave API (Local)
+          <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" style="font-size:0.68rem; color:var(--text-gray); text-decoration:underline;">Criar nova</a>
+        </div>
+        <input type="password" class="api-input" id="apiKeyInput" placeholder="Cole sua chave do Google AI Studio..." autocomplete="off" />
+        <div class="grid-2">
+          <button class="btn-mini dark" id="saveApiKeyBtn">Salvar</button>
+          <button class="btn-mini" id="testApiKeyBtn">Testar API</button>
+        </div>
+        <div class="api-status" id="apiStatus">Salva apenas no seu navegador para não vazar no GitHub.</div>
+      </div>
+
       <div class="section-box">
         <div class="section-title">Privacidade</div>
         <label class="toggle-row">
@@ -689,7 +707,6 @@
         <button class="btn-mini" id="burnSessionBtn" style="display:none;">Limpar Chat Temporal</button>
       </div>
 
-      <!-- Modos -->
       <div class="section-box">
         <div class="section-title">Ferramenta</div>
         <div class="mode-grid">
@@ -701,17 +718,18 @@
         <div id="chatOptions">
           <label class="field-label">Modelo</label>
           <select id="chatModel">
-            <option value="gemini-3.8-flash">Gemini 3.8 Flash (Rápido)</option>
-            <option value="gemini-4-hydrogen">Gemini 4 Hydrogen (Avançado)</option>
-            <option value="gemini-4-carbon">Gemini 4 Carbon (Pro)</option>
-            <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite</option>
+            <option value="gemini-4-hydrogen">Gemini 4 Hydrogen (Grátis / Avançado)</option>
+            <option value="gemini-3.8-flash">Gemini 3.8 Flash (Grátis / Rápido)</option>
+            <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite (Grátis)</option>
+            <option value="gemini-4-carbon">Gemini 4 Carbon (Pro / Requer Billing)</option>
           </select>
         </div>
 
         <div id="imageOptions" style="display:none; flex-direction:column; gap:8px;">
           <div>
-            <label class="field-label">Modelo de Imagem</label>
+            <label class="field-label">Modelo de Imagem (Requer Billing)</label>
             <select id="imageModel">
+              <option value="gemini-nano-banana-2.1">Gemini Nano Banana 2.1 (4K - Novo)</option>
               <option value="gemini-3.1-flash-image">Gemini 3.1 Flash Image (4K)</option>
               <option value="gemini-3-pro-image">Gemini 3 Pro Image</option>
             </select>
@@ -739,13 +757,13 @@
 
         <div id="videoOptions" style="display:none; flex-direction:column; gap:8px;">
           <div>
-            <label class="field-label">Duração total (Sequência contínua)</label>
+            <label class="field-label">Duração total (Requer Billing)</label>
             <select id="videoTotalDuration">
               <option value="15">15 segundos (1 cena)</option>
-              <option value="60" selected>1 minuto (4 cenas de 15s)</option>
-              <option value="90">1 min 30s (6 cenas de 15s)</option>
-              <option value="120">2 minutos (8 cenas de 15s)</option>
-              <option value="180">3 minutos (12 cenas de 15s)</option>
+              <option value="25">25 segundos (2 cenas contínuas)</option>
+              <option value="60" selected>~1 minuto (4 cenas)</option>
+              <option value="90">~1 min 30s (6 cenas)</option>
+              <option value="120">~2 minutos (8 cenas)</option>
             </select>
           </div>
           <div class="grid-2">
@@ -768,21 +786,18 @@
         </div>
       </div>
 
-      <!-- Atalhos -->
       <div class="section-box">
         <div class="section-title">Modelos rápidos</div>
         <button class="prompt-chip" data-mode-jump="image" data-prompt="Fotografia editorial ultra realista em 4K de arquitetura minimalista em concreto cinza e vidro branco sob luz natural suave">Imagem Arquitetura 4K</button>
-        <button class="prompt-chip" data-mode-jump="video" data-prompt="Documentário cinematográfico em câmera lenta mostrando uma viagem contínua de trem pelas montanhas nevadas até uma cidade moderna ao pôr do sol">Vídeo Longo (+1 min)</button>
+        <button class="prompt-chip" data-mode-jump="video" data-prompt="Documentário cinematográfico em câmera lenta mostrando uma viagem contínua de trem pelas montanhas nevadas até uma cidade moderna ao pôr do sol">Vídeo Longo</button>
         <button class="prompt-chip" data-mode-jump="chat" data-prompt="Escreva um código completo, limpo e comentado em HTML/CSS/JS para um portfólio minimalista.">Gerar Código Pro</button>
       </div>
 
-      <!-- Instrução -->
       <div class="section-box">
         <div class="section-title">Personalidade da IA</div>
         <textarea class="sys-prompt" id="systemPrompt" rows="2">Você é o Gemini Pro. Responda sempre em português do Brasil com clareza, precisão e objetividade.</textarea>
       </div>
 
-      <!-- Histórico -->
       <div class="section-box">
         <div class="section-title">
           Recentes
@@ -793,7 +808,6 @@
     </div>
   </aside>
 
-  <!-- ÁREA PRINCIPAL BRANCA -->
   <main class="main">
     <header class="topbar">
       <div class="topbar-left">
@@ -814,7 +828,7 @@
       <div class="chat-inner" id="chatContainer">
         <div class="welcome" id="welcomeScreen">
           <h1>Olá! <span>Como posso ajudar hoje?</span></h1>
-          <p>Converse, gere imagens em 4K Ultra HD ou crie sequências de vídeo acima de 1 minuto. Abra as <b>3 barrinhas (☰)</b> no canto superior esquerdo para alternar modos e usar o Chat Temporal.</p>
+          <p>Converse, gere imagens em 4K Ultra HD ou crie sequências de vídeo. Abra as <b>3 barrinhas (☰)</b> no canto superior esquerdo para colar sua API Key do Google AI Studio, alternar modos e usar o Chat Temporal.</p>
           <div class="quick-cards">
             <div class="quick-card" data-mode-jump="chat" data-prompt="Crie um plano detalhado passo a passo para lançar um projeto digital do zero.">
               <strong>Chat & Raciocínio Pro</strong>
@@ -825,7 +839,7 @@
               <span>Crie artes e fotografias em alta definição diretamente no chat.</span>
             </div>
             <div class="quick-card" data-mode-jump="video" data-prompt="Uma caminhada contínua em primeira pessoa por uma floresta tranquila até chegar a um lago cristalino ao amanhecer">
-              <strong>Vídeos (+1, 2 ou 3 min)</strong>
+              <strong>Vídeos Cinematográficos</strong>
               <span>Geração sequencial em blocos contínuos com áudio sincronizado.</span>
             </div>
           </div>
@@ -852,12 +866,8 @@
   </main>
 
   <script>
-    // =========================================================================
-    // COLE SUA CHAVE DA API DO GOOGLE AI STUDIO ABAIXO ANTES DE PUBLICAR:
-    const GEMINI_API_KEY = "AQ.Ab8RN6L4zuNLq4YhJkqcorZH2uIX26NvU2um8FCxNB2nhmRJMw";
-    // =========================================================================
-
     const state = {
+      apiKey: localStorage.getItem("gp_api_key") || "",
       mode: "chat",
       temporal: false,
       currentChatId: null,
@@ -873,6 +883,10 @@
       hamburgerBtn: document.getElementById("hamburgerBtn"),
       closeSidebarBtn: document.getElementById("closeSidebarBtn"),
       newChatBtn: document.getElementById("newChatBtn"),
+      apiKeyInput: document.getElementById("apiKeyInput"),
+      saveApiKeyBtn: document.getElementById("saveApiKeyBtn"),
+      testApiKeyBtn: document.getElementById("testApiKeyBtn"),
+      apiStatus: document.getElementById("apiStatus"),
       temporalToggle: document.getElementById("temporalToggle"),
       burnSessionBtn: document.getElementById("burnSessionBtn"),
       modeBtns: document.querySelectorAll(".mode-btn"),
@@ -905,11 +919,57 @@
     };
 
     function init() {
+      if (state.apiKey) {
+        el.apiKeyInput.value = state.apiKey;
+        setApiStatus("Chave configurada neste navegador.", "ok");
+      }
       renderHistory();
       if (!state.temporal && state.chats.length > 0) {
         loadChat(state.chats[0].id);
       }
     }
+
+    function setApiStatus(msg, type = "") {
+      el.apiStatus.textContent = msg;
+      el.apiStatus.className = "api-status" + (type ? " " + type : "");
+    }
+
+    function saveApiKeyValue(rawKey) {
+      const cleaned = (rawKey || "").trim();
+      state.apiKey = cleaned;
+      try {
+        if (cleaned) localStorage.setItem("gp_api_key", cleaned);
+        else localStorage.removeItem("gp_api_key");
+      } catch (e) {}
+      el.apiKeyInput.value = cleaned;
+      if (cleaned) setApiStatus("Chave salva neste navegador!", "ok");
+      else setApiStatus("Nenhuma chave salva.", "");
+    }
+
+    el.saveApiKeyBtn.addEventListener("click", () => {
+      saveApiKeyValue(el.apiKeyInput.value);
+    });
+
+    el.testApiKeyBtn.addEventListener("click", async () => {
+      const keyToTest = el.apiKeyInput.value.trim() || state.apiKey;
+      if (!keyToTest) {
+        setApiStatus("Cole sua chave antes de testar.", "err");
+        return;
+      }
+      saveApiKeyValue(keyToTest);
+      setApiStatus("Testando conexão com o Google...", "");
+      try {
+        const res = await fetch("https://generativelanguage.googleapis.com/v1beta/models", {
+          headers: { "x-goog-api-key": keyToTest }
+        });
+        const data = await safeJson(res);
+        if (!res.ok) throw new Error(formatApiError(res.status, data));
+        const total = Array.isArray(data.models) ? data.models.length : 0;
+        setApiStatus(`Conectado! ${total} modelos disponíveis para essa chave.`, "ok");
+      } catch (err) {
+        setApiStatus(err.message, "err");
+      }
+    });
 
     function toggleSidebar(forceClose = false) {
       const isMobile = window.innerWidth <= 900;
@@ -934,12 +994,12 @@
       el.imageOptions.style.display = mode === "image" ? "flex" : "none";
       el.videoOptions.style.display = mode === "video" ? "flex" : "none";
 
-      const names = { chat: "Pro", image: "Imagem 4K", video: "Vídeo +1 min" };
+      const names = { chat: "Pro", image: "Imagem 4K", video: "Vídeo" };
       el.modeBadge.textContent = names[mode];
       el.promptInput.placeholder =
         mode === "chat" ? "Peça ao Gemini..." :
         mode === "image" ? "Descreva a imagem em 4K que deseja criar..." :
-        "Descreva a história/cena do vídeo longo...";
+        "Descreva a história/cena do vídeo...";
     }
     el.modeBtns.forEach(btn => btn.addEventListener("click", () => setMode(btn.dataset.mode)));
 
@@ -985,9 +1045,18 @@
       if (!state.temporal) renderMessages([]);
     });
 
+    // Salva apenas texto no localStorage para não estourar o limite de 5MB com base64
     function saveChats() {
       try {
-        localStorage.setItem("gp_chats", JSON.stringify(state.chats));
+        const liteChats = state.chats.slice(0, 30).map(c => ({
+          id: c.id,
+          title: c.title,
+          messages: c.messages.map(m => ({
+            role: m.role,
+            text: m.text || ((m.imageUrl || m.videoSegments) ? "[Mídia gerada na sessão]" : "")
+          }))
+        }));
+        localStorage.setItem("gp_chats", JSON.stringify(liteChats));
       } catch (e) {
         console.warn("Memória local cheia.");
       }
@@ -1175,9 +1244,7 @@
         }
 
         video.addEventListener("ended", () => {
-          if (currentIndex + 1 < m.videoSegments.length) {
-            selectScene(currentIndex + 1);
-          }
+          if (currentIndex + 1 < m.videoSegments.length) selectScene(currentIndex + 1);
         });
 
         m.videoSegments.forEach((_, idx) => {
@@ -1249,14 +1316,38 @@
     });
     el.sendBtn.addEventListener("click", handleSend);
 
+    async function safeJson(res) {
+      const raw = await res.text();
+      try {
+        return JSON.parse(raw);
+      } catch {
+        return { error: { message: raw ? raw.slice(0, 200) : `HTTP ${res.status}` } };
+      }
+    }
+
+    function formatApiError(status, data) {
+      const msg = data?.error?.message || `Erro HTTP ${status}`;
+      if (/leaked/i.test(msg)) {
+        return "Sua chave foi bloqueada pelo Google por ter vazado publicamente. Crie uma nova chave no Google AI Studio e salve aqui no menu lateral (☰).";
+      }
+      if (/limit:\s*0/i.test(msg) || /free_tier/i.test(msg) || status === 429) {
+        return `Cota excedida ou modelo pago (${msg}). No plano gratuito, use Gemini 4 Hydrogen, 3.8 Flash ou 3.5 Flash-Lite.`;
+      }
+      if (status === 401 || status === 403 || /ACCESS_TOKEN_TYPE_UNSUPPORTED|API_KEY_INVALID/i.test(msg)) {
+        return `Chave recusada pela API (${msg}). Crie uma chave em um Novo Projeto no Google AI Studio e teste novamente.`;
+      }
+      return msg;
+    }
+
     async function handleSend() {
       if (state.isLoading) return;
       const text = el.promptInput.value.trim();
       if (!text && !state.attachedImage) return;
 
-      if (!GEMINI_API_KEY || GEMINI_API_KEY === "COLE_SUA_CHAVE_AQUI") {
-        alert("Cole sua API Key do Google AI Studio na constante GEMINI_API_KEY no código antes de usar.");
-        return;
+      if (!state.apiKey) {
+        const entered = prompt("Cole sua nova API Key do Google AI Studio (aistudio.google.com/apikey).\nEla ficará salva apenas neste navegador:");
+        if (!entered || !entered.trim()) return;
+        saveApiKeyValue(entered);
       }
 
       const msgs = getCurrentMessages();
@@ -1315,40 +1406,52 @@
     async function callGeminiChat(msgs) {
       const model = el.chatModel.value;
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
-      const contents = msgs.slice(-16).map(m => {
+
+      const validMsgs = msgs.filter(m => !m.text?.startsWith("**Erro:**")).slice(-16);
+      const contents = [];
+      for (const m of validMsgs) {
+        const role = m.role === "user" ? "user" : "model";
         const parts = [];
         if (m.text) parts.push({ text: m.text });
         if (m.attachedBase64 && m.attachedMime) {
           parts.push({ inlineData: { mimeType: m.attachedMime, data: m.attachedBase64 } });
         }
-        return { role: m.role === "user" ? "user" : "model", parts: parts.length ? parts : [{ text: " " }] };
-      });
+        const safeParts = parts.length ? parts : [{ text: " " }];
+        if (contents.length > 0 && contents[contents.length - 1].role === role) {
+          contents[contents.length - 1].parts.push(...safeParts);
+        } else {
+          contents.push({ role, parts: safeParts });
+        }
+      }
+
+      const payload = { contents };
+      const sysText = el.systemPrompt.value.trim();
+      if (sysText) {
+        payload.systemInstruction = { parts: [{ text: sysText }] };
+      }
 
       const res = await fetch(url, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "x-goog-api-key": GEMINI_API_KEY },
-        body: JSON.stringify({
-          contents,
-          systemInstruction: { parts: [{ text: el.systemPrompt.value.trim() }] }
-        })
+        headers: { "Content-Type": "application/json", "x-goog-api-key": state.apiKey },
+        body: JSON.stringify(payload)
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error?.message || `HTTP ${res.status}`);
+      const data = await safeJson(res);
+      if (!res.ok) throw new Error(formatApiError(res.status, data));
       return {
         role: "ai",
         text: data.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "Sem resposta."
       };
     }
 
-    async function callGeminiImage(prompt, attachment) {
+    async function callGeminiImage(promptText, attachment) {
       const model = el.imageModel.value;
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
-      const parts = [{ text: prompt || "Imagem em 4K." }];
+      const parts = [{ text: promptText || "Imagem em 4K." }];
       if (attachment) parts.push({ inlineData: { mimeType: attachment.mimeType, data: attachment.base64 } });
 
       const res = await fetch(url, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "x-goog-api-key": GEMINI_API_KEY },
+        headers: { "Content-Type": "application/json", "x-goog-api-key": state.apiKey },
         body: JSON.stringify({
           contents: [{ role: "user", parts }],
           generationConfig: {
@@ -1357,8 +1460,8 @@
           }
         })
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error?.message || `HTTP ${res.status}`);
+      const data = await safeJson(res);
+      if (!res.ok) throw new Error(formatApiError(res.status, data));
 
       let textOut = "";
       let imageUrl = null;
@@ -1372,21 +1475,29 @@
       return { role: "ai", text: textOut.trim() || `Imagem ${el.imageSize.value} (${el.imageRatio.value})`, imageUrl };
     }
 
-    // Gerador de Vídeo Sequencial (+1 min = vários blocos contínuos de 15s)
-    async function callGeminiVideoSequence(prompt, attachment) {
+    async function callGeminiVideoSequence(promptText, attachment) {
       const totalSeconds = parseInt(el.videoTotalDuration.value, 10);
-      const segmentsCount = Math.max(1, Math.round(totalSeconds / 15));
+      const segmentsCount = totalSeconds <= 15 ? 1 : totalSeconds <= 25 ? 2 : Math.max(1, Math.round(totalSeconds / 15));
       const url = `https://generativelanguage.googleapis.com/v1beta/interactions`;
 
       const videoSegments = [];
       let prevId = null;
+      let chainSeconds = 0;
 
       for (let i = 0; i < segmentsCount; i++) {
-        showTyping(`Gerando parte ${i + 1} de ${segmentsCount} (${(i + 1) * 15}s / ${totalSeconds}s)...`);
+        const isExtending = Boolean(prevId) && chainSeconds < 25;
+        if (!isExtending) {
+          prevId = null;
+          chainSeconds = 0;
+        }
+        const segDur = isExtending ? 10 : 15;
+        chainSeconds += segDur;
 
-        const partPrompt = i === 0
-          ? `${prompt} (aspect_ratio: ${el.videoRatio.value}, resolution: ${el.videoRes.value}, duration: 15s)`
-          : `Continue smoothly from the previous scene keeping identical characters, lighting and motion: ${prompt} (part ${i + 1}/${segmentsCount}, duration: 15s)`;
+        showTyping(`Gerando parte ${i + 1} de ${segmentsCount} (${segDur}s)...`);
+
+        const partPrompt = isExtending
+          ? `Continue smoothly from the previous scene keeping identical characters, lighting and motion: ${promptText}`
+          : promptText;
 
         let inputPayload = partPrompt;
         if (i === 0 && attachment) {
@@ -1396,23 +1507,32 @@
           ];
         }
 
-        const body = { model: "gemini-omni-1.2-flash", input: inputPayload };
+        const body = {
+          model: "gemini-omni-1.2-flash",
+          input: inputPayload,
+          response_format: {
+            type: "video",
+            aspect_ratio: el.videoRatio.value,
+            resolution: el.videoRes.value,
+            duration: `${segDur}s`
+          }
+        };
         if (prevId) body.previous_interaction_id = prevId;
 
         const res = await fetch(url, {
           method: "POST",
-          headers: { "Content-Type": "application/json", "x-goog-api-key": GEMINI_API_KEY },
+          headers: { "Content-Type": "application/json", "x-goog-api-key": state.apiKey },
           body: JSON.stringify(body)
         });
 
-        let data = await res.json();
-        if (!res.ok) throw new Error(data.error?.message || `HTTP ${res.status}`);
+        let data = await safeJson(res);
+        if (!res.ok) throw new Error(formatApiError(res.status, data));
 
         if (data.id && data.status && data.status !== "completed" && data.status !== "failed") {
           for (let pollTry = 0; pollTry < 45; pollTry++) {
             await new Promise(r => setTimeout(r, 4000));
-            const poll = await fetch(`${url}/${data.id}`, { headers: { "x-goog-api-key": GEMINI_API_KEY } });
-            data = await poll.json();
+            const poll = await fetch(`${url}/${data.id}`, { headers: { "x-goog-api-key": state.apiKey } });
+            data = await safeJson(poll);
             if (data.status === "completed" || data.status === "failed") break;
           }
         }
@@ -1429,11 +1549,13 @@
             ...((data.steps || []).flatMap(s => s.content || []))
           ];
           const vp = allItems.find(item => item.type === "video" || item.mime_type?.startsWith("video/"));
-          if (vp?.data) segUrl = `data:${vp.mime_type || "video/mp4"};base64,${vp.data}`;
-          else if (vp?.uri) {
-            segUrl = vp.uri.includes("generativelanguage.googleapis.com")
-              ? `${vp.uri}${vp.uri.includes("?") ? "&" : "?"}key=${encodeURIComponent(GEMINI_API_KEY)}`
-              : vp.uri;
+          if (vp?.data) {
+            segUrl = `data:${vp.mime_type || "video/mp4"};base64,${vp.data}`;
+          } else if (vp?.uri) {
+            const vRes = await fetch(vp.uri, { headers: { "x-goog-api-key": state.apiKey } });
+            if (!vRes.ok) throw new Error("Erro ao baixar vídeo gerado.");
+            const blob = await vRes.blob();
+            segUrl = URL.createObjectURL(blob);
           }
         }
 
@@ -1443,7 +1565,7 @@
 
       return {
         role: "ai",
-        text: `Sequência concluída: **${segmentsCount} parte(s)** totalizando **${totalSeconds} segundos** (${el.videoRes.value}). O player reproduz todas em sequência automaticamente.`,
+        text: `Sequência concluída: **${segmentsCount} parte(s)** (${el.videoRes.value}). O player reproduz todas em sequência automaticamente.`,
         videoSegments
       };
     }
@@ -1451,4 +1573,4 @@
     init();
   </script>
 </body>
-  </html>
+              </html>
