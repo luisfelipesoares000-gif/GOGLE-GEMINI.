@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gemini Pro Studio</title>
+  <style>
+    :root {
+      --bg-white: #ffffff;
+      --bg-gray-soft: #f0f4f9;
+      --bg-gray-hover: #e3e8ee;
+      --bg-gray-card: #f8f9fa;
+      --border: #dde3ea;
+      --text-black: #1f1f1f;
+      --text-gray: #444746;
+      --text-muted: #747775;
+      --accent-black: #111111;
+      --accent-dark: #2b2d30;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Google Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-white);
+      color: var(--text-black);
+      height: 100vh;
+      height: 100dvh;
+      display: flex;
+      overflow: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd2d9; border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: #9aa0a6; }
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.25);
+      z-index: 40;
+    }
+    .sidebar-overlay.active { display: block; }
+
+    /* Sidebar estilo Gemini Pro (Cinza claro) */
+    .sidebar {
+      width: 300px;
+      max-width: 86vw;
+      background: var(--bg-gray-soft);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      z-index: 50;
+      transition: margin-left 0.25s ease, transform 0.25s ease;
+      flex-shrink: 0;
+    }
+
+    .sidebar.collapsed { margin-left: -300px; }
+
+    @media (max-width: 900px) {
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        margin-left: 0 !important;
+        transform: translateX(-100%);
+      }
+      .sidebar.open-mobile { transform: translateX(0); }
+    }
+
+    .sidebar-header {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      font-weight: 600;
+      font-size: 1.08rem;
+      color: var(--text-black);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      background: var(--accent-black);
+      color: #fff;
+      padding: 2px 7px;
+      border-radius: 6px;
+      letter-spacing: 0.4px;
+    }
+
+    .close-sidebar-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-gray);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .close-sidebar-btn:hover { background: var(--bg-gray-hover); color: var(--text-black); }
+
+    .sidebar-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .btn-new-chat {
+      width: 100%;
+      padding: 11px 16px;
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      background: var(--bg-white);
+      color: var(--text-black);
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      transition: background 0.15s;
+    }
+    .btn-new-chat:hover { background: var(--bg-gray-hover); }
+
+    .section-box {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .section-title {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text-muted);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Toggle Switch */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: pointer;
+    }
+    .toggle-info strong { display: block; font-size: 0.86rem; color: var(--text-black); }
+    .toggle-info small { color: var(--text-muted); font-size: 0.73rem; }
+
+    .switch { position: relative; width: 42px; height: 22px; flex-shrink: 0; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute;
+      inset: 0;
+      background: #cfd5dc;
+      border-radius: 99px;
+      transition: 0.2s;
+    }
+    .slider:before {
+      content: "";
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      left: 3px;
+      top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: 0.2s;
+    }
+    .switch input:checked + .slider { background: var(--accent-black); }
+    .switch input:checked + .slider:before { transform: translateX(20px); }
+
+    .mode-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    .mode-btn {
+      background: var(--bg-gray-card);
+      border: 1px solid var(--border);
+      color: var(--text-gray);
+      padding: 9px 4px;
+      border-radius: 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: 0.15s;
+    }
+    .mode-btn:hover { background: var(--bg-gray-hover); color: var(--text-black); }
+    .mode-btn.active {
+      background: var(--accent-black);
+      border-color: var(--accent-black);
+      color: #fff;
+    }
+
+    label.field-label {
+      font-size: 0.76rem;
+      color: var(--text-gray);
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+
+    select, textarea.sys-prompt {
+      width: 100%;
+      background: var(--bg-gray-card);
+      border: 1px solid var(--border);
+      color: var(--text-black);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 0.82rem;
+      outline: none;
+    }
+    select:focus, textarea.sys-prompt:focus { border-color: var(--accent-black); }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+    .btn-mini {
+      background: var(--bg-gray-card);
+      border: 1px solid var(--border);
+      color: var(--text-black);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-mini:hover { background: var(--bg-gray-hover); }
+
+    .prompt-chip {
+      background: var(--bg-gray-card);
+      border: 1px solid var(--border);
+      color: var(--text-gray);
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      text-align: left;
+      transition: 0.15s;
+    }
+    .prompt-chip:hover { background: var(--bg-gray-hover); color: var(--text-black); }
+
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .history-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      padding: 8px 10px;
+      border-radius: 99px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      color: var(--text-gray);
+    }
+    .history-item:hover { background: var(--bg-gray-soft); color: var(--text-black); }
+    .history-item.active { background: #e3e8ee; color: var(--text-black); font-weight: 600; }
+    .history-item span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+    .del-chat { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.82rem; padding: 2px 4px; }
+    .del-chat:hover { color: var(--text-black); }
+
+    /* Área Principal Branca (Gemini Pro) */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-width: 0;
+      background: var(--bg-white);
+    }
+
+    .topbar {
+      height: 60px;
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-shrink: 0;
+      background: var(--bg-white);
+    }
+
+    .topbar-left { display: flex; align-items: center; gap: 14px; }
+
+    /* As 3 Barrinhas */
+    .hamburger-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4.5px;
+      transition: background 0.15s;
+    }
+    .hamburger-btn:hover { background: var(--bg-gray-soft); }
+    .hamburger-btn span {
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: var(--text-gray);
+      border-radius: 2px;
+    }
+
+    .topbar-title {
+      font-size: 1.15rem;
+      font-weight: 500;
+      color: var(--text-black);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pill-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 99px;
+      background: var(--bg-gray-soft);
+      color: var(--text-gray);
+      border: 1px solid var(--border);
+    }
+    .pill-tag.temporal {
+      background: var(--accent-black);
+      color: #fff;
+      border-color: var(--accent-black);
+    }
+
+    /* Chat */
+    .chat-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 16px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .chat-inner {
+      width: 100%;
+      max-width: 820px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .welcome {
+      margin: auto 0;
+      padding: 48px 12px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .welcome h1 {
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      font-weight: 500;
+      letter-spacing: -0.8px;
+      color: var(--text-black);
+    }
+    .welcome h1 span { color: #747775; }
+    .welcome p {
+      color: var(--text-gray);
+      font-size: 1.05rem;
+      max-width: 600px;
+      line-height: 1.5;
+    }
+
+    .quick-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+      gap: 12px;
+      width: 100%;
+      margin-top: 20px;
+    }
+    .quick-card {
+      background: var(--bg-gray-soft);
+      border: 1px solid transparent;
+      border-radius: 16px;
+      padding: 16px;
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .quick-card:hover { background: var(--bg-gray-hover); border-color: var(--border); }
+    .quick-card strong { display: block; margin-bottom: 6px; color: var(--text-black); font-size: 0.92rem; }
+    .quick-card span { color: var(--text-gray); font-size: 0.8rem; line-height: 1.4; display: block; }
+
+    /* Mensagens */
+    .msg {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .msg.user { flex-direction: row-reverse; }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.74rem;
+    }
+    .msg.user .avatar { background: #e3e8ee; color: var(--text-black); }
+    .msg.ai .avatar { background: var(--accent-black); color: #fff; }
+
+    .bubble {
+      max-width: 85%;
+      line-height: 1.65;
+      font-size: 0.96rem;
+      word-wrap: break-word;
+      overflow-x: auto;
+    }
+    .msg.user .bubble {
+      background: var(--bg-gray-soft);
+      color: var(--text-black);
+      padding: 12px 18px;
+      border-radius: 20px;
+      border-top-right-radius: 6px;
+    }
+    .msg.ai .bubble {
+      background: transparent;
+      color: var(--text-black);
+      padding: 4px 0;
+    }
+
+    .bubble pre {
+      background: #18181b;
+      color: #f4f4f5;
+      border-radius: 12px;
+      padding: 14px;
+      margin: 12px 0;
+      overflow-x: auto;
+      position: relative;
+    }
+    .bubble code { font-family: "Fira Code", Consolas, monospace; font-size: 0.85rem; }
+    .copy-code-btn {
+      float: right;
+      background: #27272a;
+      border: 1px solid #3f3f46;
+      color: #fff;
+      font-size: 0.72rem;
+      padding: 3px 9px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .copy-code-btn:hover { background: #fff; color: #000; }
+
+    .media-output {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .media-output img, .media-output video {
+      max-width: 100%;
+      max-height: 460px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #000;
+    }
+    .media-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 99px;
+      background: var(--accent-black);
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+    }
+    .download-btn:hover { background: var(--accent-dark); }
+
+    .playlist-bar {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+    .scene-pill {
+      padding: 5px 10px;
+      border-radius: 99px;
+      border: 1px solid var(--border);
+      background: var(--bg-gray-soft);
+      color: var(--text-black);
+      font-size: 0.76rem;
+      cursor: pointer;
+    }
+    .scene-pill.active {
+      background: var(--accent-black);
+      color: #fff;
+      border-color: var(--accent-black);
+    }
+
+    /* Composer estilo Gemini Pro */
+    .composer-wrap {
+      padding: 8px 16px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--bg-white);
+      flex-shrink: 0;
+    }
+    .composer {
+      width: 100%;
+      max-width: 820px;
+      background: var(--bg-gray-soft);
+      border: 1px solid transparent;
+      border-radius: 26px;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+    }
+    .composer:focus-within {
+      background: var(--bg-white);
+      border-color: #cfd5dc;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    .attachment-preview {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 10px;
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 0.8rem;
+      color: var(--text-gray);
+    }
+    .attachment-preview.active { display: flex; }
+    .attachment-preview img { width: 38px; height: 38px; object-fit: cover; border-radius: 6px; }
+
+    .composer-row { display: flex; align-items: flex-end; gap: 10px; }
+
+    .icon-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: transparent;
+      border: none;
+      color: var(--text-gray);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    .icon-btn:hover { background: var(--bg-gray-hover); color: var(--text-black); }
+
+    textarea#promptInput {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-black);
+      font-size: 0.98rem;
+      resize: none;
+      max-height: 160px;
+      min-height: 24px;
+      padding: 8px 4px;
+      line-height: 1.45;
+      outline: none;
+    }
+    textarea#promptInput::placeholder { color: var(--text-muted); }
+
+    .send-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: none;
+      background: var(--accent-black);
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: opacity 0.15s;
+    }
+    .send-btn:hover { opacity: 0.85; }
+    .send-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    .footer-note {
+      margin-top: 8px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .typing { display: inline-flex; gap: 5px; padding: 8px 0; }
+    .typing span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-black);
+      animation: bounce 1.2s infinite ease-in-out;
+    }
+    .typing span:nth-child(2) { animation-delay: 0.15s; background: #747775; }
+    .typing span:nth-child(3) { animation-delay: 0.3s; background: #b0b5ba; }
+
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.35; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- MENU LATERAL (ABRE NAS 3 BARRINHAS) -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="brand">
+        Gemini <span class="brand-badge">PRO</span>
+      </div>
+      <button class="close-sidebar-btn" id="closeSidebarBtn" title="Fechar menu">✕</button>
+    </div>
+
+    <div class="sidebar-content">
+      <button class="btn-new-chat" id="newChatBtn">
+        <span>＋</span> Nova conversa
+      </button>
+
+      <!-- Chat Temporal -->
+      <div class="section-box">
+        <div class="section-title">Privacidade</div>
+        <label class="toggle-row">
+          <div class="toggle-info">
+            <strong>Chat Temporal</strong>
+            <small>Não fica salvo no histórico</small>
+          </div>
+          <div class="switch">
+            <input type="checkbox" id="temporalToggle" />
+            <span class="slider"></span>
+          </div>
+        </label>
+        <button class="btn-mini" id="burnSessionBtn" style="display:none;">Limpar Chat Temporal</button>
+      </div>
+
+      <!-- Modos -->
+      <div class="section-box">
+        <div class="section-title">Ferramenta</div>
+        <div class="mode-grid">
+          <button class="mode-btn active" data-mode="chat">Chat Pro</button>
+          <button class="mode-btn" data-mode="image">Imagem 4K</button>
+          <button class="mode-btn" data-mode="video">Vídeo +1m</button>
+        </div>
+
+        <div id="chatOptions">
+          <label class="field-label">Modelo</label>
+          <select id="chatModel">
+            <option value="gemini-3.8-flash">Gemini 3.8 Flash (Rápido)</option>
+            <option value="gemini-4-hydrogen">Gemini 4 Hydrogen (Avançado)</option>
+            <option value="gemini-4-carbon">Gemini 4 Carbon (Pro)</option>
+            <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite</option>
+          </select>
+        </div>
+
+        <div id="imageOptions" style="display:none; flex-direction:column; gap:8px;">
+          <div>
+            <label class="field-label">Modelo de Imagem</label>
+            <select id="imageModel">
+              <option value="gemini-3.1-flash-image">Gemini 3.1 Flash Image (4K)</option>
+              <option value="gemini-3-pro-image">Gemini 3 Pro Image</option>
+            </select>
+          </div>
+          <div class="grid-2">
+            <div>
+              <label class="field-label">Qualidade</label>
+              <select id="imageSize">
+                <option value="4K" selected>4K Ultra HD</option>
+                <option value="2K">2K QHD</option>
+                <option value="1K">1K</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label">Formato</label>
+              <select id="imageRatio">
+                <option value="16:9">16:9</option>
+                <option value="9:16">9:16</option>
+                <option value="1:1" selected>1:1</option>
+                <option value="4:3">4:3</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div id="videoOptions" style="display:none; flex-direction:column; gap:8px;">
+          <div>
+            <label class="field-label">Duração total (Sequência contínua)</label>
+            <select id="videoTotalDuration">
+              <option value="15">15 segundos (1 cena)</option>
+              <option value="60" selected>1 minuto (4 cenas de 15s)</option>
+              <option value="90">1 min 30s (6 cenas de 15s)</option>
+              <option value="120">2 minutos (8 cenas de 15s)</option>
+              <option value="180">3 minutos (12 cenas de 15s)</option>
+            </select>
+          </div>
+          <div class="grid-2">
+            <div>
+              <label class="field-label">Resolução</label>
+              <select id="videoRes">
+                <option value="4k">4K Ultra HD</option>
+                <option value="1080p" selected>1080p Full HD</option>
+                <option value="720p">720p HD</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label">Formato</label>
+              <select id="videoRatio">
+                <option value="16:9" selected>16:9</option>
+                <option value="9:16">9:16</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Atalhos -->
+      <div class="section-box">
+        <div class="section-title">Modelos rápidos</div>
+        <button class="prompt-chip" data-mode-jump="image" data-prompt="Fotografia editorial ultra realista em 4K de arquitetura minimalista em concreto cinza e vidro branco sob luz natural suave">Imagem Arquitetura 4K</button>
+        <button class="prompt-chip" data-mode-jump="video" data-prompt="Documentário cinematográfico em câmera lenta mostrando uma viagem contínua de trem pelas montanhas nevadas até uma cidade moderna ao pôr do sol">Vídeo Longo (+1 min)</button>
+        <button class="prompt-chip" data-mode-jump="chat" data-prompt="Escreva um código completo, limpo e comentado em HTML/CSS/JS para um portfólio minimalista.">Gerar Código Pro</button>
+      </div>
+
+      <!-- Instrução -->
+      <div class="section-box">
+        <div class="section-title">Personalidade da IA</div>
+        <textarea class="sys-prompt" id="systemPrompt" rows="2">Você é o Gemini Pro. Responda sempre em português do Brasil com clareza, precisão e objetividade.</textarea>
+      </div>
+
+      <!-- Histórico -->
+      <div class="section-box">
+        <div class="section-title">
+          Recentes
+          <button class="btn-mini" id="clearAllHistoryBtn" style="padding:2px 8px; font-size:0.7rem;">Limpar</button>
+        </div>
+        <div class="history-list" id="historyList"></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ÁREA PRINCIPAL BRANCA -->
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Menu" title="Abrir menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div class="topbar-title">
+          Gemini
+          <span class="pill-tag" id="modeBadge">Pro</span>
+          <span class="pill-tag temporal" id="temporalBadge" style="display:none;">Temporal</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="chat-scroll" id="chatScroll">
+      <div class="chat-inner" id="chatContainer">
+        <div class="welcome" id="welcomeScreen">
+          <h1>Olá! <span>Como posso ajudar hoje?</span></h1>
+          <p>Converse, gere imagens em 4K Ultra HD ou crie sequências de vídeo acima de 1 minuto. Abra as <b>3 barrinhas (☰)</b> no canto superior esquerdo para alternar modos e usar o Chat Temporal.</p>
+          <div class="quick-cards">
+            <div class="quick-card" data-mode-jump="chat" data-prompt="Crie um plano detalhado passo a passo para lançar um projeto digital do zero.">
+              <strong>Chat & Raciocínio Pro</strong>
+              <span>Respostas completas, programação e leitura de imagens enviadas.</span>
+            </div>
+            <div class="quick-card" data-mode-jump="image" data-prompt="Foto de estúdio minimalista em 4K de um relógio mecânico preto e prata sobre mármore branco, iluminação suave">
+              <strong>Imagens 4K Ultra HD</strong>
+              <span>Crie artes e fotografias em alta definição diretamente no chat.</span>
+            </div>
+            <div class="quick-card" data-mode-jump="video" data-prompt="Uma caminhada contínua em primeira pessoa por uma floresta tranquila até chegar a um lago cristalino ao amanhecer">
+              <strong>Vídeos (+1, 2 ou 3 min)</strong>
+              <span>Geração sequencial em blocos contínuos com áudio sincronizado.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="composer-wrap">
+      <div class="composer">
+        <div class="attachment-preview" id="attachmentPreview">
+          <img id="attachmentThumb" src="" alt="Anexo" />
+          <span id="attachmentName">imagem.png</span>
+          <button class="btn-mini" id="removeAttachmentBtn" style="margin-left:auto;">Remover</button>
+        </div>
+        <div class="composer-row">
+          <input type="file" id="fileInput" accept="image/*" hidden />
+          <button class="icon-btn" id="attachBtn" title="Anexar imagem">＋</button>
+          <textarea id="promptInput" rows="1" placeholder="Peça ao Gemini..."></textarea>
+          <button class="send-btn" id="sendBtn" title="Enviar">↑</button>
+        </div>
+      </div>
+      <div class="footer-note">O Gemini pode cometer erros. Verifique informações importantes.</div>
+    </div>
+  </main>
+
+  <script>
+    // =========================================================================
+    // COLE SUA CHAVE DA API DO GOOGLE AI STUDIO ABAIXO ANTES DE PUBLICAR:
+    const GEMINI_API_KEY = "COLE_SUA_CHAVE_AQUI";
+    // =========================================================================
+
+    const state = {
+      mode: "chat",
+      temporal: false,
+      currentChatId: null,
+      chats: JSON.parse(localStorage.getItem("gp_chats") || "[]"),
+      temporalMessages: [],
+      attachedImage: null,
+      isLoading: false
+    };
+
+    const el = {
+      sidebar: document.getElementById("sidebar"),
+      overlay: document.getElementById("sidebarOverlay"),
+      hamburgerBtn: document.getElementById("hamburgerBtn"),
+      closeSidebarBtn: document.getElementById("closeSidebarBtn"),
+      newChatBtn: document.getElementById("newChatBtn"),
+      temporalToggle: document.getElementById("temporalToggle"),
+      burnSessionBtn: document.getElementById("burnSessionBtn"),
+      modeBtns: document.querySelectorAll(".mode-btn"),
+      chatOptions: document.getElementById("chatOptions"),
+      imageOptions: document.getElementById("imageOptions"),
+      videoOptions: document.getElementById("videoOptions"),
+      chatModel: document.getElementById("chatModel"),
+      imageModel: document.getElementById("imageModel"),
+      imageSize: document.getElementById("imageSize"),
+      imageRatio: document.getElementById("imageRatio"),
+      videoTotalDuration: document.getElementById("videoTotalDuration"),
+      videoRes: document.getElementById("videoRes"),
+      videoRatio: document.getElementById("videoRatio"),
+      systemPrompt: document.getElementById("systemPrompt"),
+      historyList: document.getElementById("historyList"),
+      clearAllHistoryBtn: document.getElementById("clearAllHistoryBtn"),
+      modeBadge: document.getElementById("modeBadge"),
+      temporalBadge: document.getElementById("temporalBadge"),
+      chatScroll: document.getElementById("chatScroll"),
+      chatContainer: document.getElementById("chatContainer"),
+      welcomeScreen: document.getElementById("welcomeScreen"),
+      promptInput: document.getElementById("promptInput"),
+      sendBtn: document.getElementById("sendBtn"),
+      attachBtn: document.getElementById("attachBtn"),
+      fileInput: document.getElementById("fileInput"),
+      attachmentPreview: document.getElementById("attachmentPreview"),
+      attachmentThumb: document.getElementById("attachmentThumb"),
+      attachmentName: document.getElementById("attachmentName"),
+      removeAttachmentBtn: document.getElementById("removeAttachmentBtn")
+    };
+
+    function init() {
+      renderHistory();
+      if (!state.temporal && state.chats.length > 0) {
+        loadChat(state.chats[0].id);
+      }
+    }
+
+    function toggleSidebar(forceClose = false) {
+      const isMobile = window.innerWidth <= 900;
+      if (isMobile) {
+        const open = forceClose ? false : !el.sidebar.classList.contains("open-mobile");
+        el.sidebar.classList.toggle("open-mobile", open);
+        el.overlay.classList.toggle("active", open);
+      } else {
+        if (forceClose) el.sidebar.classList.add("collapsed");
+        else el.sidebar.classList.toggle("collapsed");
+      }
+    }
+
+    el.hamburgerBtn.addEventListener("click", () => toggleSidebar(false));
+    el.closeSidebarBtn.addEventListener("click", () => toggleSidebar(true));
+    el.overlay.addEventListener("click", () => toggleSidebar(true));
+
+    function setMode(mode) {
+      state.mode = mode;
+      el.modeBtns.forEach(b => b.classList.toggle("active", b.dataset.mode === mode));
+      el.chatOptions.style.display = mode === "chat" ? "block" : "none";
+      el.imageOptions.style.display = mode === "image" ? "flex" : "none";
+      el.videoOptions.style.display = mode === "video" ? "flex" : "none";
+
+      const names = { chat: "Pro", image: "Imagem 4K", video: "Vídeo +1 min" };
+      el.modeBadge.textContent = names[mode];
+      el.promptInput.placeholder =
+        mode === "chat" ? "Peça ao Gemini..." :
+        mode === "image" ? "Descreva a imagem em 4K que deseja criar..." :
+        "Descreva a história/cena do vídeo longo...";
+    }
+    el.modeBtns.forEach(btn => btn.addEventListener("click", () => setMode(btn.dataset.mode)));
+
+    el.temporalToggle.addEventListener("change", (e) => {
+      state.temporal = e.target.checked;
+      el.temporalBadge.style.display = state.temporal ? "inline-block" : "none";
+      el.burnSessionBtn.style.display = state.temporal ? "block" : "none";
+      if (state.temporal) {
+        state.temporalMessages = [];
+        renderMessages([]);
+      } else {
+        if (state.chats.length > 0) loadChat(state.chats[0].id);
+        else renderMessages([]);
+      }
+    });
+
+    el.burnSessionBtn.addEventListener("click", () => {
+      state.temporalMessages = [];
+      renderMessages([]);
+    });
+
+    el.newChatBtn.addEventListener("click", () => {
+      if (state.temporal) {
+        state.temporalMessages = [];
+        renderMessages([]);
+      } else {
+        const chat = { id: Date.now().toString(), title: "Nova conversa", messages: [] };
+        state.chats.unshift(chat);
+        state.currentChatId = chat.id;
+        saveChats();
+        renderHistory();
+        renderMessages([]);
+      }
+      if (window.innerWidth <= 900) toggleSidebar(true);
+    });
+
+    el.clearAllHistoryBtn.addEventListener("click", () => {
+      if (!confirm("Apagar todo o histórico?")) return;
+      state.chats = [];
+      state.currentChatId = null;
+      saveChats();
+      renderHistory();
+      if (!state.temporal) renderMessages([]);
+    });
+
+    function saveChats() {
+      try {
+        localStorage.setItem("gp_chats", JSON.stringify(state.chats));
+      } catch (e) {
+        console.warn("Memória local cheia.");
+      }
+    }
+
+    function getCurrentMessages() {
+      if (state.temporal) return state.temporalMessages;
+      let chat = state.chats.find(c => c.id === state.currentChatId);
+      if (!chat) {
+        chat = { id: Date.now().toString(), title: "Nova conversa", messages: [] };
+        state.chats.unshift(chat);
+        state.currentChatId = chat.id;
+        saveChats();
+        renderHistory();
+      }
+      return chat.messages;
+    }
+
+    function loadChat(id) {
+      state.currentChatId = id;
+      const chat = state.chats.find(c => c.id === id);
+      renderHistory();
+      renderMessages(chat ? chat.messages : []);
+    }
+
+    function deleteChat(id, e) {
+      e.stopPropagation();
+      state.chats = state.chats.filter(c => c.id !== id);
+      if (state.currentChatId === id) state.currentChatId = state.chats[0]?.id || null;
+      saveChats();
+      renderHistory();
+      if (!state.temporal) {
+        const active = state.chats.find(c => c.id === state.currentChatId);
+        renderMessages(active ? active.messages : []);
+      }
+    }
+
+    function renderHistory() {
+      el.historyList.innerHTML = "";
+      if (state.chats.length === 0) {
+        el.historyList.innerHTML = `<div style="font-size:0.78rem;color:var(--text-muted);padding:6px;">Nenhuma conversa ainda.</div>`;
+        return;
+      }
+      state.chats.forEach(c => {
+        const item = document.createElement("div");
+        item.className = "history-item" + (c.id === state.currentChatId && !state.temporal ? " active" : "");
+        const span = document.createElement("span");
+        span.textContent = c.title || "Conversa";
+        const del = document.createElement("button");
+        del.className = "del-chat";
+        del.textContent = "✕";
+        del.onclick = (e) => deleteChat(c.id, e);
+        item.appendChild(span);
+        item.appendChild(del);
+        item.onclick = () => {
+          if (state.temporal) {
+            el.temporalToggle.checked = false;
+            state.temporal = false;
+            el.temporalBadge.style.display = "none";
+            el.burnSessionBtn.style.display = "none";
+          }
+          loadChat(c.id);
+          if (window.innerWidth <= 900) toggleSidebar(true);
+        };
+        el.historyList.appendChild(item);
+      });
+    }
+
+    document.querySelectorAll("[data-prompt]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        if (btn.dataset.modeJump) setMode(btn.dataset.modeJump);
+        el.promptInput.value = btn.dataset.prompt;
+        autoResizeTextarea();
+        el.promptInput.focus();
+        if (window.innerWidth <= 900) toggleSidebar(true);
+      });
+    });
+
+    el.attachBtn.addEventListener("click", () => el.fileInput.click());
+    el.fileInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = reader.result;
+        state.attachedImage = { mimeType: file.type, base64: dataUrl.split(",")[1], name: file.name, dataUrl };
+        el.attachmentThumb.src = dataUrl;
+        el.attachmentName.textContent = file.name;
+        el.attachmentPreview.classList.add("active");
+      };
+      reader.readAsDataURL(file);
+      el.fileInput.value = "";
+    });
+    el.removeAttachmentBtn.addEventListener("click", clearAttachment);
+
+    function clearAttachment() {
+      state.attachedImage = null;
+      el.attachmentPreview.classList.remove("active");
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[m]));
+    }
+
+    function formatRichText(text) {
+      const safe = escapeHtml(text || "");
+      const parts = safe.split(/```([\s\S]*?)```/g);
+      return parts.map((part, idx) => {
+        if (idx % 2 === 1) {
+          const lines = part.split("\n");
+          const first = lines[0].trim();
+          const code = /^[a-zA-Z0-9_+-]+$/.test(first) ? lines.slice(1).join("\n") : part;
+          return `<pre><button class="copy-code-btn" onclick="copyCode(this)">Copiar</button><code>${code.trim()}</code></pre>`;
+        }
+        return part
+          .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+          .replace(/`([^`]+)`/g, "<code style='background:#f0f4f9;padding:2px 5px;border-radius:4px;'>$1</code>")
+          .replace(/\n/g, "<br>");
+      }).join("");
+    }
+
+    window.copyCode = function(btn) {
+      navigator.clipboard.writeText(btn.nextElementSibling.innerText);
+      btn.textContent = "Copiado ✓";
+      setTimeout(() => btn.textContent = "Copiar", 1800);
+    };
+
+    function renderMessages(messages) {
+      el.chatContainer.innerHTML = "";
+      if (!messages || messages.length === 0) {
+        el.chatContainer.appendChild(el.welcomeScreen);
+        el.welcomeScreen.style.display = "flex";
+        return;
+      }
+      messages.forEach(m => appendMessageDOM(m));
+      scrollToBottom();
+    }
+
+    function appendMessageDOM(m) {
+      if (el.welcomeScreen.parentNode === el.chatContainer) {
+        el.welcomeScreen.style.display = "none";
+      }
+      const div = document.createElement("div");
+      div.className = `msg ${m.role === "user" ? "user" : "ai"}`;
+
+      const avatar = document.createElement("div");
+      avatar.className = "avatar";
+      avatar.textContent = m.role === "user" ? "VC" : "G";
+
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.innerHTML = formatRichText(m.text || "");
+
+      if (m.imageUrl) {
+        const wrap = document.createElement("div");
+        wrap.className = "media-output";
+        wrap.innerHTML = `
+          <img src="${m.imageUrl}" alt="Imagem" />
+          ${m.role !== "user" ? `<div class="media-actions"><a class="download-btn" href="${m.imageUrl}" download="gemini-4k-${Date.now()}.png">⬇ Baixar Imagem</a></div>` : ""}
+        `;
+        bubble.appendChild(wrap);
+      }
+
+      if (m.videoSegments && m.videoSegments.length > 0) {
+        const wrap = document.createElement("div");
+        wrap.className = "media-output";
+        const video = document.createElement("video");
+        video.controls = true;
+        video.autoplay = true;
+        video.playsInline = true;
+        let currentIndex = 0;
+        video.src = m.videoSegments[0];
+
+        const bar = document.createElement("div");
+        bar.className = "playlist-bar";
+        const pills = [];
+
+        function selectScene(idx) {
+          currentIndex = idx;
+          video.src = m.videoSegments[idx];
+          video.play().catch(() => {});
+          pills.forEach((p, i) => p.classList.toggle("active", i === idx));
+          dlBtn.href = m.videoSegments[idx];
+          dlBtn.download = `cena-${idx + 1}.mp4`;
+        }
+
+        video.addEventListener("ended", () => {
+          if (currentIndex + 1 < m.videoSegments.length) {
+            selectScene(currentIndex + 1);
+          }
+        });
+
+        m.videoSegments.forEach((_, idx) => {
+          const pill = document.createElement("button");
+          pill.className = "scene-pill" + (idx === 0 ? " active" : "");
+          pill.textContent = `Parte ${idx + 1}`;
+          pill.onclick = () => selectScene(idx);
+          pills.push(pill);
+          bar.appendChild(pill);
+        });
+
+        const actions = document.createElement("div");
+        actions.className = "media-actions";
+        const dlBtn = document.createElement("a");
+        dlBtn.className = "download-btn";
+        dlBtn.href = m.videoSegments[0];
+        dlBtn.download = "cena-1.mp4";
+        dlBtn.target = "_blank";
+        dlBtn.textContent = "⬇ Baixar Parte Atual";
+        actions.appendChild(dlBtn);
+
+        wrap.appendChild(video);
+        if (m.videoSegments.length > 1) wrap.appendChild(bar);
+        wrap.appendChild(actions);
+        bubble.appendChild(wrap);
+      }
+
+      div.appendChild(avatar);
+      div.appendChild(bubble);
+      el.chatContainer.appendChild(div);
+      scrollToBottom();
+    }
+
+    function showTyping(statusText = "") {
+      removeTyping();
+      const div = document.createElement("div");
+      div.className = "msg ai";
+      div.id = "typingIndicator";
+      div.innerHTML = `
+        <div class="avatar">G</div>
+        <div class="bubble">
+          <div class="typing"><span></span><span></span><span></span></div>
+          ${statusText ? `<div style="font-size:0.8rem;color:var(--text-muted);">${escapeHtml(statusText)}</div>` : ""}
+        </div>
+      `;
+      el.chatContainer.appendChild(div);
+      scrollToBottom();
+    }
+
+    function removeTyping() {
+      const t = document.getElementById("typingIndicator");
+      if (t) t.remove();
+    }
+
+    function scrollToBottom() {
+      el.chatScroll.scrollTop = el.chatScroll.scrollHeight;
+    }
+
+    function autoResizeTextarea() {
+      el.promptInput.style.height = "auto";
+      el.promptInput.style.height = Math.min(el.promptInput.scrollHeight, 160) + "px";
+    }
+    el.promptInput.addEventListener("input", autoResizeTextarea);
+    el.promptInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        handleSend();
+      }
+    });
+    el.sendBtn.addEventListener("click", handleSend);
+
+    async function handleSend() {
+      if (state.isLoading) return;
+      const text = el.promptInput.value.trim();
+      if (!text && !state.attachedImage) return;
+
+      if (!GEMINI_API_KEY || GEMINI_API_KEY === "COLE_SUA_CHAVE_AQUI") {
+        alert("Cole sua API Key do Google AI Studio na constante GEMINI_API_KEY no código antes de usar.");
+        return;
+      }
+
+      const msgs = getCurrentMessages();
+      const userMsg = {
+        role: "user",
+        text,
+        imageUrl: state.attachedImage?.dataUrl || null,
+        attachedBase64: state.attachedImage?.base64 || null,
+        attachedMime: state.attachedImage?.mimeType || null
+      };
+
+      msgs.push(userMsg);
+      if (!state.temporal) {
+        const chat = state.chats.find(c => c.id === state.currentChatId);
+        if (chat && chat.title === "Nova conversa" && text) {
+          chat.title = text.slice(0, 36);
+          renderHistory();
+        }
+        saveChats();
+      }
+
+      appendMessageDOM(userMsg);
+      const attachmentCopy = state.attachedImage ? { ...state.attachedImage } : null;
+      el.promptInput.value = "";
+      autoResizeTextarea();
+      clearAttachment();
+
+      state.isLoading = true;
+      el.sendBtn.disabled = true;
+      showTyping();
+
+      try {
+        let aiMsg;
+        if (state.mode === "chat") {
+          aiMsg = await callGeminiChat(msgs);
+        } else if (state.mode === "image") {
+          aiMsg = await callGeminiImage(text, attachmentCopy);
+        } else {
+          aiMsg = await callGeminiVideoSequence(text, attachmentCopy);
+        }
+        removeTyping();
+        msgs.push(aiMsg);
+        if (!state.temporal) saveChats();
+        appendMessageDOM(aiMsg);
+      } catch (err) {
+        removeTyping();
+        const errMsg = { role: "ai", text: `**Erro:** ${err.message}` };
+        msgs.push(errMsg);
+        appendMessageDOM(errMsg);
+      } finally {
+        state.isLoading = false;
+        el.sendBtn.disabled = false;
+      }
+    }
+
+    async function callGeminiChat(msgs) {
+      const model = el.chatModel.value;
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+      const contents = msgs.slice(-16).map(m => {
+        const parts = [];
+        if (m.text) parts.push({ text: m.text });
+        if (m.attachedBase64 && m.attachedMime) {
+          parts.push({ inlineData: { mimeType: m.attachedMime, data: m.attachedBase64 } });
+        }
+        return { role: m.role === "user" ? "user" : "model", parts: parts.length ? parts : [{ text: " " }] };
+      });
+
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-goog-api-key": GEMINI_API_KEY },
+        body: JSON.stringify({
+          contents,
+          systemInstruction: { parts: [{ text: el.systemPrompt.value.trim() }] }
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error?.message || `HTTP ${res.status}`);
+      return {
+        role: "ai",
+        text: data.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "Sem resposta."
+      };
+    }
+
+    async function callGeminiImage(prompt, attachment) {
+      const model = el.imageModel.value;
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+      const parts = [{ text: prompt || "Imagem em 4K." }];
+      if (attachment) parts.push({ inlineData: { mimeType: attachment.mimeType, data: attachment.base64 } });
+
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-goog-api-key": GEMINI_API_KEY },
+        body: JSON.stringify({
+          contents: [{ role: "user", parts }],
+          generationConfig: {
+            responseModalities: ["TEXT", "IMAGE"],
+            imageConfig: { aspectRatio: el.imageRatio.value, imageSize: el.imageSize.value }
+          }
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error?.message || `HTTP ${res.status}`);
+
+      let textOut = "";
+      let imageUrl = null;
+      for (const p of data.candidates?.[0]?.content?.parts || []) {
+        if (p.text) textOut += p.text + "\n";
+        if (p.inlineData?.data) {
+          imageUrl = `data:${p.inlineData.mimeType || "image/png"};base64,${p.inlineData.data}`;
+        }
+      }
+      if (!imageUrl) throw new Error("Nenhuma imagem retornada.");
+      return { role: "ai", text: textOut.trim() || `Imagem ${el.imageSize.value} (${el.imageRatio.value})`, imageUrl };
+    }
+
+    // Gerador de Vídeo Sequencial (+1 min = vários blocos contínuos de 15s)
+    async function callGeminiVideoSequence(prompt, attachment) {
+      const totalSeconds = parseInt(el.videoTotalDuration.value, 10);
+      const segmentsCount = Math.max(1, Math.round(totalSeconds / 15));
+      const url = `https://generativelanguage.googleapis.com/v1beta/interactions`;
+
+      const videoSegments = [];
+      let prevId = null;
+
+      for (let i = 0; i < segmentsCount; i++) {
+        showTyping(`Gerando parte ${i + 1} de ${segmentsCount} (${(i + 1) * 15}s / ${totalSeconds}s)...`);
+
+        const partPrompt = i === 0
+          ? `${prompt} (aspect_ratio: ${el.videoRatio.value}, resolution: ${el.videoRes.value}, duration: 15s)`
+          : `Continue smoothly from the previous scene keeping identical characters, lighting and motion: ${prompt} (part ${i + 1}/${segmentsCount}, duration: 15s)`;
+
+        let inputPayload = partPrompt;
+        if (i === 0 && attachment) {
+          inputPayload = [
+            { type: "text", text: partPrompt },
+            { type: "image", data: attachment.base64, mime_type: attachment.mimeType }
+          ];
+        }
+
+        const body = { model: "gemini-omni-1.2-flash", input: inputPayload };
+        if (prevId) body.previous_interaction_id = prevId;
+
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "x-goog-api-key": GEMINI_API_KEY },
+          body: JSON.stringify(body)
+        });
+
+        let data = await res.json();
+        if (!res.ok) throw new Error(data.error?.message || `HTTP ${res.status}`);
+
+        if (data.id && data.status && data.status !== "completed" && data.status !== "failed") {
+          for (let pollTry = 0; pollTry < 45; pollTry++) {
+            await new Promise(r => setTimeout(r, 4000));
+            const poll = await fetch(`${url}/${data.id}`, { headers: { "x-goog-api-key": GEMINI_API_KEY } });
+            data = await poll.json();
+            if (data.status === "completed" || data.status === "failed") break;
+          }
+        }
+
+        if (data.status === "failed") throw new Error(data.error?.message || `Falha na parte ${i + 1}`);
+        prevId = data.id || prevId;
+
+        let segUrl = null;
+        if (data.output_video?.data) {
+          segUrl = `data:video/mp4;base64,${data.output_video.data}`;
+        } else {
+          const allItems = [
+            ...(data.outputs || []),
+            ...((data.steps || []).flatMap(s => s.content || []))
+          ];
+          const vp = allItems.find(item => item.type === "video" || item.mime_type?.startsWith("video/"));
+          if (vp?.data) segUrl = `data:${vp.mime_type || "video/mp4"};base64,${vp.data}`;
+          else if (vp?.uri) {
+            segUrl = vp.uri.includes("generativelanguage.googleapis.com")
+              ? `${vp.uri}${vp.uri.includes("?") ? "&" : "?"}key=${encodeURIComponent(GEMINI_API_KEY)}`
+              : vp.uri;
+          }
+        }
+
+        if (!segUrl) throw new Error(`Não foi possível extrair o vídeo da parte ${i + 1}.`);
+        videoSegments.push(segUrl);
+      }
+
+      return {
+        role: "ai",
+        text: `Sequência concluída: **${segmentsCount} parte(s)** totalizando **${totalSeconds} segundos** (${el.videoRes.value}). O player reproduz todas em sequência automaticamente.`,
+        videoSegments
+      };
+    }
+
+    init();
+  </script>
+</body>
+  </html>
