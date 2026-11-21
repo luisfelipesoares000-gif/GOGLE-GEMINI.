@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gemini Pro Studio</title>
+  <title>Gemini Pro</title>
   <style>
     :root {
       --bg-white: #ffffff;
@@ -16,6 +16,7 @@
       --text-muted: #747775;
       --accent-black: #111111;
       --accent-dark: #2b2d30;
+      --gemini-blue: #1a73e8;
     }
 
     * {
@@ -43,13 +44,13 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.25);
+      background: rgba(0, 0, 0, 0.28);
       z-index: 40;
     }
     .sidebar-overlay.active { display: block; }
 
     .sidebar {
-      width: 300px;
+      width: 290px;
       max-width: 86vw;
       background: var(--bg-gray-soft);
       border-right: 1px solid var(--border);
@@ -60,8 +61,7 @@
       transition: margin-left 0.25s ease, transform 0.25s ease;
       flex-shrink: 0;
     }
-
-    .sidebar.collapsed { margin-left: -300px; }
+    .sidebar.collapsed { margin-left: -290px; }
 
     @media (max-width: 900px) {
       .sidebar {
@@ -198,16 +198,16 @@
 
     .mode-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 6px;
     }
     .mode-btn {
       background: var(--bg-gray-card);
       border: 1px solid var(--border);
       color: var(--text-gray);
-      padding: 9px 6px;
+      padding: 9px 4px;
       border-radius: 10px;
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       font-weight: 600;
       cursor: pointer;
       text-align: center;
@@ -228,7 +228,7 @@
       font-weight: 500;
     }
 
-    select, textarea.sys-prompt, input.api-input {
+    select, textarea.sys-prompt {
       width: 100%;
       background: var(--bg-gray-card);
       border: 1px solid var(--border);
@@ -238,15 +238,7 @@
       font-size: 0.82rem;
       outline: none;
     }
-    select:focus, textarea.sys-prompt:focus, input.api-input:focus { border-color: var(--accent-black); }
-
-    .api-status {
-      font-size: 0.74rem;
-      line-height: 1.35;
-      color: var(--text-muted);
-    }
-    .api-status.ok { color: #137333; font-weight: 600; }
-    .api-status.err { color: #b3261e; font-weight: 600; }
+    select:focus, textarea.sys-prompt:focus { border-color: var(--accent-black); }
 
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
@@ -261,31 +253,12 @@
       cursor: pointer;
     }
     .btn-mini:hover { background: var(--bg-gray-hover); }
-    .btn-mini.dark {
-      background: var(--accent-black);
-      border-color: var(--accent-black);
-      color: #fff;
-    }
-    .btn-mini.dark:hover { background: var(--accent-dark); }
-
-    .prompt-chip {
-      background: var(--bg-gray-card);
-      border: 1px solid var(--border);
-      color: var(--text-gray);
-      padding: 8px 10px;
-      border-radius: 10px;
-      font-size: 0.78rem;
-      cursor: pointer;
-      text-align: left;
-      transition: 0.15s;
-    }
-    .prompt-chip:hover { background: var(--bg-gray-hover); color: var(--text-black); }
 
     .history-list {
       display: flex;
       flex-direction: column;
       gap: 4px;
-      max-height: 200px;
+      max-height: 220px;
       overflow-y: auto;
     }
     .history-item {
@@ -315,7 +288,7 @@
     }
 
     .topbar {
-      height: 60px;
+      height: 58px;
       padding: 0 18px;
       display: flex;
       align-items: center;
@@ -323,9 +296,10 @@
       gap: 12px;
       flex-shrink: 0;
       background: var(--bg-white);
+      border-bottom: 1px solid #f1f3f4;
     }
 
-    .topbar-left { display: flex; align-items: center; gap: 14px; }
+    .topbar-left { display: flex; align-items: center; gap: 12px; }
 
     .hamburger-btn {
       width: 40px;
@@ -339,7 +313,6 @@
       align-items: center;
       justify-content: center;
       gap: 4.5px;
-      transition: background 0.15s;
     }
     .hamburger-btn:hover { background: var(--bg-gray-soft); }
     .hamburger-btn span {
@@ -351,13 +324,12 @@
     }
 
     .topbar-title {
-      font-size: 1.15rem;
+      font-size: 1.12rem;
       font-weight: 500;
       color: var(--text-black);
       display: flex;
       align-items: center;
       gap: 8px;
-      flex-wrap: wrap;
     }
 
     .pill-tag {
@@ -374,6 +346,18 @@
       color: #fff;
       border-color: var(--accent-black);
     }
+
+    .sandbox-banner {
+      display: none;
+      background: #fef7e0;
+      color: #5f4300;
+      border-bottom: 1px solid #f5dfa0;
+      padding: 8px 16px;
+      font-size: 0.78rem;
+      text-align: center;
+      line-height: 1.4;
+    }
+    .sandbox-banner.visible { display: block; }
 
     .chat-scroll {
       flex: 1;
@@ -394,23 +378,24 @@
 
     .welcome {
       margin: auto 0;
-      padding: 36px 12px 24px;
+      padding: 36px 8px 20px;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       gap: 10px;
     }
     .welcome h1 {
-      font-size: clamp(2rem, 4.5vw, 3rem);
+      font-size: clamp(1.9rem, 4.5vw, 2.9rem);
       font-weight: 500;
       letter-spacing: -0.8px;
-      color: var(--text-black);
+      background: linear-gradient(90deg, #1f1f1f 0%, #1a73e8 60%, #747775 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    .welcome h1 span { color: #747775; }
     .welcome p {
       color: var(--text-gray);
       font-size: 1rem;
-      max-width: 620px;
+      max-width: 600px;
       line-height: 1.5;
     }
 
@@ -425,13 +410,13 @@
       background: var(--bg-gray-soft);
       border: 1px solid transparent;
       border-radius: 16px;
-      padding: 16px;
+      padding: 15px;
       text-align: left;
       cursor: pointer;
       transition: background 0.15s, border-color 0.15s;
     }
     .quick-card:hover { background: var(--bg-gray-hover); border-color: var(--border); }
-    .quick-card strong { display: block; margin-bottom: 6px; color: var(--text-black); font-size: 0.92rem; }
+    .quick-card strong { display: block; margin-bottom: 5px; color: var(--text-black); font-size: 0.9rem; }
     .quick-card span { color: var(--text-gray); font-size: 0.8rem; line-height: 1.4; display: block; }
 
     .msg {
@@ -453,10 +438,22 @@
       font-size: 0.74rem;
     }
     .msg.user .avatar { background: #e3e8ee; color: var(--text-black); }
-    .msg.ai .avatar { background: var(--accent-black); color: #fff; }
+    .msg.ai .avatar {
+      background: linear-gradient(135deg, #111111, #1a73e8);
+      color: #fff;
+      font-size: 0.95rem;
+    }
+
+    .msg-body {
+      max-width: 86%;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+    .msg.ai .msg-body { width: 100%; max-width: 100%; }
 
     .bubble {
-      max-width: 85%;
       line-height: 1.65;
       font-size: 0.96rem;
       word-wrap: break-word;
@@ -472,21 +469,64 @@
     .msg.ai .bubble {
       background: transparent;
       color: var(--text-black);
-      padding: 4px 0;
+      padding: 2px 0;
     }
 
-    .bubble pre {
+    .msg-actions {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-top: 2px;
+    }
+    .msg-action-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      padding: 4px 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .msg-action-btn:hover { background: var(--bg-gray-soft); color: var(--text-black); border-color: var(--border); }
+
+    .bubble h1, .bubble h2, .bubble h3 { margin: 14px 0 6px; font-weight: 600; line-height: 1.3; }
+    .bubble h1 { font-size: 1.28rem; }
+    .bubble h2 { font-size: 1.12rem; }
+    .bubble h3 { font-size: 1rem; }
+    .bubble ul, .bubble ol { margin: 8px 0 8px 20px; }
+    .bubble li { margin: 4px 0; }
+    .bubble p { margin: 6px 0; }
+
+    .code-block-wrap {
       background: #18181b;
       color: #f4f4f5;
       border-radius: 12px;
-      padding: 14px;
       margin: 12px 0;
+      overflow: hidden;
+      border: 1px solid #27272a;
+    }
+    .code-block-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 14px;
+      background: #202024;
+      border-bottom: 1px solid #2e2e33;
+      font-size: 0.74rem;
+      color: #a1a1aa;
+    }
+    .code-block-actions { display: flex; gap: 6px; }
+    .code-block-wrap pre {
+      padding: 14px;
+      margin: 0;
       overflow-x: auto;
-      position: relative;
+      background: transparent;
     }
     .bubble code { font-family: "Fira Code", Consolas, monospace; font-size: 0.85rem; }
-    .copy-code-btn {
-      float: right;
+    .copy-code-btn, .preview-code-btn {
       background: #27272a;
       border: 1px solid #3f3f46;
       color: #fff;
@@ -495,10 +535,10 @@
       border-radius: 6px;
       cursor: pointer;
     }
-    .copy-code-btn:hover { background: #fff; color: #000; }
+    .copy-code-btn:hover, .preview-code-btn:hover { background: #fff; color: #000; }
 
     .media-output {
-      margin-top: 12px;
+      margin-top: 10px;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -508,8 +548,9 @@
       max-height: 460px;
       border-radius: 14px;
       border: 1px solid var(--border);
-      background: #000;
+      background: #fff;
     }
+    .media-output video { background: #000; }
     .media-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
     .download-btn {
       display: inline-flex;
@@ -527,12 +568,7 @@
     }
     .download-btn:hover { background: var(--accent-dark); }
 
-    .playlist-bar {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      margin-top: 4px;
-    }
+    .playlist-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
     .scene-pill {
       padding: 5px 10px;
       border-radius: 99px;
@@ -549,7 +585,7 @@
     }
 
     .composer-wrap {
-      padding: 8px 16px 20px;
+      padding: 8px 16px 18px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -588,7 +624,7 @@
     .attachment-preview.active { display: flex; }
     .attachment-preview img { width: 38px; height: 38px; object-fit: cover; border-radius: 6px; }
 
-    .composer-row { display: flex; align-items: flex-end; gap: 10px; }
+    .composer-row { display: flex; align-items: flex-end; gap: 6px; }
 
     .icon-btn {
       width: 38px;
@@ -601,10 +637,19 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       flex-shrink: 0;
     }
     .icon-btn:hover { background: var(--bg-gray-hover); color: var(--text-black); }
+    .icon-btn.recording {
+      background: #fce8e6;
+      color: #b3261e;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
 
     textarea#promptInput {
       flex: 1;
@@ -634,10 +679,9 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      transition: opacity 0.15s, background 0.15s;
     }
-    .send-btn:hover { opacity: 0.85; }
-    .send-btn.stop { background: #b3261e; font-size: 0.85rem; }
+    .send-btn:hover { opacity: 0.88; }
+    .send-btn.stop { background: #b3261e; font-size: 0.82rem; }
 
     .footer-note {
       margin-top: 8px;
@@ -654,12 +698,51 @@
       background: var(--accent-black);
       animation: bounce 1.2s infinite ease-in-out;
     }
-    .typing span:nth-child(2) { animation-delay: 0.15s; background: #747775; }
-    .typing span:nth-child(3) { animation-delay: 0.3s; background: #b0b5ba; }
+    .typing span:nth-child(2) { animation-delay: 0.15s; background: var(--gemini-blue); }
+    .typing span:nth-child(3) { animation-delay: 0.3s; background: #9aa0a6; }
 
     @keyframes bounce {
       0%, 80%, 100% { transform: scale(0.6); opacity: 0.35; }
       40% { transform: scale(1); opacity: 1; }
+    }
+
+    .preview-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .preview-modal.active { display: flex; }
+    .preview-card {
+      width: 100%;
+      max-width: 960px;
+      height: 82vh;
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+    }
+    .preview-card-header {
+      padding: 10px 16px;
+      background: var(--bg-gray-soft);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .preview-card iframe {
+      flex: 1;
+      width: 100%;
+      border: none;
+      background: #fff;
     }
   </style>
 </head>
@@ -681,20 +764,7 @@
       </button>
 
       <div class="section-box">
-        <div class="section-title">
-          Chave API (Local)
-          <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" style="font-size:0.68rem; color:var(--text-gray); text-decoration:underline;">Criar nova</a>
-        </div>
-        <input type="password" class="api-input" id="apiKeyInput" placeholder="Cole sua chave do Google AI Studio..." autocomplete="off" />
-        <div class="grid-2">
-          <button class="btn-mini dark" id="saveApiKeyBtn">Salvar</button>
-          <button class="btn-mini" id="testApiKeyBtn">Testar API</button>
-        </div>
-        <div class="api-status" id="apiStatus">Salva apenas no seu navegador.</div>
-      </div>
-
-      <div class="section-box">
-        <div class="section-title">Privacidade</div>
+        <div class="section-title">Privacidade & Voz</div>
         <label class="toggle-row">
           <div class="toggle-info">
             <strong>Chat Temporal</strong>
@@ -705,54 +775,43 @@
             <span class="slider"></span>
           </div>
         </label>
+        <label class="toggle-row">
+          <div class="toggle-info">
+            <strong>Voz Automática</strong>
+            <small>IA lê as respostas em voz alta</small>
+          </div>
+          <div class="switch">
+            <input type="checkbox" id="autoVoiceToggle" />
+            <span class="slider"></span>
+          </div>
+        </label>
         <button class="btn-mini" id="burnSessionBtn" style="display:none;">Limpar Chat Temporal</button>
       </div>
 
       <div class="section-box">
-        <div class="section-title">Ferramenta</div>
+        <div class="section-title">Modo</div>
         <div class="mode-grid">
-          <button class="mode-btn active" data-mode="auto">Auto (Inteligente)</button>
-          <button class="mode-btn" data-mode="chat">Chat Pro</button>
-          <button class="mode-btn" data-mode="image">Imagem (Billing)</button>
-          <button class="mode-btn" data-mode="video">Vídeo (Billing)</button>
+          <button class="mode-btn active" data-mode="chat">Chat Pro</button>
+          <button class="mode-btn" data-mode="image">Imagem 4K</button>
+          <button class="mode-btn" data-mode="video">Vídeo</button>
         </div>
 
-        <div id="chatOptions" style="display:flex; flex-direction:column; gap:8px;">
-          <div>
-            <label class="field-label">Modelo de Chat (Grátis)</label>
-            <select id="chatModel">
-              <option value="gemini-4-hydrogen" selected>Gemini 4 Hydrogen (Grátis / Avançado)</option>
-              <option value="gemini-3.8-flash">Gemini 3.8 Flash (Grátis / Rápido)</option>
-              <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite (Grátis / Leve)</option>
-              <option value="gemini-4-carbon">Gemini 4 Carbon (Pro / Requer Billing)</option>
-            </select>
-          </div>
-          <div>
-            <label class="field-label">Velocidade / Raciocínio</label>
-            <select id="thinkingLevel">
-              <option value="LOW" selected>Rápido (1–3 seg, ideal p/ chat)</option>
-              <option value="MEDIUM">Equilibrado</option>
-              <option value="HIGH">Profundo (mais lento)</option>
-            </select>
-          </div>
-          <label class="toggle-row" style="margin-top:2px;">
-            <div class="toggle-info">
-              <strong>Pesquisa Web (Google)</strong>
-              <small>Busca fatos recentes (se disponível)</small>
-            </div>
-            <div class="switch">
-              <input type="checkbox" id="webSearchToggle" />
-              <span class="slider"></span>
-            </div>
-          </label>
+        <div id="chatOptions">
+          <label class="field-label">Modelo</label>
+          <select id="chatModel">
+            <option value="gemini-4-hydrogen">Gemini 4 Hydrogen (Grátis / Melhor)</option>
+            <option value="gemini-3.8-flash">Gemini 3.8 Flash (Grátis / Ultra Rápido)</option>
+            <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite (Grátis / Leve)</option>
+            <option value="gemini-4-argon">Gemini 4 Argon (Pago)</option>
+            <option value="gemini-4-carbon">Gemini 4 Carbon (Pago Máximo)</option>
+          </select>
         </div>
 
         <div id="imageOptions" style="display:none; flex-direction:column; gap:8px;">
           <div>
             <label class="field-label">Modelo de Imagem (Requer Billing)</label>
             <select id="imageModel">
-              <option value="gemini-3.1-flash-lite-image">Nano Banana 2 Lite (1K - Mais Rápido)</option>
-              <option value="gemini-nano-banana-2.1" selected>Nano Banana 2.1 (Até 4K)</option>
+              <option value="gemini-nano-banana-2.1">Gemini Nano Banana 2.1 (4K)</option>
               <option value="gemini-3.1-flash-image">Gemini 3.1 Flash Image (4K)</option>
               <option value="gemini-3-pro-image">Gemini 3 Pro Image</option>
             </select>
@@ -761,9 +820,9 @@
             <div>
               <label class="field-label">Qualidade</label>
               <select id="imageSize">
-                <option value="4K">4K Ultra HD</option>
+                <option value="4K" selected>4K Ultra HD</option>
                 <option value="2K">2K QHD</option>
-                <option value="1K" selected>1K (Rápido)</option>
+                <option value="1K">1K</option>
               </select>
             </div>
             <div>
@@ -782,9 +841,8 @@
           <div>
             <label class="field-label">Duração total (Requer Billing)</label>
             <select id="videoTotalDuration">
-              <option value="10">10 segundos (1 cena - Rápido)</option>
               <option value="15" selected>15 segundos (1 cena)</option>
-              <option value="30">~30 segundos (2 cenas contínuas)</option>
+              <option value="25">25 segundos (2 cenas contínuas)</option>
               <option value="60">~1 minuto (4 cenas)</option>
             </select>
           </div>
@@ -792,10 +850,9 @@
             <div>
               <label class="field-label">Resolução</label>
               <select id="videoRes">
-                <option value="360p">360p (Rascunho Rápido)</option>
-                <option value="720p" selected>720p HD (Nativo)</option>
-                <option value="1080p">1080p Full HD</option>
                 <option value="4k">4K Ultra HD</option>
+                <option value="1080p">1080p Full HD</option>
+                <option value="720p" selected>720p HD</option>
               </select>
             </div>
             <div>
@@ -810,16 +867,8 @@
       </div>
 
       <div class="section-box">
-        <div class="section-title">Testes rápidos</div>
-        <button class="prompt-chip" data-mode-jump="chat" data-prompt="Oi! Tudo bem? Qual é o seu nome e o que você consegue fazer?">Testar Chat (Oi)</button>
-        <button class="prompt-chip" data-mode-jump="chat" data-prompt="Quanto é 5 x 7? E me conte 3 curiosidades incríveis sobre o mundo.">Matemática & Mundo</button>
-        <button class="prompt-chip" data-mode-jump="image" data-prompt="Fotografia realista em estúdio de um relógio de luxo sobre mármore branco, iluminação suave">Gerar Imagem (Billing)</button>
-        <button class="prompt-chip" data-mode-jump="video" data-prompt="Um rapaz dançando breakdance em uma rua iluminada ao entardecer, câmera suave">Gerar Vídeo (Billing)</button>
-      </div>
-
-      <div class="section-box">
         <div class="section-title">Personalidade da IA</div>
-        <textarea class="sys-prompt" id="systemPrompt" rows="2">Você é o Gemini Pro. Responda sempre em português do Brasil de forma amigável, clara, direta e precisa.</textarea>
+        <textarea class="sys-prompt" id="systemPrompt" rows="3">Você é o Gemini Pro. Responda em português do Brasil com naturalidade, inteligência, clareza e códigos completos sem cortes.</textarea>
       </div>
 
       <div class="section-box">
@@ -842,29 +891,33 @@
         </button>
         <div class="topbar-title">
           Gemini
-          <span class="pill-tag" id="modeBadge">Auto</span>
+          <span class="pill-tag" id="modeBadge">Pro</span>
           <span class="pill-tag temporal" id="temporalBadge" style="display:none;">Temporal</span>
         </div>
       </div>
     </header>
 
+    <div class="sandbox-banner" id="sandboxBanner">
+      Você está vendo dentro da prévia isolada do AI Studio — ela pode bloquear o microfone e travar conexões. Clique em <b>⬇ Baixar</b> no topo e abra o arquivo direto no Chrome para funcionar 100%.
+    </div>
+
     <div class="chat-scroll" id="chatScroll">
       <div class="chat-inner" id="chatContainer">
         <div class="welcome" id="welcomeScreen">
-          <h1>Olá! <span>Como posso ajudar hoje?</span></h1>
-          <p>Converse, faça contas, pergunte sobre qualquer assunto do mundo ou analise imagens enviadas gratuitamente. Abra o menu <b>(☰)</b> para colar sua chave API do Google AI Studio.</p>
+          <h1>Olá! Como posso ajudar hoje?</h1>
+          <p>Converse por texto ou voz, gere códigos completos com visualização ao vivo, analise imagens anexadas e crie ilustrações.</p>
           <div class="quick-cards">
-            <div class="quick-card" data-mode-jump="chat" data-prompt="Oi, tudo bem? Qual é o seu nome?">
-              <strong>Chat Rápido (Grátis)</strong>
-              <span>Responde cumprimentos, perguntas gerais, matemática e códigos em segundos.</span>
+            <div class="quick-card" data-mode-jump="chat" data-prompt="Crie um site completo em um único arquivo HTML com design moderno e animações.">
+              <strong>Programação Pro</strong>
+              <span>Escreve códigos completos e permite testar HTML ao vivo.</span>
             </div>
-            <div class="quick-card" data-mode-jump="chat" data-prompt="Me explique 5 curiosidades impressionantes sobre o planeta Terra.">
-              <strong>Conhecimento Mundial</strong>
-              <span>Pergunte sobre ciência, história, idiomas e qualquer tema do mundo.</span>
+            <div class="quick-card" data-mode-jump="chat" data-prompt="Faça um urso fofo em uma floresta ao amanhecer.">
+              <strong>Criar Ilustrações</strong>
+              <span>Peça diretamente no chat e a IA cria para você.</span>
             </div>
-            <div class="quick-card" data-mode-jump="image" data-prompt="Foto realista em alta definição de uma paisagem futurista com montanhas e lago ao pôr do sol">
-              <strong>Imagens (Requer Billing)</strong>
-              <span>Cria imagens com Nano Banana quando a conta possui Billing ativo.</span>
+            <div class="quick-card" data-mode-jump="chat" data-prompt="Explique de forma simples e prática como funciona a inteligência artificial.">
+              <strong>Respostas & Voz</strong>
+              <span>Fale pelo microfone (🎙) e ouça as respostas em áudio (🔊).</span>
             </div>
           </div>
         </div>
@@ -882,24 +935,50 @@
           <input type="file" id="fileInput" accept="image/*" hidden />
           <button class="icon-btn" id="attachBtn" title="Anexar imagem">＋</button>
           <textarea id="promptInput" rows="1" placeholder="Peça ao Gemini..."></textarea>
+          <button class="icon-btn" id="micBtn" title="Falar por voz">🎙</button>
           <button class="send-btn" id="sendBtn" title="Enviar">↑</button>
         </div>
       </div>
-      <div class="footer-note">O Gemini pode cometer erros. Plano gratuito da API libera Chat; Imagem e Vídeo exigem Billing no Google AI Studio.</div>
+      <div class="footer-note">O Gemini pode cometer erros. Verifique informações importantes.</div>
     </div>
   </main>
 
+  <div class="preview-modal" id="previewModal">
+    <div class="preview-card">
+      <div class="preview-card-header">
+        <span>Visualização do Código HTML</span>
+        <button class="btn-mini" id="closePreviewBtn">Fechar ✕</button>
+      </div>
+      <iframe id="previewFrame" sandbox="allow-scripts allow-forms allow-modals"></iframe>
+    </div>
+  </div>
+
   <script>
+    const EMBEDDED_API_KEY = "AQ.Ab8RN6JJbG3bhYTUI4gYRuk0IGTdP5oYtIyWK-UN9Xl_-T6fag";
+
+    function loadSafeChats() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem("gp_chats") || "[]");
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+
     const state = {
-      apiKey: localStorage.getItem("gp_api_key") || "",
-      mode: "auto",
+      apiKey: localStorage.getItem("gp_api_key_override") || EMBEDDED_API_KEY,
+      mode: "chat",
       temporal: false,
+      autoVoice: false,
       currentChatId: null,
-      chats: JSON.parse(localStorage.getItem("gp_chats") || "[]"),
+      chats: loadSafeChats(),
       temporalMessages: [],
       attachedImage: null,
       isLoading: false,
-      abortController: null
+      abortController: null,
+      activeRequestToken: 0,
+      isRecording: false,
+      recognition: null
     };
 
     const el = {
@@ -908,20 +987,1175 @@
       hamburgerBtn: document.getElementById("hamburgerBtn"),
       closeSidebarBtn: document.getElementById("closeSidebarBtn"),
       newChatBtn: document.getElementById("newChatBtn"),
-      apiKeyInput: document.getElementById("apiKeyInput"),
-      saveApiKeyBtn: document.getElementById("saveApiKeyBtn"),
-      testApiKeyBtn: document.getElementById("testApiKeyBtn"),
-      apiStatus: document.getElementById("apiStatus"),
       temporalToggle: document.getElementById("temporalToggle"),
+      autoVoiceToggle: document.getElementById("autoVoiceToggle"),
       burnSessionBtn: document.getElementById("burnSessionBtn"),
       modeBtns: document.querySelectorAll(".mode-btn"),
       chatOptions: document.getElementById("chatOptions"),
       imageOptions: document.getElementById("imageOptions"),
       videoOptions: document.getElementById("videoOptions"),
       chatModel: document.getElementById("chatModel"),
-      thinkingLevel: document.getElementById("thinkingLevel"),
-      webSearchToggle: document.getElementById("webSearchToggle"),
       imageModel: document.getElementById("imageModel"),
       imageSize: document.getElementById("imageSize"),
       imageRatio: document.getElementById("imageRatio"),
-      videoTota
+      videoTotalDuration: document.getElementById("videoTotalDuration"),
+      videoRes: document.getElementById("videoRes"),
+      videoRatio: document.getElementById("videoRatio"),
+      systemPrompt: document.getElementById("systemPrompt"),
+      historyList: document.getElementById("historyList"),
+      clearAllHistoryBtn: document.getElementById("clearAllHistoryBtn"),
+      modeBadge: document.getElementById("modeBadge"),
+      temporalBadge: document.getElementById("temporalBadge"),
+      sandboxBanner: document.getElementById("sandboxBanner"),
+      chatScroll: document.getElementById("chatScroll"),
+      chatContainer: document.getElementById("chatContainer"),
+      welcomeScreen: document.getElementById("welcomeScreen"),
+      promptInput: document.getElementById("promptInput"),
+      sendBtn: document.getElementById("sendBtn"),
+      micBtn: document.getElementById("micBtn"),
+      attachBtn: document.getElementById("attachBtn"),
+      fileInput: document.getElementById("fileInput"),
+      attachmentPreview: document.getElementById("attachmentPreview"),
+      attachmentThumb: document.getElementById("attachmentThumb"),
+      attachmentName: document.getElementById("attachmentName"),
+      removeAttachmentBtn: document.getElementById("removeAttachmentBtn"),
+      previewModal: document.getElementById("previewModal"),
+      previewFrame: document.getElementById("previewFrame"),
+      closePreviewBtn: document.getElementById("closePreviewBtn")
+    };
+
+    function init() {
+      try {
+        if (window.self !== window.top) {
+          el.sandboxBanner.classList.add("visible");
+        }
+      } catch {
+        el.sandboxBanner.classList.add("visible");
+      }
+
+      renderHistory();
+      if (!state.temporal && state.chats.length > 0) {
+        loadChat(state.chats[0].id);
+      }
+      setupVoiceInput();
+    }
+
+    function cancelOngoingRequest() {
+      state.activeRequestToken++;
+      if (state.abortController) {
+        try { state.abortController.abort(new DOMException("Troca de conversa", "AbortError")); } catch {}
+        state.abortController = null;
+      }
+      removeTyping();
+      setLoading(false);
+    }
+
+    function toggleSidebar(forceClose = false) {
+      const isMobile = window.innerWidth <= 900;
+      if (isMobile) {
+        const open = forceClose ? false : !el.sidebar.classList.contains("open-mobile");
+        el.sidebar.classList.toggle("open-mobile", open);
+        el.overlay.classList.toggle("active", open);
+      } else {
+        if (forceClose) el.sidebar.classList.add("collapsed");
+        else el.sidebar.classList.toggle("collapsed");
+      }
+    }
+
+    el.hamburgerBtn.addEventListener("click", () => toggleSidebar(false));
+    el.closeSidebarBtn.addEventListener("click", () => toggleSidebar(true));
+    el.overlay.addEventListener("click", () => toggleSidebar(true));
+    el.closePreviewBtn.addEventListener("click", () => {
+      el.previewModal.classList.remove("active");
+      el.previewFrame.srcdoc = "";
+    });
+
+    function setMode(mode) {
+      state.mode = mode;
+      el.modeBtns.forEach(b => b.classList.toggle("active", b.dataset.mode === mode));
+      el.chatOptions.style.display = mode === "chat" ? "block" : "none";
+      el.imageOptions.style.display = mode === "image" ? "flex" : "none";
+      el.videoOptions.style.display = mode === "video" ? "flex" : "none";
+
+      const names = { chat: "Pro", image: "Imagem 4K", video: "Vídeo" };
+      el.modeBadge.textContent = names[mode];
+      el.promptInput.placeholder =
+        mode === "chat" ? "Peça ao Gemini..." :
+        mode === "image" ? "Descreva a imagem em 4K que deseja criar..." :
+        "Descreva a cena do vídeo...";
+    }
+    el.modeBtns.forEach(btn => btn.addEventListener("click", () => setMode(btn.dataset.mode)));
+
+    el.autoVoiceToggle.addEventListener("change", (e) => {
+      state.autoVoice = e.target.checked;
+      if (!state.autoVoice && window.speechSynthesis) window.speechSynthesis.cancel();
+    });
+
+    el.temporalToggle.addEventListener("change", (e) => {
+      cancelOngoingRequest();
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+      state.temporal = e.target.checked;
+      el.temporalBadge.style.display = state.temporal ? "inline-block" : "none";
+      el.burnSessionBtn.style.display = state.temporal ? "block" : "none";
+      if (state.temporal) {
+        state.temporalMessages = [];
+        renderMessages([]);
+      } else {
+        if (state.chats.length > 0) loadChat(state.chats[0].id);
+        else renderMessages([]);
+      }
+    });
+
+    el.burnSessionBtn.addEventListener("click", () => {
+      cancelOngoingRequest();
+      state.temporalMessages = [];
+      renderMessages([]);
+    });
+
+    el.newChatBtn.addEventListener("click", () => {
+      cancelOngoingRequest();
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+      if (state.temporal) {
+        state.temporalMessages = [];
+        renderMessages([]);
+      } else {
+        const chat = { id: Date.now().toString(), title: "Nova conversa", messages: [] };
+        state.chats.unshift(chat);
+        state.currentChatId = chat.id;
+        saveChats();
+        renderHistory();
+        renderMessages([]);
+      }
+      if (window.innerWidth <= 900) toggleSidebar(true);
+    });
+
+    el.clearAllHistoryBtn.addEventListener("click", () => {
+      if (!confirm("Apagar todo o histórico?")) return;
+      cancelOngoingRequest();
+      state.chats = [];
+      state.currentChatId = null;
+      saveChats();
+      renderHistory();
+      if (!state.temporal) renderMessages([]);
+    });
+
+    function saveChats() {
+      try {
+        const liteChats = state.chats.slice(0, 30).map(c => ({
+          id: c.id,
+          title: c.title,
+          messages: c.messages.map(m => ({
+            role: m.role,
+            text: m.text || ((m.imageUrl || m.videoSegments) ? "[Mídia gerada na sessão]" : "")
+          }))
+        }));
+        localStorage.setItem("gp_chats", JSON.stringify(liteChats));
+      } catch {}
+    }
+
+    function getCurrentMessages() {
+      if (state.temporal) return state.temporalMessages;
+      let chat = state.chats.find(c => c.id === state.currentChatId);
+      if (!chat) {
+        chat = { id: Date.now().toString(), title: "Nova conversa", messages: [] };
+        state.chats.unshift(chat);
+        state.currentChatId = chat.id;
+        saveChats();
+        renderHistory();
+      }
+      return chat.messages;
+    }
+
+    function loadChat(id) {
+      cancelOngoingRequest();
+      state.currentChatId = id;
+      const chat = state.chats.find(c => c.id === id);
+      renderHistory();
+      renderMessages(chat ? chat.messages : []);
+    }
+
+    function deleteChat(id, e) {
+      e.stopPropagation();
+      if (state.currentChatId === id) cancelOngoingRequest();
+      state.chats = state.chats.filter(c => c.id !== id);
+      if (state.currentChatId === id) state.currentChatId = state.chats[0]?.id || null;
+      saveChats();
+      renderHistory();
+      if (!state.temporal) {
+        const active = state.chats.find(c => c.id === state.currentChatId);
+        renderMessages(active ? active.messages : []);
+      }
+    }
+
+    function renderHistory() {
+      el.historyList.innerHTML = "";
+      if (state.chats.length === 0) {
+        el.historyList.innerHTML = `<div style="font-size:0.78rem;color:var(--text-muted);padding:6px;">Nenhuma conversa ainda.</div>`;
+        return;
+      }
+      state.chats.forEach(c => {
+        const item = document.createElement("div");
+        item.className = "history-item" + (c.id === state.currentChatId && !state.temporal ? " active" : "");
+        const span = document.createElement("span");
+        span.textContent = c.title || "Conversa";
+        const del = document.createElement("button");
+        del.className = "del-chat";
+        del.textContent = "✕";
+        del.onclick = (e) => deleteChat(c.id, e);
+        item.appendChild(span);
+        item.appendChild(del);
+        item.onclick = () => {
+          if (state.temporal) {
+            el.temporalToggle.checked = false;
+            state.temporal = false;
+            el.temporalBadge.style.display = "none";
+            el.burnSessionBtn.style.display = "none";
+          }
+          loadChat(c.id);
+          if (window.innerWidth <= 900) toggleSidebar(true);
+        };
+        el.historyList.appendChild(item);
+      });
+    }
+
+    document.querySelectorAll("[data-prompt]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        if (btn.dataset.modeJump) setMode(btn.dataset.modeJump);
+        el.promptInput.value = btn.dataset.prompt;
+        autoResizeTextarea();
+        el.promptInput.focus();
+        if (window.innerWidth <= 900) toggleSidebar(true);
+      });
+    });
+
+    el.attachBtn.addEventListener("click", () => el.fileInput.click());
+    el.fileInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = reader.result;
+        state.attachedImage = { mimeType: file.type, base64: dataUrl.split(",")[1], name: file.name, dataUrl };
+        el.attachmentThumb.src = dataUrl;
+        el.attachmentName.textContent = file.name;
+        el.attachmentPreview.classList.add("active");
+      };
+      reader.readAsDataURL(file);
+      el.fileInput.value = "";
+    });
+    el.removeAttachmentBtn.addEventListener("click", clearAttachment);
+
+    function clearAttachment() {
+      state.attachedImage = null;
+      el.attachmentPreview.classList.remove("active");
+    }
+
+    // Voz: Microfone (SpeechRecognition) + Leitura em áudio (speechSynthesis)
+    function setupVoiceInput() {
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRec) {
+        el.micBtn.onclick = () => alert("Seu navegador ou esta janela bloqueia o microfone. Abra o arquivo HTML direto no Chrome para usar voz.");
+        return;
+      }
+      const rec = new SpeechRec();
+      rec.lang = "pt-BR";
+      rec.interimResults = true;
+      rec.continuous = false;
+
+      rec.onresult = (event) => {
+        let transcript = "";
+        for (let i = 0; i < event.results.length; i++) {
+          transcript += event.results[i][0].transcript;
+        }
+        el.promptInput.value = transcript;
+        autoResizeTextarea();
+      };
+
+      rec.onend = () => {
+        state.isRecording = false;
+        el.micBtn.classList.remove("recording");
+        el.micBtn.title = "Falar por voz";
+      };
+
+      rec.onerror = () => {
+        state.isRecording = false;
+        el.micBtn.classList.remove("recording");
+      };
+
+      el.micBtn.onclick = () => {
+        if (state.isRecording) {
+          rec.stop();
+        } else {
+          try {
+            state.isRecording = true;
+            el.micBtn.classList.add("recording");
+            el.micBtn.title = "Ouvindo... clique para parar";
+            rec.start();
+          } catch {
+            state.isRecording = false;
+            el.micBtn.classList.remove("recording");
+            alert("Permissão de microfone negada ou bloqueada nesta aba.");
+          }
+        }
+      };
+    }
+
+    function speakText(text, btn = null) {
+      if (!window.speechSynthesis) {
+        alert("Leitura de voz não suportada neste navegador.");
+        return;
+      }
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+        if (btn) btn.textContent = "🔊 Ouvir";
+        return;
+      }
+      const clean = (text || "")
+        .replace(/```[\s\S]*?```/g, " Código gerado na tela. ")
+        .replace(/[#*_`]/g, "")
+        .trim();
+      if (!clean) return;
+
+      const utter = new SpeechSynthesisUtterance(clean);
+      utter.lang = "pt-BR";
+      utter.rate = 1.03;
+      const voices = window.speechSynthesis.getVoices();
+      const ptVoice = voices.find(v => /pt[-_]BR/i.test(v.lang)) || voices.find(v => /^pt/i.test(v.lang));
+      if (ptVoice) utter.voice = ptVoice;
+
+      if (btn) btn.textContent = "⏹ Parar";
+      utter.onend = utter.onerror = () => {
+        if (btn) btn.textContent = "🔊 Ouvir";
+      };
+      window.speechSynthesis.speak(utter);
+    }
+
+    function escapeHtml(str) {
+      return (str || "").replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[m]));
+    }
+
+    function formatRichText(text) {
+      let raw = text || "";
+      const fences = (raw.match(/```/g) || []).length;
+      if (fences % 2 === 1) raw += "\n```";
+
+      const codeBlocks = [];
+      const withPlaceholders = raw.replace(/```([a-zA-Z0-9_+-]*)\n?([\s\S]*?)```/g, (_, lang, code) => {
+        const idx = codeBlocks.length;
+        const cleanLang = (lang || "código").trim();
+        const trimmedCode = code.replace(/^\n+|\n+$/g, "");
+        const isHtml = /^html$/i.test(cleanLang) || /<!DOCTYPE html|<html[\s>]/i.test(trimmedCode);
+        const previewBtn = isHtml
+          ? `<button class="preview-code-btn" onclick="previewHtmlCode(this)">▶ Executar</button>`
+          : "";
+        codeBlocks.push(`
+          <div class="code-block-wrap">
+            <div class="code-block-header">
+              <span>${escapeHtml(cleanLang)}</span>
+              <div class="code-block-actions">
+                ${previewBtn}
+                <button class="copy-code-btn" onclick="copyCode(this)">Copiar</button>
+              </div>
+            </div>
+            <pre><code>${escapeHtml(trimmedCode)}</code></pre>
+          </div>
+        `);
+        return `@@CODEBLOCK_${idx}@@`;
+      });
+
+      let html = escapeHtml(withPlaceholders)
+        .replace(/^### (.*)$/gm, "<h3>$1</h3>")
+        .replace(/^## (.*)$/gm, "<h2>$1</h2>")
+        .replace(/^# (.*)$/gm, "<h1>$1</h1>")
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+        .replace(/\*([^*\n]+)\*/g, "<em>$1</em>")
+        .replace(/`([^`\n]+)`/g, "<code style='background:#f0f4f9;padding:2px 6px;border-radius:5px;'>$1</code>")
+        .replace(/^\s*[-*] (.*)$/gm, "<li>$1</li>")
+        .replace(/((?:<li>.*<\/li>\n?)+)/g, "<ul>$1</ul>")
+        .replace(/\n/g, "<br>");
+
+      codeBlocks.forEach((block, i) => {
+        html = html.replace(`@@CODEBLOCK_${i}@@`, block);
+      });
+      return html;
+    }
+
+    window.copyCode = function(btn) {
+      const codeEl = btn.closest(".code-block-wrap").querySelector("code");
+      navigator.clipboard.writeText(codeEl.innerText);
+      btn.textContent = "Copiado ✓";
+      setTimeout(() => btn.textContent = "Copiar", 1800);
+    };
+
+    window.previewHtmlCode = function(btn) {
+      const codeEl = btn.closest(".code-block-wrap").querySelector("code");
+      el.previewFrame.srcdoc = codeEl.innerText;
+      el.previewModal.classList.add("active");
+    };
+
+    window.updateEmergencyApiKey = function() {
+      const nova = prompt("Cole uma nova chave API válida do Google AI Studio (aistudio.google.com/apikey):");
+      if (nova && nova.trim()) {
+        state.apiKey = nova.trim();
+        localStorage.setItem("gp_api_key_override", state.apiKey);
+        alert("Chave atualizada! Envie sua mensagem novamente.");
+      }
+    };
+
+    function renderMessages(messages) {
+      el.chatContainer.innerHTML = "";
+      if (!messages || messages.length === 0) {
+        el.chatContainer.appendChild(el.welcomeScreen);
+        el.welcomeScreen.style.display = "flex";
+        return;
+      }
+      messages.forEach(m => appendMessageDOM(m));
+      scrollToBottom();
+    }
+
+    function appendMessageDOM(m) {
+      if (el.welcomeScreen.parentNode === el.chatContainer) {
+        el.welcomeScreen.style.display = "none";
+      }
+      const div = document.createElement("div");
+      div.className = `msg ${m.role === "user" ? "user" : "ai"}`;
+
+      const avatar = document.createElement("div");
+      avatar.className = "avatar";
+      avatar.textContent = m.role === "user" ? "VC" : "✦";
+
+      const bodyWrap = document.createElement("div");
+      bodyWrap.className = "msg-body";
+
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.innerHTML = formatRichText(m.text || "");
+
+      if (m.showKeyFix) {
+        const fixBtn = document.createElement("button");
+        fixBtn.className = "btn-mini";
+        fixBtn.style.marginTop = "8px";
+        fixBtn.textContent = "Atualizar Chave API";
+        fixBtn.onclick = window.updateEmergencyApiKey;
+        bubble.appendChild(fixBtn);
+      }
+
+      if (m.imageUrl) {
+        const wrap = document.createElement("div");
+        wrap.className = "media-output";
+        wrap.innerHTML = `
+          <img src="${m.imageUrl}" alt="Imagem" />
+          ${m.role !== "user" ? `<div class="media-actions"><a class="download-btn" href="${m.imageUrl}" download="gemini-imagem-${Date.now()}.${m.imageExt || 'png'}">⬇ Baixar Imagem</a></div>` : ""}
+        `;
+        bubble.appendChild(wrap);
+      }
+
+      if (m.videoSegments && m.videoSegments.length > 0) {
+        const wrap = document.createElement("div");
+        wrap.className = "media-output";
+        const video = document.createElement("video");
+        video.controls = true;
+        video.autoplay = true;
+        video.playsInline = true;
+        let currentIndex = 0;
+        video.src = m.videoSegments[0];
+
+        const bar = document.createElement("div");
+        bar.className = "playlist-bar";
+        const pills = [];
+
+        function selectScene(idx) {
+          currentIndex = idx;
+          video.src = m.videoSegments[idx];
+          video.play().catch(() => {});
+          pills.forEach((p, i) => p.classList.toggle("active", i === idx));
+          dlBtn.href = m.videoSegments[idx];
+          dlBtn.download = `cena-${idx + 1}.mp4`;
+        }
+
+        video.addEventListener("ended", () => {
+          if (currentIndex + 1 < m.videoSegments.length) selectScene(currentIndex + 1);
+        });
+
+        m.videoSegments.forEach((_, idx) => {
+          const pill = document.createElement("button");
+          pill.className = "scene-pill" + (idx === 0 ? " active" : "");
+          pill.textContent = `Parte ${idx + 1}`;
+          pill.onclick = () => selectScene(idx);
+          pills.push(pill);
+          bar.appendChild(pill);
+        });
+
+        const actions = document.createElement("div");
+        actions.className = "media-actions";
+        const dlBtn = document.createElement("a");
+        dlBtn.className = "download-btn";
+        dlBtn.href = m.videoSegments[0];
+        dlBtn.download = "cena-1.mp4";
+        dlBtn.target = "_blank";
+        dlBtn.textContent = "⬇ Baixar Parte Atual";
+        actions.appendChild(dlBtn);
+
+        wrap.appendChild(video);
+        if (m.videoSegments.length > 1) wrap.appendChild(bar);
+        wrap.appendChild(actions);
+        bubble.appendChild(wrap);
+      }
+
+      bodyWrap.appendChild(bubble);
+
+      if (m.role !== "user" && m.text) {
+        const actionsBar = document.createElement("div");
+        actionsBar.className = "msg-actions";
+
+        const listenBtn = document.createElement("button");
+        listenBtn.className = "msg-action-btn";
+        listenBtn.textContent = "🔊 Ouvir";
+        listenBtn.onclick = () => speakText(m.text, listenBtn);
+
+        const copyMsgBtn = document.createElement("button");
+        copyMsgBtn.className = "msg-action-btn";
+        copyMsgBtn.textContent = "📋 Copiar";
+        copyMsgBtn.onclick = () => {
+          navigator.clipboard.writeText(m.text);
+          copyMsgBtn.textContent = "✓ Copiado";
+          setTimeout(() => copyMsgBtn.textContent = "📋 Copiar", 1600);
+        };
+
+        actionsBar.appendChild(listenBtn);
+        actionsBar.appendChild(copyMsgBtn);
+        bodyWrap.appendChild(actionsBar);
+      }
+
+      div.appendChild(avatar);
+      div.appendChild(bodyWrap);
+      el.chatContainer.appendChild(div);
+      scrollToBottom();
+      return { div, bubble, bodyWrap };
+    }
+
+    function showTyping(statusText = "") {
+      const existing = document.getElementById("typingIndicator");
+      if (existing) {
+        const statusEl = existing.querySelector(".typing-status");
+        if (statusEl) statusEl.textContent = statusText;
+        else if (statusText) {
+          const d = document.createElement("div");
+          d.className = "typing-status";
+          d.style.cssText = "font-size:0.8rem;color:var(--text-muted);";
+          d.textContent = statusText;
+          existing.querySelector(".bubble").appendChild(d);
+        }
+        scrollToBottom();
+        return;
+      }
+      const div = document.createElement("div");
+      div.className = "msg ai";
+      div.id = "typingIndicator";
+      div.innerHTML = `
+        <div class="avatar">✦</div>
+        <div class="msg-body">
+          <div class="bubble">
+            <div class="typing"><span></span><span></span><span></span></div>
+            ${statusText ? `<div class="typing-status" style="font-size:0.8rem;color:var(--text-muted);">${escapeHtml(statusText)}</div>` : ""}
+          </div>
+        </div>
+      `;
+      el.chatContainer.appendChild(div);
+      scrollToBottom();
+    }
+
+    function removeTyping() {
+      const t = document.getElementById("typingIndicator");
+      if (t) t.remove();
+    }
+
+    function scrollToBottom() {
+      el.chatScroll.scrollTop = el.chatScroll.scrollHeight;
+    }
+
+    function autoResizeTextarea() {
+      el.promptInput.style.height = "auto";
+      el.promptInput.style.height = Math.min(el.promptInput.scrollHeight, 160) + "px";
+    }
+    el.promptInput.addEventListener("input", autoResizeTextarea);
+    el.promptInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        handleSend();
+      }
+    });
+
+    el.sendBtn.addEventListener("click", () => {
+      if (state.isLoading && state.abortController) {
+        state.abortController.abort(new DOMException("Cancelado pelo usuário", "AbortError"));
+      } else {
+        handleSend();
+      }
+    });
+
+    function setLoading(loading) {
+      state.isLoading = loading;
+      el.sendBtn.textContent = loading ? "■" : "↑";
+      el.sendBtn.title = loading ? "Parar resposta" : "Enviar";
+      el.sendBtn.classList.toggle("stop", loading);
+    }
+
+    async function fetchWithTimeout(url, options, timeoutMs = 20000) {
+      const localController = new AbortController();
+      const parentSignal = state.abortController?.signal;
+      const onParentAbort = () => localController.abort(new DOMException("Cancelado", "AbortError"));
+      if (parentSignal) {
+        if (parentSignal.aborted) onParentAbort();
+        else parentSignal.addEventListener("abort", onParentAbort, { once: true });
+      }
+      const timer = setTimeout(() => {
+        localController.abort(new DOMException("Tempo limite de conexão atingido. Se estiver na prévia do AI Studio, baixe o HTML e abra direto no Chrome.", "TimeoutError"));
+      }, timeoutMs);
+      try {
+        return await fetch(url, { ...options, signal: localController.signal });
+      } finally {
+        clearTimeout(timer);
+        if (parentSignal) parentSignal.removeEventListener("abort", onParentAbort);
+      }
+    }
+
+    async function readSseStream(res, onPart) {
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder("utf-8");
+      let buffer = "";
+
+      const processEvent = (evt) => {
+        const dataLines = evt
+          .split(/\r?\n/)
+          .filter(l => l.startsWith("data:"))
+          .map(l => l.slice(5).trimStart());
+        if (!dataLines.length) return;
+        const jsonStr = dataLines.join("\n").trim();
+        if (!jsonStr || jsonStr === "[DONE]") return;
+        try {
+          const chunk = JSON.parse(jsonStr);
+          const parts = chunk.candidates?.[0]?.content?.parts || [];
+          for (const p of parts) onPart(p);
+        } catch {}
+      };
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const events = buffer.split(/\r?\n\r?\n/);
+        buffer = events.pop() || "";
+        for (const evt of events) processEvent(evt);
+      }
+      if (buffer.trim()) processEvent(buffer);
+    }
+
+    async function safeJson(res) {
+      const raw = await res.text();
+      try {
+        return JSON.parse(raw);
+      } catch {
+        return { error: { message: raw ? raw.slice(0, 240) : `HTTP ${res.status}` } };
+      }
+    }
+
+    function formatApiError(status, data) {
+      const msg = data?.error?.message || `Erro HTTP ${status}`;
+      if (/leaked/i.test(msg)) {
+        return { text: "Sua chave API foi bloqueada pelo Google por ter vazado publicamente. Crie uma nova chave no Google AI Studio.", authError: true };
+      }
+      if (status === 401 || status === 403 || /API_KEY_INVALID|API_KEY_SERVICE_BLOCKED|ACCESS_TOKEN_TYPE_UNSUPPORTED/i.test(msg)) {
+        return { text: `Chave recusada pela API do Google (${msg}).`, authError: true };
+      }
+      if (/limit:\s*0/i.test(msg) || /free_tier/i.test(msg) || status === 429) {
+        return { text: `Cota atingida ou recurso exclusivo do plano pago (${msg}).`, authError: false };
+      }
+      return { text: msg, authError: false };
+    }
+
+    function detectVisualIntent(text) {
+      const t = (text || "").trim();
+      if (!t) return null;
+      const isTextOrCode = /\b(código|codigo|html|css|js|javascript|python|site|app|programa|texto|resumo|redação|redacao|email|e-mail|lista|plano|tabela|função|funcao|script|história|historia|poema|música|musica|letra|conta|cálculo|calculo|exercício|exercicio|receita|dieta|treino|roteiro|frase|piada)\b/i.test(t);
+      if (isTextOrCode) return null;
+
+      if (/\b(vídeo|video|animação|animacao|clipe)\b/i.test(t) && /\b(faça|faca|faz|crie|cria|gere|gera|gerar|criar|fazer|monte)\b/i.test(t)) {
+        return "video";
+      }
+      if (/\b(imagem|foto|fotografia|ilustração|ilustracao|desenho|arte|wallpaper|retrato|logo|pintura)\b/i.test(t) && /\b(faça|faca|faz|crie|cria|gere|gera|gerar|criar|fazer|desenhe|desenha|mostre|quero)\b/i.test(t)) {
+        return "image";
+      }
+      if (/^\s*(desenhe|desenha|pinte|ilustre)\b/i.test(t)) {
+        return "image";
+      }
+      if (/^\s*(faça|faca|faz|crie|cria|gere|gera)\s+(um|uma|o|a)\s+[^\n]{2,45}$/i.test(t)) {
+        return "image";
+      }
+      return null;
+    }
+
+    async function handleSend() {
+      if (state.isLoading) return;
+      const text = el.promptInput.value.trim();
+      if (!text && !state.attachedImage) return;
+
+      const myToken = ++state.activeRequestToken;
+      const msgs = getCurrentMessages();
+      const userMsg = {
+        role: "user",
+        text,
+        imageUrl: state.attachedImage?.dataUrl || null,
+        attachedBase64: state.attachedImage?.base64 || null,
+        attachedMime: state.attachedImage?.mimeType || null
+      };
+
+      msgs.push(userMsg);
+      if (!state.temporal) {
+        const chat = state.chats.find(c => c.id === state.currentChatId);
+        if (chat && chat.title === "Nova conversa" && text) {
+          chat.title = text.slice(0, 36);
+          renderHistory();
+        }
+        saveChats();
+      }
+
+      appendMessageDOM(userMsg);
+      const attachmentCopy = state.attachedImage ? { ...state.attachedImage } : null;
+      el.promptInput.value = "";
+      autoResizeTextarea();
+      clearAttachment();
+
+      state.abortController = new AbortController();
+      setLoading(true);
+      showTyping("Conectando ao Gemini...");
+
+      try {
+        let effectiveMode = state.mode;
+        if (state.mode === "chat") {
+          const detected = detectVisualIntent(text);
+          if (detected) effectiveMode = detected;
+        }
+
+        let aiMsg;
+        if (effectiveMode === "chat") {
+          aiMsg = await callGeminiChatStream(msgs, myToken);
+        } else if (effectiveMode === "image") {
+          aiMsg = await callGeminiImageWithFallback(text, attachmentCopy, myToken);
+        } else {
+          aiMsg = await callGeminiVideoSequence(text, attachmentCopy, myToken);
+        }
+
+        if (myToken !== state.activeRequestToken) return;
+        removeTyping();
+
+        if (aiMsg) {
+          msgs.push(aiMsg);
+          if (!state.temporal) saveChats();
+          if (!aiMsg._alreadyMounted) appendMessageDOM(aiMsg);
+          if (state.autoVoice && aiMsg.text) speakText(aiMsg.text);
+        }
+      } catch (err) {
+        if (myToken !== state.activeRequestToken) return;
+        removeTyping();
+        const userStopped = err.name === "AbortError" && state.abortController?.signal.aborted;
+        const errText = userStopped
+          ? "Geração interrompida."
+          : `**Erro:** ${err.message || "Falha de conexão."}`;
+        const errMsg = { role: "ai", text: errText, showKeyFix: Boolean(err.authError) };
+        msgs.push(errMsg);
+        if (!state.temporal) saveChats();
+        appendMessageDOM(errMsg);
+      } finally {
+        if (myToken === state.activeRequestToken) {
+          state.abortController = null;
+          setLoading(false);
+        }
+      }
+    }
+
+    function buildContents(msgs) {
+      const validMsgs = msgs.filter(m => !m.text?.startsWith("**Erro:**") && m.text !== "Geração interrompida.").slice(-16);
+      const contents = [];
+      for (const m of validMsgs) {
+        const role = m.role === "user" ? "user" : "model";
+        const parts = [];
+        if (m.text) parts.push({ text: m.text });
+        if (m.attachedBase64 && m.attachedMime) {
+          parts.push({ inlineData: { mimeType: m.attachedMime, data: m.attachedBase64 } });
+        }
+        const safeParts = parts.length ? parts : [{ text: " " }];
+        if (contents.length > 0 && contents[contents.length - 1].role === role) {
+          contents[contents.length - 1].parts.push(...safeParts);
+        } else {
+          contents.push({ role, parts: safeParts });
+        }
+      }
+      while (contents.length > 0 && contents[0].role !== "user") {
+        contents.shift();
+      }
+      return contents;
+    }
+
+    async function callGeminiChatStream(msgs, myToken) {
+      const selectedModel = el.chatModel.value;
+      const freeFallbacks = ["gemini-4-hydrogen", "gemini-3.8-flash", "gemini-3.5-flash-lite"];
+      const candidates = freeFallbacks.includes(selectedModel)
+        ? [selectedModel, ...freeFallbacks.filter(m => m !== selectedModel)]
+        : [selectedModel];
+
+      const contents = buildContents(msgs);
+      const sysBase = el.systemPrompt.value.trim();
+
+      let lastError = null;
+
+      for (let i = 0; i < candidates.length; i++) {
+        if (myToken !== state.activeRequestToken) return null;
+        const model = candidates[i];
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse`;
+        const payload = { contents };
+        if (sysBase) payload.systemInstruction = { parts: [{ text: sysBase }] };
+        if (model.startsWith("gemini-4-") || model === "gemini-3.8-flash") {
+          payload.generationConfig = { thinkingConfig: { thinkingLevel: "LOW" } };
+        }
+
+        let res;
+        try {
+          res = await fetchWithTimeout(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-goog-api-key": state.apiKey
+            },
+            body: JSON.stringify(payload)
+          }, 20000);
+        } catch (err) {
+          if (myToken !== state.activeRequestToken || (err.name === "AbortError" && state.abortController?.signal.aborted)) throw err;
+          if (i < candidates.length - 1) {
+            showTyping(`Tentando ${candidates[i + 1]}...`);
+            lastError = { text: err.message };
+            continue;
+          }
+          throw err;
+        }
+
+        if (!res.ok) {
+          const errData = await safeJson(res);
+          const parsed = formatApiError(res.status, errData);
+          if (!parsed.authError && i < candidates.length - 1 && (res.status === 429 || res.status === 503 || res.status === 500)) {
+            showTyping(`Modelo ocupado, tentando ${candidates[i + 1]}...`);
+            lastError = parsed;
+            continue;
+          }
+          const e = new Error(parsed.text);
+          e.authError = parsed.authError;
+          throw e;
+        }
+
+        let fullText = "";
+        let mounted = null;
+
+        await readSseStream(res, (p) => {
+          if (myToken !== state.activeRequestToken || p.thought || !p.text) return;
+          fullText += p.text;
+          if (!mounted) {
+            removeTyping();
+            mounted = appendMessageDOM({ role: "ai", text: fullText });
+          } else {
+            mounted.bubble.innerHTML = formatRichText(fullText);
+            scrollToBottom();
+          }
+        });
+
+        if (myToken !== state.activeRequestToken) return null;
+
+        const finalText = fullText.trim() || "Não recebi resposta do modelo.";
+        if (mounted) {
+          mounted.bubble.innerHTML = formatRichText(finalText);
+          // Adiciona barra de ações (Ouvir / Copiar) na bolha montada ao vivo
+          const actionsBar = document.createElement("div");
+          actionsBar.className = "msg-actions";
+          const listenBtn = document.createElement("button");
+          listenBtn.className = "msg-action-btn";
+          listenBtn.textContent = "🔊 Ouvir";
+          listenBtn.onclick = () => speakText(finalText, listenBtn);
+          const copyMsgBtn = document.createElement("button");
+          copyMsgBtn.className = "msg-action-btn";
+          copyMsgBtn.textContent = "📋 Copiar";
+          copyMsgBtn.onclick = () => {
+            navigator.clipboard.writeText(finalText);
+            copyMsgBtn.textContent = "✓ Copiado";
+            setTimeout(() => copyMsgBtn.textContent = "📋 Copiar", 1600);
+          };
+          actionsBar.appendChild(listenBtn);
+          actionsBar.appendChild(copyMsgBtn);
+          mounted.bodyWrap.appendChild(actionsBar);
+        }
+
+        return { role: "ai", text: finalText, _alreadyMounted: Boolean(mounted) };
+      }
+
+      const fallbackErr = new Error(lastError?.text || "Não foi possível obter resposta.");
+      fallbackErr.authError = lastError?.authError;
+      throw fallbackErr;
+    }
+
+    async function callGeminiImageWithFallback(promptText, attachment, myToken) {
+      const model = el.imageModel.value;
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+      const parts = [{ text: promptText || "Imagem em alta definição." }];
+      if (attachment) parts.push({ inlineData: { mimeType: attachment.mimeType, data: attachment.base64 } });
+
+      showTyping("Gerando imagem 4K...");
+
+      let res;
+      try {
+        res = await fetchWithTimeout(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-goog-api-key": state.apiKey
+          },
+          body: JSON.stringify({
+            contents: [{ role: "user", parts }],
+            generationConfig: {
+              responseModalities: ["TEXT", "IMAGE"],
+              imageConfig: { aspectRatio: el.imageRatio.value, imageSize: el.imageSize.value }
+            }
+          })
+        }, 25000);
+      } catch (err) {
+        if (myToken !== state.activeRequestToken || (err.name === "AbortError" && state.abortController?.signal.aborted)) throw err;
+        showTyping("Desenhando ilustração rápida...");
+        return await generateFreeSvgIllustration(promptText, myToken);
+      }
+
+      const data = await safeJson(res);
+      if (!res.ok) {
+        const parsed = formatApiError(res.status, data);
+        if (parsed.authError) {
+          const e = new Error(parsed.text);
+          e.authError = true;
+          throw e;
+        }
+        if (res.status === 429 || /limit:\s*0|free_tier|billing|quota/i.test(data?.error?.message || "")) {
+          showTyping("Plano gratuito detectado — desenhando ilustração...");
+          return await generateFreeSvgIllustration(promptText, myToken);
+        }
+        throw new Error(parsed.text);
+      }
+
+      let textOut = "";
+      let imageUrl = null;
+      for (const p of data.candidates?.[0]?.content?.parts || []) {
+        if (p.text && !p.thought) textOut += p.text + "\n";
+        if (p.inlineData?.data) {
+          imageUrl = `data:${p.inlineData.mimeType || "image/png"};base64,${p.inlineData.data}`;
+        }
+      }
+      if (!imageUrl) throw new Error("O modelo não retornou imagem.");
+      return {
+        role: "ai",
+        text: textOut.trim() || `Imagem ${el.imageSize.value} (${el.imageRatio.value}):`,
+        imageUrl,
+        imageExt: "png"
+      };
+    }
+
+    async function generateFreeSvgIllustration(promptText, myToken) {
+      const svgModels = [
+        { id: "gemini-3.8-flash", thinking: "LOW" },
+        { id: "gemini-3.5-flash-lite", thinking: null },
+        { id: "gemini-4-hydrogen", thinking: "LOW" }
+      ];
+
+      let lastErr = "Não foi possível gerar o desenho.";
+
+      for (let i = 0; i < svgModels.length; i++) {
+        if (myToken !== state.activeRequestToken) return null;
+        const m = svgModels[i];
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${m.id}:streamGenerateContent?alt=sse`;
+        const payload = {
+          contents: [{
+            role: "user",
+            parts: [{
+              text: `Crie um desenho vetorial SVG bem detalhado, colorido e bonito (viewBox="0 0 800 600") com cenário e sombras para: "${promptText}". Retorne SOMENTE o código <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">...</svg>.`
+            }]
+          }]
+        };
+        if (m.thinking) {
+          payload.generationConfig = { thinkingConfig: { thinkingLevel: m.thinking } };
+        }
+
+        showTyping(`Desenhando (${m.id})...`);
+
+        let res;
+        try {
+          res = await fetchWithTimeout(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-goog-api-key": state.apiKey
+            },
+            body: JSON.stringify(payload)
+          }, 20000);
+        } catch (err) {
+          if (myToken !== state.activeRequestToken || (err.name === "AbortError" && state.abortController?.signal.aborted)) throw err;
+          lastErr = err.message;
+          continue;
+        }
+
+        if (!res.ok) {
+          const errData = await safeJson(res);
+          const parsed = formatApiError(res.status, errData);
+          lastErr = parsed.text;
+          if (parsed.authError) {
+            const e = new Error(parsed.text);
+            e.authError = true;
+            throw e;
+          }
+          continue;
+        }
+
+        let raw = "";
+        await readSseStream(res, (p) => {
+          if (myToken !== state.activeRequestToken || p.thought || !p.text) return;
+          raw += p.text;
+          showTyping(`Desenhando... (${raw.length} caracteres)`);
+        });
+
+        if (myToken !== state.activeRequestToken) return null;
+
+        const match = raw.match(/<svg[\s\S]*?<\/svg>/i);
+        if (match) {
+          let svgCode = match[0];
+          if (!/xmlns=/i.test(svgCode)) {
+            svgCode = svgCode.replace(/^<svg/i, '<svg xmlns="http://www.w3.org/2000/svg"');
+          }
+          const svgDataUrl = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgCode);
+          return {
+            role: "ai",
+            text: `Aqui está a **ilustração vetorial** de *"${promptText}"*.\n\n*(Nota: fotos 4K realistas exigem Billing ativo na chave do Google AI Studio; no plano gratuito o app cria desenho vetorial.)*`,
+            imageUrl: svgDataUrl,
+            imageExt: "svg"
+          };
+        }
+      }
+
+      throw new Error(lastErr);
+    }
+
+    async function callGeminiVideoSequence(promptText, attachment, myToken) {
+      const totalSeconds = parseInt(el.videoTotalDuration.value, 10);
+      const segmentsCount = totalSeconds <= 15 ? 1 : totalSeconds <= 25 ? 2 : Math.max(1, Math.round(totalSeconds / 15));
+      const url = `https://generativelanguage.googleapis.com/v1beta/interactions`;
+
+      const videoSegments = [];
+      let prevId = null;
+      let chainSeconds = 0;
+
+      for (let i = 0; i < segmentsCount; i++) {
+        if (myToken !== state.activeRequestToken) return null;
+        const isExtending = Boolean(prevId) && chainSeconds < 25;
+        if (!isExtending) {
+          prevId = null;
+          chainSeconds = 0;
+        }
+        const segDur = isExtending ? 10 : 15;
+        chainSeconds += segDur;
+
+        showTyping(`Gerando parte ${i + 1} de ${segmentsCount} (${segDur}s)...`);
+
+        const partPrompt = isExtending
+          ? `Continue smoothly from the previous scene keeping identical characters, lighting and motion: ${promptText}`
+          : promptText;
+
+        let inputPayload = partPrompt;
+        if (i === 0 && attachment) {
+          inputPayload = [
+            { type: "text", text: partPrompt },
+            { type: "image", data: attachment.base64, mime_type: attachment.mimeType }
+          ];
+        }
+
+        const body = {
+          model: "gemini-omni-1.2-flash",
+          input: inputPayload,
+          response_format: {
+            type: "video",
+            aspect_ratio: el.videoRatio.value,
+            resolution: el.videoRes.value,
+            duration: `${segDur}s`
+          }
+        };
+        if (prevId) body.previous_interaction_id = prevId;
+
+        const res = await fetchWithTimeout(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-goog-api-key": state.apiKey
+          },
+          body: JSON.stringify(body)
+        }, 30000);
+
+        let data = await safeJson(res);
+        if (!res.ok) {
+          const parsed = formatApiError(res.status, data);
+          if (res.status === 429 || /limit:\s*0|free_tier|billing|quota/i.test(data?.error?.message || "")) {
+            throw new Error("A geração de vídeos (Gemini Omni 1.2 Flash) exige faturamento (Billing) ativo no Google AI Studio.");
+          }
+          const e = new Error(parsed.text);
+          e.authError = parsed.authError;
+          throw e;
+        }
+
+        if (data.id && data.status && data.status !== "completed" && data.status !== "failed") {
+          for (let pollTry = 0; pollTry < 45; pollTry++) {
+            if (myToken !== state.activeRequestToken) return null;
+            await new Promise(r => setTimeout(r, 4000));
+            const poll = await fetchWithTimeout(`${url}/${data.id}`, {
+              headers: { "x-goog-api-key": state.apiKey }
+            }, 20000);
+            data = await safeJson(poll);
+            if (data.status === "completed" || data.status === "failed") break;
+          }
+        }
+
+        if (data.status === "failed") throw new Error(data.error?.message || `Falha na parte ${i + 1}`);
+        prevId = data.id || prevId;
+
+        let segUrl = null;
+        if (data.output_video?.data) {
+          segUrl = `data:video/mp4;base64,${data.output_video.data}`;
+        } else {
+          const allItems = [
+            ...(data.outputs || []),
+            ...((data.steps || []).flatMap(s => s.content || []))
+          ];
+          const vp = allItems.find(item => item.type === "video" || item.mime_type?.startsWith("video/"));
+          if (vp?.data) {
+            segUrl = `data:${vp.mime_type || "video/mp4"};base64,${vp.data}`;
+          } else if (vp?.uri) {
+            const vRes = await fetchWithTimeout(vp.uri, { headers: { "x-goog-api-key": state.apiKey } }, 45000);
+            if (!vRes.ok) throw new Error("Erro ao baixar vídeo gerado.");
+            const blob = await vRes.blob();
+            segUrl = URL.createObjectURL(blob);
+          }
+        }
+
+        if (!segUrl) throw new Error(`Não foi possível extrair o vídeo da parte ${i + 1}.`);
+        videoSegments.push(segUrl);
+      }
+
+      return {
+        role: "ai",
+        text: `Sequência concluída: **${segmentsCount} parte(s)** (${el.videoRes.value}).`,
+        videoSegments
+      };
+    }
+
+    init();
+  </script>
+</body>
+</html>
