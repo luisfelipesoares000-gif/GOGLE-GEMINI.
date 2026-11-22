@@ -4,119 +4,73 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gemini Pro Studio</title>
+  <script src="https://js.puter.com/v2/"></script>
   <style>
-    :root{--bg-white:#fff;--bg-gray-soft:#f0f4f9;--bg-gray-hover:#e3e8ee;--bg-gray-card:#f8f9fa;--border:#dde3ea;--text-black:#1f1f1f;--text-gray:#444746;--text-muted:#747775;--accent-black:#111;--accent-dark:#2b2d30;--gemini-blue:#1a73e8}
+    :root{--bg-white:#fff;--bg-gray-soft:#f0f4f9;--bg-gray-hover:#e3e8ee;--bg-gray-card:#f8f9fa;--border:#dde3ea;--text-black:#1f1f1f;--text-gray:#444746;--text-muted:#747775;--accent-black:#111;--gemini-blue:#1a73e8}
     *{box-sizing:border-box;margin:0;padding:0;font-family:"Google Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,sans-serif}
     body{background:var(--bg-white);color:var(--text-black);height:100vh;height:100dvh;display:flex;overflow:hidden}
     ::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-thumb{background:#cbd2d9;border-radius:99px}
     .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.28);z-index:40}.sidebar-overlay.active{display:block}
-    .sidebar{width:304px;max-width:86vw;background:var(--bg-gray-soft);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100%;z-index:50;transition:margin-left .25s ease,transform .25s ease;flex-shrink:0}
-    .sidebar.collapsed{margin-left:-304px}
-    @media(max-width:900px){.sidebar{position:fixed;left:0;top:0;margin-left:0!important;transform:translateX(-100%)}.sidebar.open-mobile{transform:translateX(0)}}
-    .sidebar-header{padding:16px;display:flex;align-items:center;justify-content:space-between}
-    .brand{font-weight:600;font-size:1.08rem;display:flex;align-items:center;gap:8px}
-    .brand-badge{font-size:.68rem;font-weight:700;background:var(--accent-black);color:#fff;padding:2px 7px;border-radius:6px}
-    .close-sidebar-btn{background:transparent;border:none;color:var(--text-gray);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem}
-    .close-sidebar-btn:hover{background:var(--bg-gray-hover);color:var(--text-black)}
-    .sidebar-content{flex:1;overflow-y:auto;padding:8px 14px 18px;display:flex;flex-direction:column;gap:14px}
-    .btn-new-chat{width:100%;padding:11px 16px;border:1px solid var(--border);border-radius:99px;background:#fff;color:var(--text-black);font-weight:600;font-size:.88rem;cursor:pointer;display:flex;align-items:center;gap:10px}
-    .btn-new-chat:hover{background:var(--bg-gray-hover)}
-    .section-box{background:#fff;border:1px solid var(--border);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:10px}
-    .section-title{font-size:.72rem;text-transform:uppercase;letter-spacing:.6px;color:var(--text-muted);font-weight:700;display:flex;align-items:center;justify-content:space-between}
-    .toggle-row{display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer}
-    .toggle-info strong{display:block;font-size:.86rem}.toggle-info small{color:var(--text-muted);font-size:.73rem}
-    .switch{position:relative;width:42px;height:22px;flex-shrink:0}.switch input{opacity:0;width:0;height:0}
-    .slider{position:absolute;inset:0;background:#cfd5dc;border-radius:99px;transition:.2s}
-    .slider:before{content:"";position:absolute;width:16px;height:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}
-    .switch input:checked+.slider{background:var(--accent-black)}.switch input:checked+.slider:before{transform:translateX(20px)}
-    .mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-    .mode-btn{background:var(--bg-gray-card);border:1px solid var(--border);color:var(--text-gray);padding:9px 4px;border-radius:10px;font-size:.75rem;font-weight:600;cursor:pointer}
-    .mode-btn.active{background:var(--accent-black);border-color:var(--accent-black);color:#fff}
+    .sidebar{width:310px;max-width:86vw;background:var(--bg-gray-soft);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100%;z-index:50;transition:margin-left .25s ease,transform .25s ease;flex-shrink:0}
+    .sidebar.collapsed{margin-left:-310px}@media(max-width:900px){.sidebar{position:fixed;left:0;top:0;margin-left:0!important;transform:translateX(-100%)}.sidebar.open-mobile{transform:translateX(0)}}
+    .sidebar-header{padding:16px;display:flex;align-items:center;justify-content:space-between}.brand{font-weight:600;font-size:1.08rem;display:flex;align-items:center;gap:8px}.brand-badge{font-size:.68rem;font-weight:700;background:var(--accent-black);color:#fff;padding:2px 7px;border-radius:6px}
+    .close-sidebar-btn{background:transparent;border:none;color:var(--text-gray);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem}.close-sidebar-btn:hover{background:var(--bg-gray-hover);color:var(--text-black)}
+    .sidebar-content{flex:1;overflow-y:auto;padding:8px 14px 18px;display:flex;flex-direction:column;gap:12px}
+    .btn-new-chat{width:100%;padding:11px 16px;border:1px solid var(--border);border-radius:99px;background:#fff;color:var(--text-black);font-weight:600;font-size:.88rem;cursor:pointer;display:flex;align-items:center;gap:10px}.btn-new-chat:hover{background:var(--bg-gray-hover)}
+    .section-box{background:#fff;border:1px solid var(--border);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:10px}.section-title{font-size:.72rem;text-transform:uppercase;letter-spacing:.6px;color:var(--text-muted);font-weight:700;display:flex;align-items:center;justify-content:space-between}
+    .toggle-row{display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer}.toggle-info strong{display:block;font-size:.86rem}.toggle-info small{color:var(--text-muted);font-size:.73rem}
+    .switch{position:relative;width:42px;height:22px;flex-shrink:0}.switch input{opacity:0;width:0;height:0}.slider{position:absolute;inset:0;background:#cfd5dc;border-radius:99px;transition:.2s}.slider:before{content:"";position:absolute;width:16px;height:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}.switch input:checked+.slider{background:var(--accent-black)}.switch input:checked+.slider:before{transform:translateX(20px)}
+    .mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.mode-btn{background:var(--bg-gray-card);border:1px solid var(--border);color:var(--text-gray);padding:9px 4px;border-radius:10px;font-size:.75rem;font-weight:600;cursor:pointer}.mode-btn.active{background:var(--accent-black);border-color:var(--accent-black);color:#fff}
     label.field-label{font-size:.76rem;color:var(--text-gray);display:block;margin-bottom:4px;font-weight:500}
-    select,textarea.sys-prompt,input.lock-input{width:100%;background:var(--bg-gray-card);border:1px solid var(--border);color:var(--text-black);border-radius:10px;padding:8px 10px;font-size:.82rem;outline:none}
-    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-    .btn-mini{background:var(--bg-gray-card);border:1px solid var(--border);color:var(--text-black);border-radius:8px;padding:6px 10px;font-size:.76rem;font-weight:600;cursor:pointer}
-    .history-list{display:flex;flex-direction:column;gap:4px;max-height:200px;overflow-y:auto}
-    .history-item{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:8px 10px;border-radius:99px;cursor:pointer;font-size:.82rem;color:var(--text-gray)}
-    .history-item.active{background:#e3e8ee;color:var(--text-black);font-weight:600}
-    .history-item span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
-    .del-chat{background:none;border:none;color:var(--text-muted);cursor:pointer;padding:2px 4px}
-    .main{flex:1;display:flex;flex-direction:column;height:100%;min-width:0;background:#fff}
-    .topbar{height:58px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-bottom:1px solid #f1f3f4}
-    .topbar-left{display:flex;align-items:center;gap:12px}
-    .hamburger-btn{width:40px;height:40px;border-radius:50%;background:transparent;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4.5px}
-    .hamburger-btn span{display:block;width:18px;height:2px;background:var(--text-gray);border-radius:2px}
-    .topbar-title{font-size:1.12rem;font-weight:500;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-    .pill-tag{font-size:.72rem;font-weight:600;padding:4px 10px;border-radius:99px;background:var(--bg-gray-soft);color:var(--text-gray);border:1px solid var(--border)}
-    .pill-tag.temporal{background:var(--accent-black);color:#fff;border-color:var(--accent-black)}
-    .pill-tag.secure{background:#e6f4ea;color:#137333;border-color:#ceead6}
-    .chat-scroll{flex:1;overflow-y:auto;padding:16px 16px 24px;display:flex;flex-direction:column;align-items:center}
-    .chat-inner{width:100%;max-width:820px;display:flex;flex-direction:column;gap:22px}
-    .welcome{margin:auto 0;padding:32px 8px 20px;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
-    .welcome h1{font-size:clamp(1.9rem,4.5vw,2.9rem);font-weight:500;letter-spacing:-.8px;background:linear-gradient(90deg,#1f1f1f 0%,#1a73e8 60%,#747775 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-    .welcome p{color:var(--text-gray);font-size:1rem;max-width:620px;line-height:1.5}
-    .quick-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:12px;width:100%;margin-top:14px}
-    .quick-card{background:var(--bg-gray-soft);border:1px solid transparent;border-radius:16px;padding:15px;text-align:left;cursor:pointer}
-    .quick-card:hover{background:var(--bg-gray-hover);border-color:var(--border)}
-    .quick-card strong{display:block;margin-bottom:5px;font-size:.9rem}.quick-card span{color:var(--text-gray);font-size:.8rem;line-height:1.4;display:block}
-    .msg{display:flex;gap:14px;align-items:flex-start}.msg.user{flex-direction:row-reverse}
-    .avatar{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.74rem}
-    .msg.user .avatar{background:#e3e8ee;color:var(--text-black)}.msg.ai .avatar{background:linear-gradient(135deg,#111,#1a73e8);color:#fff;font-size:.95rem}
-    .msg-body{max-width:86%;display:flex;flex-direction:column;gap:6px;min-width:0}.msg.ai .msg-body{width:100%;max-width:100%}
-    .bubble{line-height:1.65;font-size:.96rem;word-wrap:break-word;overflow-x:auto}
-    .msg.user .bubble{background:var(--bg-gray-soft);padding:12px 18px;border-radius:20px;border-top-right-radius:6px}
-    .msg-actions{display:flex;gap:4px;align-items:center;margin-top:2px}
-    .msg-action-btn{width:32px;height:32px;background:transparent;border:1px solid transparent;color:var(--text-muted);font-size:1rem;border-radius:50%;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
-    .msg-action-btn:hover{background:var(--bg-gray-soft);color:var(--text-black);border-color:var(--border)}
-    .msg-action-btn.copied{color:#137333;background:#e6f4ea;border-color:#ceead6}
+    select,textarea.sys-prompt,input.lock-input,input.key-input{width:100%;background:var(--bg-gray-card);border:1px solid var(--border);color:var(--text-black);border-radius:10px;padding:8px 10px;font-size:.82rem;outline:none}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.btn-mini{background:var(--bg-gray-card);border:1px solid var(--border);color:var(--text-black);border-radius:8px;padding:6px 10px;font-size:.76rem;font-weight:600;cursor:pointer}.btn-mini:hover{background:var(--bg-gray-hover)}
+    .history-list{display:flex;flex-direction:column;gap:4px;max-height:180px;overflow-y:auto}.history-item{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:8px 10px;border-radius:99px;cursor:pointer;font-size:.82rem;color:var(--text-gray)}.history-item.active{background:#e3e8ee;color:var(--text-black);font-weight:600}.history-item span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}.del-chat{background:none;border:none;color:var(--text-muted);cursor:pointer;padding:2px 4px}
+    .main{flex:1;display:flex;flex-direction:column;height:100%;min-width:0;background:#fff}.topbar{height:58px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-bottom:1px solid #f1f3f4}.topbar-left{display:flex;align-items:center;gap:12px}
+    .hamburger-btn{width:40px;height:40px;border-radius:50%;background:transparent;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4.5px}.hamburger-btn span{display:block;width:18px;height:2px;background:var(--text-gray);border-radius:2px}
+    .topbar-title{font-size:1.12rem;font-weight:500;display:flex;align-items:center;gap:8px;flex-wrap:wrap}.pill-tag{font-size:.72rem;font-weight:600;padding:4px 10px;border-radius:99px;background:var(--bg-gray-soft);color:var(--text-gray);border:1px solid var(--border)}.pill-tag.temporal{background:var(--accent-black);color:#fff;border-color:var(--accent-black)}.pill-tag.secure{background:#e6f4ea;color:#137333;border-color:#ceead6}.pill-tag.warn{background:#fef7e0;color:#b06000;border-color:#fde293}
+    .chat-scroll{flex:1;overflow-y:auto;padding:16px 16px 24px;display:flex;flex-direction:column;align-items:center}.chat-inner{width:100%;max-width:820px;display:flex;flex-direction:column;gap:22px}
+    .welcome{margin:auto 0;padding:32px 8px 20px;display:flex;flex-direction:column;align-items:flex-start;gap:10px}.welcome h1{font-size:clamp(1.9rem,4.5vw,2.9rem);font-weight:500;letter-spacing:-.8px;background:linear-gradient(90deg,#1f1f1f 0%,#1a73e8 60%,#747775 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.welcome p{color:var(--text-gray);font-size:1rem;max-width:650px;line-height:1.5}
+    .quick-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:12px;width:100%;margin-top:14px}.quick-card{background:var(--bg-gray-soft);border:1px solid transparent;border-radius:16px;padding:15px;text-align:left;cursor:pointer}.quick-card:hover{background:var(--bg-gray-hover);border-color:var(--border)}.quick-card strong{display:block;margin-bottom:5px;font-size:.9rem}.quick-card span{color:var(--text-gray);font-size:.8rem;line-height:1.4;display:block}
+    .msg{display:flex;gap:14px;align-items:flex-start}.msg.user{flex-direction:row-reverse}.avatar{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.74rem}.msg.user .avatar{background:#e3e8ee;color:var(--text-black)}.msg.ai .avatar{background:linear-gradient(135deg,#111,#1a73e8);color:#fff;font-size:.95rem}
+    .msg-body{max-width:86%;display:flex;flex-direction:column;gap:6px;min-width:0}.msg.ai .msg-body{width:100%;max-width:100%}.bubble{line-height:1.65;font-size:.96rem;word-wrap:break-word;overflow-x:auto}.msg.user .bubble{background:var(--bg-gray-soft);padding:12px 18px;border-radius:20px;border-top-right-radius:6px}
+    .msg-actions{display:flex;gap:4px;align-items:center;margin-top:2px}.msg-action-btn{width:32px;height:32px;background:transparent;border:1px solid transparent;color:var(--text-muted);font-size:1rem;border-radius:50%;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}.msg-action-btn:hover{background:var(--bg-gray-soft);color:var(--text-black);border-color:var(--border)}.msg-action-btn.copied{color:#137333;background:#e6f4ea;border-color:#ceead6}
     .bubble h1,.bubble h2,.bubble h3{margin:14px 0 6px;font-weight:600;line-height:1.3}.bubble ul{margin:8px 0 8px 20px}.bubble li{margin:4px 0}
-    .code-block-wrap{background:#18181b;color:#f4f4f5;border-radius:12px;margin:12px 0;overflow:hidden;border:1px solid #27272a}
-    .code-block-header{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:#202024;border-bottom:1px solid #2e2e33;font-size:.74rem;color:#a1a1aa}
-    .code-block-actions{display:flex;gap:6px;align-items:center}.code-block-wrap pre{padding:14px;margin:0;overflow-x:auto}.bubble code{font-family:"Fira Code",Consolas,monospace;font-size:.85rem}
-    .copy-code-btn,.preview-code-btn{background:#27272a;border:1px solid #3f3f46;color:#e4e4e7;width:30px;height:28px;border-radius:7px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0}
-    .copy-code-btn:hover,.preview-code-btn:hover{background:#fff;color:#000;border-color:#fff}.copy-code-btn.copied{background:#137333;border-color:#137333;color:#fff}
-    .media-output{margin-top:8px;display:flex;flex-direction:column;gap:10px}
-    .media-output img,.media-output video{max-width:100%;max-height:520px;border-radius:14px;border:1px solid var(--border);background:#0d0d0f}
-    .media-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-    .download-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:99px;background:var(--accent-black);color:#fff;text-decoration:none;font-size:.8rem;font-weight:600;border:none;cursor:pointer}
-    .secondary-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:99px;background:var(--bg-gray-soft);color:var(--text-black);font-size:.8rem;font-weight:600;border:1px solid var(--border);cursor:pointer}
-    .playlist-bar{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}.scene-pill{padding:5px 10px;border-radius:99px;border:1px solid var(--border);background:var(--bg-gray-soft);font-size:.76rem;cursor:pointer}
-    .scene-pill.active{background:var(--accent-black);color:#fff;border-color:var(--accent-black)}
-    .composer-wrap{padding:6px 16px 16px;display:flex;flex-direction:column;align-items:center;background:#fff;flex-shrink:0}
-    .quick-mode-bar{width:100%;max-width:820px;display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;padding:0 4px}
-    .qmode-pill{padding:6px 12px;border-radius:99px;border:1px solid var(--border);background:#fff;color:var(--text-gray);font-size:.78rem;font-weight:600;cursor:pointer}
-    .qmode-pill.active{background:var(--accent-black);color:#fff;border-color:var(--accent-black)}
-    .composer{width:100%;max-width:820px;background:var(--bg-gray-soft);border:1px solid transparent;border-radius:26px;padding:10px 14px;display:flex;flex-direction:column;gap:8px}
-    .composer:focus-within{background:#fff;border-color:#cfd5dc;box-shadow:0 2px 12px rgba(0,0,0,.06)}
-    .attachment-preview{display:none;align-items:center;gap:10px;padding:6px 10px;background:#fff;border:1px solid var(--border);border-radius:12px;font-size:.8rem;color:var(--text-gray)}
-    .attachment-preview.active{display:flex}.attachment-preview img{width:38px;height:38px;object-fit:cover;border-radius:6px}
-    .composer-row{display:flex;align-items:flex-end;gap:6px}
-    .icon-btn{width:38px;height:38px;border-radius:50%;background:transparent;border:none;color:var(--text-gray);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0}
-    .icon-btn.recording{background:#fce8e6;color:#b3261e;animation:pulse 1s infinite}
-    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
-    textarea#promptInput{flex:1;background:transparent;border:none;color:var(--text-black);font-size:.98rem;resize:none;max-height:160px;min-height:24px;padding:8px 4px;line-height:1.45;outline:none}
-    .send-btn{width:38px;height:38px;border-radius:50%;border:none;background:var(--accent-black);color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-    .send-btn.stop{background:#b3261e;font-size:.82rem}.footer-note{margin-top:8px;font-size:.72rem;color:var(--text-muted);text-align:center}
-    .typing{display:inline-flex;gap:5px;padding:8px 0}.typing span{width:7px;height:7px;border-radius:50%;background:var(--accent-black);animation:bounce 1.2s infinite ease-in-out}
-    .typing span:nth-child(2){animation-delay:.15s;background:var(--gemini-blue)}.typing span:nth-child(3){animation-delay:.3s;background:#9aa0a6}
-    @keyframes bounce{0%,80%,100%{transform:scale(.6);opacity:.35}40%{transform:scale(1);opacity:1}}
-    .preview-modal,.lock-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;align-items:center;justify-content:center;padding:16px}
-    .preview-modal.active,.lock-modal.active{display:flex}
-    .preview-card{width:100%;max-width:960px;height:82vh;background:#fff;border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
-    .preview-card-header{padding:10px 16px;background:var(--bg-gray-soft);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:.9rem}
-    .preview-card iframe{flex:1;width:100%;border:none;background:#fff}
-    .lock-card{width:100%;max-width:360px;background:#fff;border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:12px;box-shadow:0 12px 32px rgba(0,0,0,.22)}
+    .code-block-wrap{background:#18181b;color:#f4f4f5;border-radius:12px;margin:12px 0;overflow:hidden;border:1px solid #27272a}.code-block-header{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:#202024;border-bottom:1px solid #2e2e33;font-size:.74rem;color:#a1a1aa}.code-block-actions{display:flex;gap:6px;align-items:center}.code-block-wrap pre{padding:14px;margin:0;overflow-x:auto}.bubble code{font-family:"Fira Code",Consolas,monospace;font-size:.85rem}
+    .copy-code-btn,.preview-code-btn{background:#27272a;border:1px solid #3f3f46;color:#e4e4e7;width:30px;height:28px;border-radius:7px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0}.copy-code-btn:hover,.preview-code-btn:hover{background:#fff;color:#000;border-color:#fff}.copy-code-btn.copied{background:#137333;border-color:#137333;color:#fff}
+    .media-output{margin-top:8px;display:flex;flex-direction:column;gap:10px}.media-output img,.media-output video{max-width:100%;max-height:520px;border-radius:14px;border:1px solid var(--border);background:#0d0d0f}.media-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .download-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:99px;background:var(--accent-black);color:#fff;text-decoration:none;font-size:.8rem;font-weight:600;border:none;cursor:pointer}.secondary-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:99px;background:var(--bg-gray-soft);color:var(--text-black);font-size:.8rem;font-weight:600;border:1px solid var(--border);cursor:pointer}
+    .playlist-bar{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}.scene-pill{padding:5px 10px;border-radius:99px;border:1px solid var(--border);background:var(--bg-gray-soft);font-size:.76rem;cursor:pointer}.scene-pill.active{background:var(--accent-black);color:#fff;border-color:var(--accent-black)}
+    .composer-wrap{padding:6px 16px 16px;display:flex;flex-direction:column;align-items:center;background:#fff;flex-shrink:0}.quick-mode-bar{width:100%;max-width:820px;display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;padding:0 4px}
+    .qmode-pill{padding:6px 12px;border-radius:99px;border:1px solid var(--border);background:#fff;color:var(--text-gray);font-size:.78rem;font-weight:600;cursor:pointer}.qmode-pill.active{background:var(--accent-black);color:#fff;border-color:var(--accent-black)}
+    .composer{width:100%;max-width:820px;background:var(--bg-gray-soft);border:1px solid transparent;border-radius:26px;padding:10px 14px;display:flex;flex-direction:column;gap:8px}.composer:focus-within{background:#fff;border-color:#cfd5dc;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+    .attachment-preview{display:none;align-items:center;gap:10px;padding:6px 10px;background:#fff;border:1px solid var(--border);border-radius:12px;font-size:.8rem;color:var(--text-gray)}.attachment-preview.active{display:flex}.attachment-preview img{width:38px;height:38px;object-fit:cover;border-radius:6px}
+    .composer-row{display:flex;align-items:flex-end;gap:6px}.icon-btn{width:38px;height:38px;border-radius:50%;background:transparent;border:none;color:var(--text-gray);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0}.icon-btn.recording{background:#fce8e6;color:#b3261e;animation:pulse 1s infinite}@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+    textarea#promptInput{flex:1;background:transparent;border:none;color:var(--text-black);font-size:.98rem;resize:none;max-height:160px;min-height:24px;padding:8px 4px;line-height:1.45;outline:none}.send-btn{width:38px;height:38px;border-radius:50%;border:none;background:var(--accent-black);color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}.send-btn.stop{background:#b3261e;font-size:.82rem}.footer-note{margin-top:8px;font-size:.72rem;color:var(--text-muted);text-align:center}
+    .typing{display:inline-flex;gap:5px;padding:8px 0}.typing span{width:7px;height:7px;border-radius:50%;background:var(--accent-black);animation:bounce 1.2s infinite ease-in-out}.typing span:nth-child(2){animation-delay:.15s;background:var(--gemini-blue)}.typing span:nth-child(3){animation-delay:.3s;background:#9aa0a6}@keyframes bounce{0%,80%,100%{transform:scale(.6);opacity:.35}40%{transform:scale(1);opacity:1}}
+    .preview-modal,.lock-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;align-items:center;justify-content:center;padding:16px}.preview-modal.active,.lock-modal.active{display:flex}
+    .preview-card{width:100%;max-width:960px;height:82vh;background:#fff;border-radius:16px;overflow:hidden;display:flex;flex-direction:column}.preview-card-header{padding:10px 16px;background:var(--bg-gray-soft);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:.9rem}.preview-card iframe{flex:1;width:100%;border:none;background:#fff}
+    .lock-card{width:100%;max-width:360px;background:#fff;border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:12px;box-shadow:0 12px 32px rgba(0,0,0,.22)}.info-tip{font-size:.73rem;color:var(--text-gray);background:var(--bg-gray-soft);border:1px solid var(--border);padding:8px 10px;border-radius:10px;line-height:1.4}
+    details.keys-box summary{cursor:pointer;font-size:.78rem;font-weight:600;color:var(--text-black)}
   </style>
 </head>
 <body>
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <div class="brand">Gemini <span class="brand-badge">PRO v7</span></div>
-      <button class="close-sidebar-btn" id="closeSidebarBtn">✕</button>
-    </div>
+    <div class="sidebar-header"><div class="brand">Gemini <span class="brand-badge">PRO v9</span></div><button class="close-sidebar-btn" id="closeSidebarBtn">✕</button></div>
     <div class="sidebar-content">
       <button class="btn-new-chat" id="newChatBtn"><span>＋</span> Nova conversa</button>
+      <div class="section-box">
+        <div class="section-title">Motores Sem Marca d'Água</div>
+        <button class="btn-mini" id="puterAuthBtn">🔗 Conectar Puter (Vídeo Real IA)</button>
+        <details class="keys-box"><summary>🔑 Chaves Extras Opcionais</summary>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;">
+            <div class="info-tip">AI Horde já funciona grátis sem chave. Chaves opcionais aumentam resolução/velocidade:</div>
+            <div><label class="field-label">AI Horde Key (aihorde.net)</label><input type="password" class="key-input" id="hordeKeyInput" placeholder="0000000000" /></div>
+            <div><label class="field-label">Pollinations Key (enter.pollinations.ai)</label><input type="password" class="key-input" id="polliKeyInput" placeholder="sk_..." /></div>
+            <div><label class="field-label">Google AI Studio Key</label><input type="password" class="key-input" id="geminiKeyInput" placeholder="AIza..." /></div>
+          </div>
+        </details>
+      </div>
       <div class="section-box">
         <div class="section-title">Privacidade & Voz</div>
         <label class="toggle-row"><div class="toggle-info"><strong>Chat Temporal</strong><small>Não fica salvo</small></div><div class="switch"><input type="checkbox" id="temporalToggle" /><span class="slider"></span></div></label>
@@ -125,31 +79,22 @@
       </div>
       <div class="section-box">
         <div class="section-title">Modo</div>
-        <div class="mode-grid">
-          <button class="mode-btn active" data-mode="chat">Chat Pro</button>
-          <button class="mode-btn" data-mode="image">Foto Real</button>
-          <button class="mode-btn" data-mode="video">Vídeo +1m</button>
-        </div>
+        <div class="mode-grid"><button class="mode-btn active" data-mode="chat">Chat Pro</button><button class="mode-btn" data-mode="image">Foto Real</button><button class="mode-btn" data-mode="video">Vídeo IA</button></div>
         <div id="chatOptions" style="display:flex;flex-direction:column;gap:8px;">
-          <div><label class="field-label">Modelo</label><select id="chatModel"><option value="auto-turbo" selected>⚡ Auto Pro (Gemini 4 / 3.6 + Worker)</option><option value="gemini-4-hydrogen">Gemini 4 Hydrogen (Pro)</option><option value="gemini-3.6-flash">Gemini 3.6 Flash (Grátis)</option><option value="gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite</option><option value="gemini-2.5-flash">Gemini 2.5 Flash</option><option value="workers-gemma">Cloudflare Gemma 4</option></select></div>
-          <div><label class="field-label">Velocidade / Raciocínio</label><select id="chatSpeed"><option value="deep" selected>🧠 Profundo (Pro Máximo)</option><option value="balanced">⚖️ Equilibrado</option><option value="instant">⚡ Instantâneo (1s)</option></select></div>
+          <div><label class="field-label">Modelo</label><select id="chatModel"><option value="auto-turbo" selected>⚡ Auto (Worker → Pollinations → AI Horde → Puter)</option><option value="pollinations-text">🌸 Pollinations Texto</option><option value="horde-text">🆓 AI Horde Texto (Grátis)</option><option value="puter-chat">🚀 Puter AI</option><option value="gemini-4-hydrogen">Gemini 4 Hydrogen (Worker)</option><option value="gemini-3.6-flash">Gemini 3.6 Flash (Worker)</option><option value="gemini-2.5-flash">Gemini 2.5 Flash (Worker)</option></select></div>
+          <div><label class="field-label">Velocidade</label><select id="chatSpeed"><option value="deep" selected>🧠 Profundo</option><option value="balanced">⚖️ Equilibrado</option><option value="instant">⚡ Instantâneo</option></select></div>
         </div>
         <div id="imageOptions" style="display:none;flex-direction:column;gap:8px;">
-          <div><label class="field-label">Motor de Imagem</label><select id="imageModel"><option value="auto-smart" selected>✨ Auto (Nano Banana 2.1 → FLUX.2)</option><option value="workers-flux">📸 Cloudflare FLUX.2 Pro (Grátis)</option><option value="gemini-nano-banana-2.1">👑 Google Nano Banana 2.1 (Billing)</option></select></div>
-          <div><label class="field-label">Estilo Visual</label><select id="imageStyle"><option value="photoreal" selected>📸 Foto Jornalística Real</option><option value="cinema">🎬 Cinema 35mm</option><option value="portrait">👤 Retrato Editorial</option><option value="concept">🎨 Arte Detalhada</option></select></div>
-          <div class="grid-2">
-            <div><label class="field-label">Qualidade</label><select id="imageSize"><option value="1K">1K</option><option value="2K">2K QHD</option><option value="4K" selected>4K UHD</option></select></div>
-            <div><label class="field-label">Formato</label><select id="imageRatio"><option value="16:9" selected>16:9</option><option value="9:16">9:16</option><option value="1:1">1:1</option><option value="4:3">4:3</option></select></div>
-          </div>
+          <div><label class="field-label">Motor (0% Marca d'Água)</label><select id="imageModel"><option value="auto-smart" selected>✨ Auto (Worker → Chave Polli → AI Horde Grátis)</option><option value="ai-horde">🆓 AI Horde Realista (Grátis)</option><option value="workers-flux">☁️ Cloudflare FLUX.2</option><option value="pollinations-api">🌸 Pollinations API (c/ Chave)</option><option value="puter-nano-banana">🚀 Puter Nano Banana 2.1</option><option value="puter-flux">🚀 Puter FLUX.2 Pro</option></select></div>
+          <div><label class="field-label">Estilo</label><select id="imageStyle"><option value="photoreal" selected>📸 Foto Jornalística Real</option><option value="cinema">🎬 Cinema 35mm</option><option value="portrait">👤 Retrato Editorial</option><option value="concept">🎨 Arte Detalhada</option></select></div>
+          <div class="grid-2"><div><label class="field-label">Qualidade</label><select id="imageSize"><option value="1K">1K</option><option value="2K">2K QHD</option><option value="4K" selected>4K UHD</option></select></div><div><label class="field-label">Formato</label><select id="imageRatio"><option value="16:9" selected>16:9</option><option value="9:16">9:16</option><option value="1:1">1:1</option><option value="4:3">4:3</option></select></div></div>
+          <label class="toggle-row"><div class="toggle-info"><strong>Auto-Upscale Nitidez HD</strong><small>Corrige pixels</small></div><div class="switch"><input type="checkbox" id="autoUpscaleToggle" checked /><span class="slider"></span></div></label>
         </div>
         <div id="videoOptions" style="display:none;flex-direction:column;gap:8px;">
-          <div><label class="field-label">Duração</label><select id="videoTotalDuration"><option value="30">30 segundos</option><option value="60" selected>1 minuto (60s)</option><option value="90">1 min 30s (90s)</option><option value="120">2 minutos (120s)</option><option value="180">3 minutos (180s)</option></select></div>
-          <div><label class="field-label">Motor de Vídeo</label><select id="videoEngine"><option value="auto" selected>⚡ Auto (Omni → Cinema MP4 FLUX.2)</option><option value="flux-cinema">🎬 Cinema MP4 FLUX.2 +1m (Grátis)</option><option value="gemini-omni-1.2-flash">👑 Somente Omni (Billing)</option></select></div>
+          <div><label class="field-label">Motor de Vídeo (0% Marca d'Água)</label><select id="videoEngine"><option value="puter-vidu-q3" selected>🎬 Vidu Q3 Real + Áudio (Puter)</option><option value="puter-veo-3.1">👑 Google Veo 3.1 Real + Áudio (Puter)</option><option value="puter-wan-2.7">⚡ Wan 2.7 Realista (Puter)</option><option value="puter-kling-2.1">🎥 Kling 2.1 Master (Puter)</option><option value="puter-pixverse-v6">🎞️ PixVerse v6 (Puter)</option><option value="pollinations-video">🌸 Pollinations Seedance (c/ Chave)</option><option value="gemini-omni-1.2-flash">☁️ Gemini Omni (Worker)</option><option value="slideshow-fallback">🖼️ Slideshow AI Horde (Grátis)</option></select></div>
+          <div><label class="field-label">Duração</label><select id="videoTotalDuration"><option value="8" selected>1 Cena Real (~8s–16s)</option><option value="24">Sequência (~24s)</option><option value="60">Filme Encadeado (~60s)</option></select></div>
           <div><label class="field-label">Movimento</label><select id="videoMotion"><option value="normal">🎬 Suave</option><option value="high" selected>⚡ Dinâmico</option><option value="extreme">🔥 Ação Extrema</option></select></div>
-          <div class="grid-2">
-            <div><label class="field-label">Resolução</label><select id="videoRes"><option value="720p">720p HD</option><option value="1080p" selected>1080p Full HD</option></select></div>
-            <div><label class="field-label">Formato</label><select id="videoRatio"><option value="16:9" selected>16:9</option><option value="9:16">9:16</option></select></div>
-          </div>
+          <div class="grid-2"><div><label class="field-label">Resolução</label><select id="videoRes"><option value="720p">720p HD</option><option value="1080p" selected>1080p Full HD</option></select></div><div><label class="field-label">Formato</label><select id="videoRatio"><option value="16:9" selected>16:9</option><option value="9:16">9:16</option></select></div></div>
           <label class="toggle-row"><div class="toggle-info"><strong>Trilha Ambiente</strong><small>Áudio no MP4</small></div><div class="switch"><input type="checkbox" id="videoAudioToggle" checked /><span class="slider"></span></div></label>
         </div>
       </div>
@@ -157,875 +102,212 @@
       <div class="section-box"><div class="section-title">Recentes<button class="btn-mini" id="clearAllHistoryBtn" style="padding:2px 8px;font-size:.7rem;">Limpar</button></div><div class="history-list" id="historyList"></div></div>
     </div>
   </aside>
-
   <main class="main">
-    <header class="topbar">
-      <div class="topbar-left">
-        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
-        <div class="topbar-title">Gemini <span class="pill-tag" id="modeBadge">Pro ⚡</span> <span class="pill-tag secure" id="securityBadge">🔒 Gemini + FLUX.2 v7</span> <span class="pill-tag temporal" id="temporalBadge" style="display:none;">Temporal</span></div>
-      </div>
-    </header>
-    <div class="chat-scroll" id="chatScroll">
-      <div class="chat-inner" id="chatContainer">
-        <div class="welcome" id="welcomeScreen">
-          <h1>Olá! Como posso ajudar hoje?</h1>
-          <p>Modo Pro v7 ativo: chat inteligente, fotografias naturais sem cara de 3D e vídeos MP4 multicenas de <b>1 a 3 minutos</b>.</p>
-          <div class="quick-cards">
-            <div class="quick-card" data-mode-jump="image" data-prompt="Documentário de vida selvagem ao pôr do sol na savana africana, fotografia real"><strong>Foto Realista 📸</strong><span>Sem efeito 3D e com proteção anti-erro.</span></div>
-            <div class="quick-card" data-mode-jump="video" data-prompt="Uma jornada épica por montanhas nevadas até uma cidade iluminada à noite"><strong>Vídeo MP4 +1 Minuto 🎬</strong><span>Roteiro multicenas exportado em MP4 HD.</span></div>
-            <div class="quick-card" data-mode-jump="chat" data-prompt="Crie um site completo em HTML moderno e responsivo."><strong>Programação & Chat 💻</strong><span>Códigos com visualização HTML ao vivo.</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <header class="topbar"><div class="topbar-left"><button class="hamburger-btn" id="hamburgerBtn"><span></span><span></span><span></span></button><div class="topbar-title">Gemini <span class="pill-tag" id="modeBadge">Pro ⚡</span> <span class="pill-tag secure" id="securityBadge">🔒 Zero Marca d'Água v9</span> <span class="pill-tag temporal" id="temporalBadge" style="display:none;">Temporal</span></div></div></header>
+    <div class="chat-scroll" id="chatScroll"><div class="chat-inner" id="chatContainer"><div class="welcome" id="welcomeScreen"><h1>Olá! Como posso ajudar hoje?</h1><p>Modo Pro v9: <b>Zero marca d'água</b>, filtro anti-mão-torta e anti-erros de esporte, auto-upscale HD, motor gratuito <b>AI Horde</b> + vídeo real via <b>Puter AI</b>.</p><div class="quick-cards"><div class="quick-card" data-mode-jump="image" data-prompt="Neymar Jr vestindo a camisa oficial da seleção da Argentina com o escudo da AFA e três estrelas no peito, comemorando em campo de futebol iluminado, fotografia jornalística real"><strong>Foto Realista 📸</strong><span>AI Horde gratuito + Auto-Upscale.</span></div><div class="quick-card" data-mode-jump="video" data-prompt="Real broadcast footage of a soccer match in a packed stadium at night, Neymar Jr dribbling past defenders and shooting a soccer ball toward the goal on green grass"><strong>Vídeo Real Futebol ⚽</strong><span>Movimento real (anexe foto no ＋).</span></div><div class="quick-card" data-mode-jump="chat" data-prompt="Crie um site completo em HTML moderno e responsivo."><strong>Programação 💻</strong><span>Códigos com visualização ao vivo.</span></div></div></div></div></div>
     <div class="composer-wrap">
-      <div class="quick-mode-bar">
-        <button class="qmode-pill active" data-mode="chat">💬 Chat Pro</button>
-        <button class="qmode-pill" data-mode="image">📸 Foto Real</button>
-        <button class="qmode-pill" data-mode="video">🎬 Vídeo +1m</button>
-      </div>
+      <div class="quick-mode-bar"><button class="qmode-pill active" data-mode="chat">💬 Chat Pro</button><button class="qmode-pill" data-mode="image">📸 Foto Real</button><button class="qmode-pill" data-mode="video">🎬 Vídeo IA Real</button></div>
       <div class="composer">
-        <div class="attachment-preview" id="attachmentPreview"><img id="attachmentThumb" src="" alt="Anexo" /><span id="attachmentName">imagem.png</span><button class="btn-mini" id="removeAttachmentBtn" style="margin-left:auto;">Remover</button></div>
-        <div class="composer-row">
-          <input type="file" id="fileInput" accept="image/*" hidden />
-          <button class="icon-btn" id="attachBtn" title="Anexar imagem">＋</button>
-          <textarea id="promptInput" rows="1" placeholder="Peça ao Gemini..."></textarea>
-          <button class="icon-btn" id="magicPromptBtn" title="Aprimorar prompt">✨</button>
-          <button class="icon-btn" id="micBtn" title="Voz">🎙️</button>
-          <button class="send-btn" id="sendBtn" title="Enviar">↑</button>
-        </div>
+        <div class="attachment-preview" id="attachmentPreview"><img id="attachmentThumb" src="" alt="Anexo" /><span id="attachmentName">img.png</span><button class="btn-mini" id="removeAttachmentBtn" style="margin-left:auto;">Remover</button></div>
+        <div class="composer-row"><input type="file" id="fileInput" accept="image/*" hidden /><button class="icon-btn" id="attachBtn" title="Anexar foto">＋</button><textarea id="promptInput" rows="1" placeholder="Peça ao Gemini..."></textarea><button class="icon-btn" id="magicPromptBtn" title="Aprimorar">✨</button><button class="icon-btn" id="micBtn" title="Voz">🎙️</button><button class="send-btn" id="sendBtn" title="Enviar">↑</button></div>
       </div>
-      <div class="footer-note">O Gemini pode cometer erros. Verifique informações importantes.</div>
+      <div class="footer-note">Dica: anexe uma foto do Neymar no botão ＋ para maior fidelidade no rosto.</div>
     </div>
   </main>
-
   <div class="preview-modal" id="previewModal"><div class="preview-card"><div class="preview-card-header"><span>Visualização HTML</span><button class="btn-mini" id="closePreviewBtn">✕</button></div><iframe id="previewFrame" sandbox="allow-scripts allow-forms allow-modals"></iframe></div></div>
-  <div class="lock-modal" id="lockModal"><div class="lock-card"><strong style="font-size:1.05rem;">🔒 Acesso Protegido</strong><small style="color:var(--text-gray);">Digite a senha do Worker (<code>SITE_PASSWORD</code>).</small><input type="password" class="lock-input" id="sitePasswordInput" placeholder="Senha..." /><button class="download-btn" id="unlockSiteBtn" style="justify-content:center;">Entrar no App</button></div></div>
-
+  <div class="lock-modal" id="lockModal"><div class="lock-card"><strong style="font-size:1.05rem;">🔒 Acesso Protegido</strong><small style="color:var(--text-gray);">Digite a senha (<code>SITE_PASSWORD</code>).</small><input type="password" class="lock-input" id="sitePasswordInput" placeholder="Senha..." /><button class="download-btn" id="unlockSiteBtn" style="justify-content:center;">Entrar</button></div></div>
   <script>
-    const WORKER_URL = "https://solitary-hill-0b64.luisfelipesoares000.workers.dev";
-    const ICON_COPY_SVG = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
-    const ICON_CHECK_SVG = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`;
-
-    const sGet = k => { try { return sessionStorage.getItem(k) || ""; } catch { return ""; } };
-    const sSet = (k, v) => { try { sessionStorage.setItem(k, v); } catch {} };
-    const sRem = k => { try { sessionStorage.removeItem(k); } catch {} };
+    const WORKER_URL = "https://solitary-hill-0b64.luisfelipesoares000.workers.dev", HORDE_API = "https://aihorde.net/api/v2", HORDE_AGENT = "GeminiProStudio:9.0:github.com";
+    const NEG_PROMPT = "deformed hands, extra fingers, missing fingers, mutated hands, six fingers, distorted face, ugly, wrong logo, gibberish crest, basketball, basketball hoop, wooden court, american football helmet, watermark, logo overlay, signature, text, blurry, lowres, pixelated, jpeg artifacts, plastic skin, 3d render, cgi, cartoon";
+    const ICON_COPY = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`, ICON_OK = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`;
+    const sGet = k => { try { return sessionStorage.getItem(k) || ""; } catch { return ""; } }, sSet = (k, v) => { try { sessionStorage.setItem(k, v); } catch {} }, sRem = k => { try { sessionStorage.removeItem(k); } catch {} };
+    const lGet = k => { try { return localStorage.getItem(k) || ""; } catch { return ""; } }, lSet = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
     const loadSafeChats = () => { try { const p = JSON.parse(localStorage.getItem("gp_chats") || "[]"); return Array.isArray(p) ? p : []; } catch { return []; } };
-
-    const state = {
-      sitePassword: sGet("gp_site_pass"), mode: "chat", temporal: false, autoVoice: false,
-      currentChatId: null, chats: loadSafeChats(), temporalMessages: [], attachedImage: null,
-      isLoading: false, abortController: null, activeRequestToken: 0, isRecording: false,
-      googleImageBlocked: false, googleVideoBlocked: false, confirmClearTimer: null
-    };
-
-    const $ = id => document.getElementById(id);
-    const el = {
-      sidebar:$("sidebar"), overlay:$("sidebarOverlay"), hamburgerBtn:$("hamburgerBtn"), closeSidebarBtn:$("closeSidebarBtn"),
-      newChatBtn:$("newChatBtn"), temporalToggle:$("temporalToggle"), autoVoiceToggle:$("autoVoiceToggle"), burnSessionBtn:$("burnSessionBtn"),
-      modeBtns:document.querySelectorAll(".mode-btn"), qmodePills:document.querySelectorAll(".qmode-pill"),
-      chatOptions:$("chatOptions"), imageOptions:$("imageOptions"), videoOptions:$("videoOptions"),
-      chatModel:$("chatModel"), chatSpeed:$("chatSpeed"), imageModel:$("imageModel"), imageStyle:$("imageStyle"),
-      imageSize:$("imageSize"), imageRatio:$("imageRatio"), videoEngine:$("videoEngine"), videoTotalDuration:$("videoTotalDuration"),
-      videoMotion:$("videoMotion"), videoRes:$("videoRes"), videoRatio:$("videoRatio"), videoAudioToggle:$("videoAudioToggle"),
-      systemPrompt:$("systemPrompt"), historyList:$("historyList"), clearAllHistoryBtn:$("clearAllHistoryBtn"),
-      modeBadge:$("modeBadge"), securityBadge:$("securityBadge"), temporalBadge:$("temporalBadge"),
-      chatScroll:$("chatScroll"), chatContainer:$("chatContainer"), welcomeScreen:$("welcomeScreen"),
-      promptInput:$("promptInput"), magicPromptBtn:$("magicPromptBtn"), sendBtn:$("sendBtn"), micBtn:$("micBtn"),
-      attachBtn:$("attachBtn"), fileInput:$("fileInput"), attachmentPreview:$("attachmentPreview"),
-      attachmentThumb:$("attachmentThumb"), attachmentName:$("attachmentName"), removeAttachmentBtn:$("removeAttachmentBtn"),
-      previewModal:$("previewModal"), previewFrame:$("previewFrame"), closePreviewBtn:$("closePreviewBtn"),
-      lockModal:$("lockModal"), sitePasswordInput:$("sitePasswordInput"), unlockSiteBtn:$("unlockSiteBtn")
-    };
-
-    const workerHeaders = (extra = {}) => {
-      const h = { "Content-Type": "application/json", ...extra };
-      if (state.sitePassword) h["x-site-password"] = state.sitePassword;
-      return h;
-    };
-
-    async function checkWorkerHealth() {
-      try {
-        const res = await fetch(`${WORKER_URL}/health`);
-        if (!res.ok) throw 0;
-        const d = await res.json();
-        el.securityBadge.textContent = d.hasGemini && d.hasWorkersAI ? "🔒 Gemini + FLUX.2 v7" : d.hasWorkersAI ? "🔒 Worker AI v7" : d.hasGemini ? "🔒 Gemini v7" : "⚠️ Worker";
-        if (d.locked && !state.sitePassword) el.lockModal.classList.add("active");
-      } catch { el.securityBadge.textContent = "⚠️ Worker Offline"; }
-    }
-
-    el.unlockSiteBtn.onclick = () => { state.sitePassword = el.sitePasswordInput.value; sSet("gp_site_pass", state.sitePassword); el.lockModal.classList.remove("active"); };
-    el.sitePasswordInput.onkeydown = e => { if (e.key === "Enter") el.unlockSiteBtn.click(); };
-
-    function init() { checkWorkerHealth(); renderHistory(); if (!state.temporal && state.chats.length > 0) loadChat(state.chats[0].id); setupVoiceInput(); }
-
-    function cancelOngoingRequest() {
-      state.activeRequestToken++;
-      if (state.abortController) { try { state.abortController.abort(new DOMException("Cancelado", "AbortError")); } catch {} state.abortController = null; }
-      removeTyping(); setLoading(false);
-    }
-
-    function toggleSidebar(forceClose = false) {
-      if (window.innerWidth <= 900) {
-        const open = forceClose ? false : !el.sidebar.classList.contains("open-mobile");
-        el.sidebar.classList.toggle("open-mobile", open); el.overlay.classList.toggle("active", open);
-      } else {
-        if (forceClose) el.sidebar.classList.add("collapsed"); else el.sidebar.classList.toggle("collapsed");
-      }
-    }
-    el.hamburgerBtn.onclick = () => toggleSidebar(false);
-    el.closeSidebarBtn.onclick = () => toggleSidebar(true);
-    el.overlay.onclick = () => toggleSidebar(true);
-    el.closePreviewBtn.onclick = () => { el.previewModal.classList.remove("active"); el.previewFrame.srcdoc = ""; };
-    el.previewModal.onclick = e => { if (e.target === el.previewModal) { el.previewModal.classList.remove("active"); el.previewFrame.srcdoc = ""; } };
-
-    function setMode(mode) {
-      state.mode = mode;
-      el.modeBtns.forEach(b => b.classList.toggle("active", b.dataset.mode === mode));
-      el.qmodePills.forEach(b => b.classList.toggle("active", b.dataset.mode === mode));
-      el.chatOptions.style.display = mode === "chat" ? "flex" : "none";
-      el.imageOptions.style.display = mode === "image" ? "flex" : "none";
-      el.videoOptions.style.display = mode === "video" ? "flex" : "none";
-      el.modeBadge.textContent = { chat: "Pro ⚡", image: "Foto Real", video: "Vídeo +1m" }[mode];
-      el.promptInput.placeholder = mode === "chat" ? "Peça ao Gemini..." : mode === "image" ? "Descreva a foto realista..." : "Descreva o vídeo de 1 minuto ou mais...";
-    }
-    el.modeBtns.forEach(b => b.onclick = () => setMode(b.dataset.mode));
-    el.qmodePills.forEach(b => b.onclick = () => setMode(b.dataset.mode));
-
-    el.magicPromptBtn.onclick = async () => {
-      const txt = el.promptInput.value.trim(); if (!txt || state.isLoading) return;
-      el.magicPromptBtn.textContent = "⏳";
-      try { const imp = await craftMasterPrompt(txt, state.mode === "video" ? "video" : "image"); if (imp) { el.promptInput.value = imp; autoResizeTextarea(); } }
-      finally { el.magicPromptBtn.textContent = "✨"; }
-    };
-
+    const state = { sitePassword: sGet("gp_site_pass"), mode: "chat", temporal: false, autoVoice: false, currentChatId: null, chats: loadSafeChats(), temporalMessages: [], attachedImage: null, isLoading: false, abortController: null, activeRequestToken: 0, isRecording: false, workerNeuronsExhausted: false, confirmClearTimer: null };
+    const $ = id => document.getElementById(id), el = { sidebar:$("sidebar"), overlay:$("sidebarOverlay"), hamburgerBtn:$("hamburgerBtn"), closeSidebarBtn:$("closeSidebarBtn"), newChatBtn:$("newChatBtn"), puterAuthBtn:$("puterAuthBtn"), hordeKeyInput:$("hordeKeyInput"), polliKeyInput:$("polliKeyInput"), geminiKeyInput:$("geminiKeyInput"), temporalToggle:$("temporalToggle"), autoVoiceToggle:$("autoVoiceToggle"), autoUpscaleToggle:$("autoUpscaleToggle"), burnSessionBtn:$("burnSessionBtn"), modeBtns:document.querySelectorAll(".mode-btn"), qmodePills:document.querySelectorAll(".qmode-pill"), chatOptions:$("chatOptions"), imageOptions:$("imageOptions"), videoOptions:$("videoOptions"), chatModel:$("chatModel"), chatSpeed:$("chatSpeed"), imageModel:$("imageModel"), imageStyle:$("imageStyle"), imageSize:$("imageSize"), imageRatio:$("imageRatio"), videoEngine:$("videoEngine"), videoTotalDuration:$("videoTotalDuration"), videoMotion:$("videoMotion"), videoRes:$("videoRes"), videoRatio:$("videoRatio"), videoAudioToggle:$("videoAudioToggle"), systemPrompt:$("systemPrompt"), historyList:$("historyList"), clearAllHistoryBtn:$("clearAllHistoryBtn"), modeBadge:$("modeBadge"), securityBadge:$("securityBadge"), temporalBadge:$("temporalBadge"), chatScroll:$("chatScroll"), chatContainer:$("chatContainer"), welcomeScreen:$("welcomeScreen"), promptInput:$("promptInput"), magicPromptBtn:$("magicPromptBtn"), sendBtn:$("sendBtn"), micBtn:$("micBtn"), attachBtn:$("attachBtn"), fileInput:$("fileInput"), attachmentPreview:$("attachmentPreview"), attachmentThumb:$("attachmentThumb"), attachmentName:$("attachmentName"), removeAttachmentBtn:$("removeAttachmentBtn"), previewModal:$("previewModal"), previewFrame:$("previewFrame"), closePreviewBtn:$("closePreviewBtn"), lockModal:$("lockModal"), sitePasswordInput:$("sitePasswordInput"), unlockSiteBtn:$("unlockSiteBtn") };
+    el.hordeKeyInput.value = lGet("gp_horde_key"); el.polliKeyInput.value = lGet("gp_polli_key"); el.geminiKeyInput.value = lGet("gp_gemini_key");
+    el.hordeKeyInput.oninput = () => lSet("gp_horde_key", el.hordeKeyInput.value.trim()); el.polliKeyInput.oninput = () => lSet("gp_polli_key", el.polliKeyInput.value.trim()); el.geminiKeyInput.oninput = () => lSet("gp_gemini_key", el.geminiKeyInput.value.trim());
+    const getHordeKey = () => el.hordeKeyInput.value.trim() || "0000000000", getPolliKey = () => el.polliKeyInput.value.trim(), getGeminiKey = () => el.geminiKeyInput.value.trim();
+    const workerHeaders = (extra = {}) => { const h = { "Content-Type": "application/json", ...extra }; if (state.sitePassword) h["x-site-password"] = state.sitePassword; return h; };
+    function updatePuterButton() { el.puterAuthBtn.textContent = (typeof puter === "undefined" || !puter.auth) ? "⚠️ Puter Offline" : puter.auth.isSignedIn() ? "✅ Puter Conectado" : "🔗 Conectar Puter (Vídeo Real IA)"; }
+    el.puterAuthBtn.onclick = async () => { if (typeof puter !== "undefined" && puter.auth) try { await puter.auth.signIn(); updatePuterButton(); } catch { alert("Login cancelado."); } };
+    async function checkWorkerHealth() { try { const r = await fetch(`${WORKER_URL}/health`); if (!r.ok) throw 0; const d = await r.json(); el.securityBadge.textContent = "🔒 Zero Marca d'Água v9"; if (d.locked && !state.sitePassword) el.lockModal.classList.add("active"); } catch { el.securityBadge.textContent = "🆓 AI Horde + Puter v9"; el.securityBadge.className = "pill-tag warn"; } }
+    el.unlockSiteBtn.onclick = () => { state.sitePassword = el.sitePasswordInput.value; sSet("gp_site_pass", state.sitePassword); el.lockModal.classList.remove("active"); }; el.sitePasswordInput.onkeydown = e => { if (e.key === "Enter") el.unlockSiteBtn.click(); };
+    function init() { checkWorkerHealth(); updatePuterButton(); renderHistory(); if (!state.temporal && state.chats.length > 0) loadChat(state.chats[0].id); setupVoiceInput(); }
+    function cancelOngoingRequest() { state.activeRequestToken++; if (state.abortController) { try { state.abortController.abort(new DOMException("Cancelado", "AbortError")); } catch {} state.abortController = null; } removeTyping(); setLoading(false); }
+    function toggleSidebar(fc = false) { if (window.innerWidth <= 900) { const o = fc ? false : !el.sidebar.classList.contains("open-mobile"); el.sidebar.classList.toggle("open-mobile", o); el.overlay.classList.toggle("active", o); } else { if (fc) el.sidebar.classList.add("collapsed"); else el.sidebar.classList.toggle("collapsed"); } }
+    el.hamburgerBtn.onclick = () => toggleSidebar(false); el.closeSidebarBtn.onclick = () => toggleSidebar(true); el.overlay.onclick = () => toggleSidebar(true);
+    el.closePreviewBtn.onclick = () => { el.previewModal.classList.remove("active"); el.previewFrame.srcdoc = ""; }; el.previewModal.onclick = e => { if (e.target === el.previewModal) el.closePreviewBtn.click(); };
+    function setMode(m) { state.mode = m; el.modeBtns.forEach(b => b.classList.toggle("active", b.dataset.mode === m)); el.qmodePills.forEach(b => b.classList.toggle("active", b.dataset.mode === m)); el.chatOptions.style.display = m === "chat" ? "flex" : "none"; el.imageOptions.style.display = m === "image" ? "flex" : "none"; el.videoOptions.style.display = m === "video" ? "flex" : "none"; el.modeBadge.textContent = { chat: "Pro ⚡", image: "Foto Real", video: "Vídeo IA Real" }[m]; el.promptInput.placeholder = m === "chat" ? "Peça ao Gemini..." : m === "image" ? "Descreva a foto realista..." : "Descreva o vídeo realista..."; }
+    el.modeBtns.forEach(b => b.onclick = () => setMode(b.dataset.mode)); el.qmodePills.forEach(b => b.onclick = () => setMode(b.dataset.mode));
+    el.magicPromptBtn.onclick = async () => { const t = el.promptInput.value.trim(); if (!t || state.isLoading) return; el.magicPromptBtn.textContent = "⏳"; try { const i = await craftMasterPrompt(t, state.mode === "video" ? "video" : "image"); if (i) { el.promptInput.value = i; autoResizeTextarea(); } } finally { el.magicPromptBtn.textContent = "✨"; } };
     el.autoVoiceToggle.onchange = e => { state.autoVoice = e.target.checked; if (!state.autoVoice && window.speechSynthesis) window.speechSynthesis.cancel(); };
-    el.temporalToggle.onchange = e => {
-      cancelOngoingRequest(); if (window.speechSynthesis) window.speechSynthesis.cancel();
-      state.temporal = e.target.checked; el.temporalBadge.style.display = state.temporal ? "inline-block" : "none";
-      el.burnSessionBtn.style.display = state.temporal ? "block" : "none";
-      if (state.temporal) { state.temporalMessages = []; renderMessages([]); } else if (state.chats.length > 0) loadChat(state.chats[0].id); else renderMessages([]);
-    };
+    el.temporalToggle.onchange = e => { cancelOngoingRequest(); if (window.speechSynthesis) window.speechSynthesis.cancel(); state.temporal = e.target.checked; el.temporalBadge.style.display = state.temporal ? "inline-block" : "none"; el.burnSessionBtn.style.display = state.temporal ? "block" : "none"; if (state.temporal) { state.temporalMessages = []; renderMessages([]); } else if (state.chats.length > 0) loadChat(state.chats[0].id); else renderMessages([]); };
     el.burnSessionBtn.onclick = () => { cancelOngoingRequest(); state.temporalMessages = []; renderMessages([]); };
-
-    el.newChatBtn.onclick = () => {
-      cancelOngoingRequest(); if (window.speechSynthesis) window.speechSynthesis.cancel();
-      if (state.temporal) { state.temporalMessages = []; renderMessages([]); }
-      else { const c = { id: Date.now().toString(), title: "Nova conversa", messages: [] }; state.chats.unshift(c); state.currentChatId = c.id; saveChats(); renderHistory(); renderMessages([]); }
-      if (window.innerWidth <= 900) toggleSidebar(true);
-    };
-
-    el.clearAllHistoryBtn.onclick = () => {
-      if (el.clearAllHistoryBtn.dataset.confirm !== "1") {
-        el.clearAllHistoryBtn.dataset.confirm = "1"; el.clearAllHistoryBtn.textContent = "Confirmar?";
-        clearTimeout(state.confirmClearTimer); state.confirmClearTimer = setTimeout(() => { el.clearAllHistoryBtn.dataset.confirm = ""; el.clearAllHistoryBtn.textContent = "Limpar"; }, 3000);
-        return;
-      }
-      clearTimeout(state.confirmClearTimer); el.clearAllHistoryBtn.dataset.confirm = ""; el.clearAllHistoryBtn.textContent = "Limpar";
-      cancelOngoingRequest(); state.chats = []; state.currentChatId = null; saveChats(); renderHistory(); if (!state.temporal) renderMessages([]);
-    };
-
-    function saveChats() {
-      try {
-        localStorage.setItem("gp_chats", JSON.stringify(state.chats.slice(0, 30).map(c => ({
-          id: c.id, title: c.title,
-          messages: c.messages.map(m => ({ role: m.role, text: m.text || ((m.imageUrl || m.videoSegments) ? "[Mídia]" : ""), isMediaSummary: Boolean(m.isMediaSummary || m.imageUrl || m.videoSegments) }))
-        }))));
-      } catch {}
-    }
-
-    function getCurrentMessages() {
-      if (state.temporal) return state.temporalMessages;
-      let c = state.chats.find(x => x.id === state.currentChatId);
-      if (!c) { c = { id: Date.now().toString(), title: "Nova conversa", messages: [] }; state.chats.unshift(c); state.currentChatId = c.id; saveChats(); renderHistory(); }
-      return c.messages;
-    }
-
+    el.newChatBtn.onclick = () => { cancelOngoingRequest(); if (window.speechSynthesis) window.speechSynthesis.cancel(); if (state.temporal) { state.temporalMessages = []; renderMessages([]); } else { const c = { id: Date.now().toString(), title: "Nova conversa", messages: [] }; state.chats.unshift(c); state.currentChatId = c.id; saveChats(); renderHistory(); renderMessages([]); } if (window.innerWidth <= 900) toggleSidebar(true); };
+    el.clearAllHistoryBtn.onclick = () => { if (el.clearAllHistoryBtn.dataset.confirm !== "1") { el.clearAllHistoryBtn.dataset.confirm = "1"; el.clearAllHistoryBtn.textContent = "Confirmar?"; clearTimeout(state.confirmClearTimer); state.confirmClearTimer = setTimeout(() => { el.clearAllHistoryBtn.dataset.confirm = ""; el.clearAllHistoryBtn.textContent = "Limpar"; }, 3000); return; } clearTimeout(state.confirmClearTimer); el.clearAllHistoryBtn.dataset.confirm = ""; el.clearAllHistoryBtn.textContent = "Limpar"; cancelOngoingRequest(); state.chats = []; state.currentChatId = null; saveChats(); renderHistory(); if (!state.temporal) renderMessages([]); };
+    function saveChats() { try { localStorage.setItem("gp_chats", JSON.stringify(state.chats.slice(0, 30).map(c => ({ id: c.id, title: c.title, messages: c.messages.map(m => ({ role: m.role, text: m.text || ((m.imageUrl || m.videoSegments) ? "[Mídia]" : ""), isMediaSummary: Boolean(m.isMediaSummary || m.imageUrl || m.videoSegments) })) })))); } catch {} }
+    function getCurrentMessages() { if (state.temporal) return state.temporalMessages; let c = state.chats.find(x => x.id === state.currentChatId); if (!c) { c = { id: Date.now().toString(), title: "Nova conversa", messages: [] }; state.chats.unshift(c); state.currentChatId = c.id; saveChats(); renderHistory(); } return c.messages; }
     function loadChat(id) { cancelOngoingRequest(); state.currentChatId = id; const c = state.chats.find(x => x.id === id); renderHistory(); renderMessages(c ? c.messages : []); }
-    function deleteChat(id, e) {
-      e.stopPropagation(); if (state.currentChatId === id) cancelOngoingRequest();
-      state.chats = state.chats.filter(x => x.id !== id); if (state.currentChatId === id) state.currentChatId = state.chats[0]?.id || null;
-      saveChats(); renderHistory(); if (!state.temporal) renderMessages((state.chats.find(x => x.id === state.currentChatId) || {}).messages || []);
-    }
-
-    function renderHistory() {
-      el.historyList.innerHTML = state.chats.length ? "" : `<div style="font-size:.78rem;color:var(--text-muted);padding:6px;">Nenhuma conversa ainda.</div>`;
-      state.chats.forEach(c => {
-        const item = document.createElement("div"); item.className = "history-item" + (c.id === state.currentChatId && !state.temporal ? " active" : "");
-        const span = document.createElement("span"); span.textContent = c.title || "Conversa";
-        const del = document.createElement("button"); del.className = "del-chat"; del.textContent = "✕"; del.onclick = e => deleteChat(c.id, e);
-        item.append(span, del);
-        item.onclick = () => {
-          if (state.temporal) { el.temporalToggle.checked = false; state.temporal = false; el.temporalBadge.style.display = "none"; el.burnSessionBtn.style.display = "none"; }
-          loadChat(c.id); if (window.innerWidth <= 900) toggleSidebar(true);
-        };
-        el.historyList.appendChild(item);
-      });
-    }
-
-    document.querySelectorAll("[data-prompt]").forEach(b => b.onclick = () => {
-      if (b.dataset.modeJump) setMode(b.dataset.modeJump);
-      el.promptInput.value = b.dataset.prompt; autoResizeTextarea(); el.promptInput.focus();
-      if (window.innerWidth <= 900) toggleSidebar(true);
-    });
-
+    function deleteChat(id, e) { e.stopPropagation(); if (state.currentChatId === id) cancelOngoingRequest(); state.chats = state.chats.filter(x => x.id !== id); if (state.currentChatId === id) state.currentChatId = state.chats[0]?.id || null; saveChats(); renderHistory(); if (!state.temporal) renderMessages((state.chats.find(x => x.id === state.currentChatId) || {}).messages || []); }
+    function renderHistory() { el.historyList.innerHTML = state.chats.length ? "" : `<div style="font-size:.78rem;color:var(--text-muted);padding:6px;">Nenhuma conversa ainda.</div>`; state.chats.forEach(c => { const i = document.createElement("div"); i.className = "history-item" + (c.id === state.currentChatId && !state.temporal ? " active" : ""); const s = document.createElement("span"); s.textContent = c.title || "Conversa"; const d = document.createElement("button"); d.className = "del-chat"; d.textContent = "✕"; d.onclick = e => deleteChat(c.id, e); i.append(s, d); i.onclick = () => { if (state.temporal) { el.temporalToggle.checked = false; state.temporal = false; el.temporalBadge.style.display = "none"; el.burnSessionBtn.style.display = "none"; } loadChat(c.id); if (window.innerWidth <= 900) toggleSidebar(true); }; el.historyList.appendChild(i); }); }
+    document.querySelectorAll("[data-prompt]").forEach(b => b.onclick = () => { if (b.dataset.modeJump) setMode(b.dataset.modeJump); el.promptInput.value = b.dataset.prompt; autoResizeTextarea(); el.promptInput.focus(); if (window.innerWidth <= 900) toggleSidebar(true); });
     el.attachBtn.onclick = () => el.fileInput.click();
-    el.fileInput.onchange = e => {
-      const file = e.target.files[0]; if (!file) return;
-      const r = new FileReader();
-      r.onload = () => {
-        state.attachedImage = { mimeType: file.type, base64: r.result.split(",")[1], name: file.name, dataUrl: r.result };
-        el.attachmentThumb.src = r.result; el.attachmentName.textContent = file.name; el.attachmentPreview.classList.add("active");
-      };
-      r.readAsDataURL(file); el.fileInput.value = "";
-    };
-    const clearAttachment = () => { state.attachedImage = null; el.attachmentPreview.classList.remove("active"); };
-    el.removeAttachmentBtn.onclick = clearAttachment;
-
-    function setupVoiceInput() {
-      try {
-        const SR = window.SpeechRecognition || window.webkitSpeechRecognition; if (!SR) { el.micBtn.style.display = "none"; return; }
-        const rec = new SR(); rec.lang = "pt-BR"; rec.interimResults = true;
-        rec.onresult = ev => { let t = ""; for (let i = 0; i < ev.results.length; i++) t += ev.results[i][0].transcript; el.promptInput.value = t; autoResizeTextarea(); };
-        rec.onend = rec.onerror = () => { state.isRecording = false; el.micBtn.classList.remove("recording"); };
-        el.micBtn.onclick = () => { if (state.isRecording) rec.stop(); else { try { state.isRecording = true; el.micBtn.classList.add("recording"); rec.start(); } catch { state.isRecording = false; el.micBtn.classList.remove("recording"); } } };
-      } catch { el.micBtn.style.display = "none"; }
-    }
-
-    function speakText(text, btn = null) {
-      if (!window.speechSynthesis) return;
-      if (window.speechSynthesis.speaking) { window.speechSynthesis.cancel(); if (btn) btn.textContent = "🔊"; return; }
-      const clean = (text || "").replace(/```[\s\S]*?```/g, " Código gerado na tela. ").replace(/[#*_`]/g, "").trim(); if (!clean) return;
-      const u = new SpeechSynthesisUtterance(clean); u.lang = "pt-BR"; u.rate = 1.06;
-      const v = window.speechSynthesis.getVoices().find(x => /pt[-_]BR/i.test(x.lang)); if (v) u.voice = v;
-      if (btn) btn.textContent = "⏹️"; u.onend = u.onerror = () => { if (btn) btn.textContent = "🔊"; };
-      window.speechSynthesis.speak(u);
-    }
-
+    el.fileInput.onchange = e => { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => { state.attachedImage = { mimeType: f.type, base64: r.result.split(",")[1], name: f.name, dataUrl: r.result }; el.attachmentThumb.src = r.result; el.attachmentName.textContent = f.name; el.attachmentPreview.classList.add("active"); }; r.readAsDataURL(f); el.fileInput.value = ""; };
+    const clearAttachment = () => { state.attachedImage = null; el.attachmentPreview.classList.remove("active"); }; el.removeAttachmentBtn.onclick = clearAttachment;
+    function setupVoiceInput() { try { const SR = window.SpeechRecognition || window.webkitSpeechRecognition; if (!SR) { el.micBtn.style.display = "none"; return; } const rec = new SR(); rec.lang = "pt-BR"; rec.interimResults = true; rec.onresult = ev => { let t = ""; for (let i = 0; i < ev.results.length; i++) t += ev.results[i][0].transcript; el.promptInput.value = t; autoResizeTextarea(); }; rec.onend = rec.onerror = () => { state.isRecording = false; el.micBtn.classList.remove("recording"); }; el.micBtn.onclick = () => { if (state.isRecording) rec.stop(); else { try { state.isRecording = true; el.micBtn.classList.add("recording"); rec.start(); } catch { state.isRecording = false; el.micBtn.classList.remove("recording"); } } }; } catch { el.micBtn.style.display = "none"; } }
+    function speakText(text, btn = null) { if (!window.speechSynthesis) return; if (window.speechSynthesis.speaking) { window.speechSynthesis.cancel(); if (btn) btn.textContent = "🔊"; return; } const cl = (text || "").replace(/\x60{3}[\s\S]*?\x60{3}/g, " Código. ").replace(/[#*_\x60]/g, "").trim(); if (!cl) return; const u = new SpeechSynthesisUtterance(cl); u.lang = "pt-BR"; u.rate = 1.06; const v = window.speechSynthesis.getVoices().find(x => /pt[-_]BR/i.test(x.lang)); if (v) u.voice = v; if (btn) btn.textContent = "⏹️"; u.onend = u.onerror = () => { if (btn) btn.textContent = "🔊"; }; window.speechSynthesis.speak(u); }
     const escapeHtml = s => (s || "").replace(/[&<>"']/g, m => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;" }[m]));
-    function formatRichText(text) {
-      let raw = text || ""; if (((raw.match(/```/g) || []).length) % 2 === 1) raw += "\n```";
-      const cb = [];
-      const wp = raw.replace(/```([a-zA-Z0-9_+-]*)\n?([\s\S]*?)```/g, (_, lang, code) => {
-        const i = cb.length, cl = (lang || "código").trim(), tc = code.replace(/^\n+|\n+$/g, "");
-        const isH = /^html?$/i.test(cl) || /<!DOCTYPE html|<html[\s>]/i.test(tc);
-        cb.push(`<div class="code-block-wrap"><div class="code-block-header"><span>${escapeHtml(cl)}</span><div class="code-block-actions">${isH ? `<button class="preview-code-btn" onclick="previewHtmlCode(this)" title="Visualizar">▶</button>` : ""}<button class="copy-code-btn" onclick="copyCode(this)" title="Copiar">${ICON_COPY_SVG}</button></div></div><pre><code>${escapeHtml(tc)}</code></pre></div>`);
-        return `@@CB_${i}@@`;
-      });
-      let html = escapeHtml(wp).replace(/^### (.*)$/gm, "<h3>$1</h3>").replace(/^## (.*)$/gm, "<h2>$1</h2>").replace(/^# (.*)$/gm, "<h1>$1</h1>")
-        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>").replace(/\*([^*\n]+)\*/g, "<em>$1</em>").replace(/`([^`\n]+)`/g, "<code style='background:#f0f4f9;padding:2px 6px;border-radius:5px;'>$1</code>")
-        .replace(/^\s*[-*] (.*)$/gm, "<li>$1</li>").replace(/((?:<li>.*<\/li>\n?)+)/g, "<ul>$1</ul>").replace(/\n/g, "<br>").replace(/(<\/(?:ul|h1|h2|h3)>)\s*<br>/g, "$1")
-        .replace(/<br>\s*(@@CB_\d+@@)/g, "$1").replace(/(@@CB_\d+@@)\s*<br>/g, "$1");
-      cb.forEach((b, i) => { html = html.replace(`@@CB_${i}@@`, b); });
-      return html;
-    }
-
-    window.copyCode = btn => { navigator.clipboard.writeText(btn.closest(".code-block-wrap").querySelector("code").textContent); btn.innerHTML = ICON_CHECK_SVG; btn.classList.add("copied"); setTimeout(() => { btn.innerHTML = ICON_COPY_SVG; btn.classList.remove("copied"); }, 1500); };
+    function formatRichText(text) { let raw = text || ""; if (((raw.match(/\x60{3}/g) || []).length) % 2 === 1) raw += "\n\x60\x60\x60"; const cb = []; const wp = raw.replace(/\x60{3}([a-zA-Z0-9_+-]*)\n?([\s\S]*?)\x60{3}/g, (_, l, c) => { const i = cb.length, cl = (l || "código").trim(), tc = c.replace(/^\n+|\n+$/g, ""), isH = /^html?$/i.test(cl) || /<!DOCTYPE html|<html[\s>]/i.test(tc); cb.push(`<div class="code-block-wrap"><div class="code-block-header"><span>${escapeHtml(cl)}</span><div class="code-block-actions">${isH ? `<button class="preview-code-btn" onclick="previewHtmlCode(this)" title="Visualizar">▶</button>` : ""}<button class="copy-code-btn" onclick="copyCode(this)" title="Copiar">${ICON_COPY}</button></div></div><pre><code>${escapeHtml(tc)}</code></pre></div>`); return `@@CB_${i}@@`; }); let h = escapeHtml(wp).replace(/^### (.*)$/gm, "<h3>$1</h3>").replace(/^## (.*)$/gm, "<h2>$1</h2>").replace(/^# (.*)$/gm, "<h1>$1</h1>").replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>").replace(/\*([^*\n]+)\*/g, "<em>$1</em>").replace(/\x60([^\x60\n]+)\x60/g, "<code style='background:#f0f4f9;padding:2px 6px;border-radius:5px;'>$1</code>").replace(/^\s*[-*] (.*)$/gm, "<li>$1</li>").replace(/((?:<li>.*<\/li>\n?)+)/g, "<ul>$1</ul>").replace(/\n/g, "<br>").replace(/(<\/(?:ul|h1|h2|h3)>)\s*<br>/g, "$1").replace(/<br>\s*(@@CB_\d+@@)/g, "$1").replace(/(@@CB_\d+@@)\s*<br>/g, "$1"); cb.forEach((b, i) => { h = h.replace(`@@CB_${i}@@`, b); }); return h; }
+    window.copyCode = btn => { navigator.clipboard.writeText(btn.closest(".code-block-wrap").querySelector("code").textContent); btn.innerHTML = ICON_OK; btn.classList.add("copied"); setTimeout(() => { btn.innerHTML = ICON_COPY; btn.classList.remove("copied"); }, 1500); };
     window.previewHtmlCode = btn => { el.previewFrame.srcdoc = btn.closest(".code-block-wrap").querySelector("code").textContent; el.previewModal.classList.add("active"); };
-
-    function createActionBar(text) {
-      const bar = document.createElement("div"); bar.className = "msg-actions";
-      const l = document.createElement("button"); l.className = "msg-action-btn"; l.textContent = "🔊"; l.onclick = () => speakText(text, l);
-      const c = document.createElement("button"); c.className = "msg-action-btn"; c.innerHTML = ICON_COPY_SVG;
-      c.onclick = () => { navigator.clipboard.writeText(text); c.innerHTML = ICON_CHECK_SVG; c.classList.add("copied"); setTimeout(() => { c.innerHTML = ICON_COPY_SVG; c.classList.remove("copied"); }, 1500); };
-      bar.append(l, c); return bar;
-    }
-
-    function renderMessages(msgs) {
-      el.chatContainer.innerHTML = "";
-      if (!msgs || !msgs.length) { el.chatContainer.appendChild(el.welcomeScreen); el.welcomeScreen.style.display = "flex"; return; }
-      msgs.forEach(m => appendMessageDOM(m)); scrollToBottom(true);
-    }
-
-    async function upscaleImageDataUrl(srcUrl) {
-      const img = await loadImgElement(srcUrl);
-      const tw = Math.min(3840, img.width * 2), th = Math.min(3840, img.height * 2);
-      const c = document.createElement("canvas"); c.width = tw; c.height = th;
-      const ctx = c.getContext("2d"); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = "high";
-      ctx.drawImage(img, 0, 0, tw, th);
-      const id = ctx.getImageData(0, 0, tw, th), d = id.data, cp = new Uint8ClampedArray(d), st = tw * 4;
-      for (let y = 1; y < th - 1; y++) for (let x = 1; x < tw - 1; x++) {
-        const i = y * st + x * 4;
-        for (let ch = 0; ch < 3; ch++) {
-          const bl = (cp[i - 4 + ch] + cp[i + 4 + ch] + cp[i - st + ch] + cp[i + st + ch]) * 0.25;
-          d[i + ch] = Math.max(0, Math.min(255, cp[i + ch] + (cp[i + ch] - bl) * 0.25));
-        }
-      }
-      ctx.putImageData(id, 0, 0);
-      return new Promise(res => c.toBlob(b => res(URL.createObjectURL(b)), "image/png"));
-    }
-
+    function createActionBar(t) { const b = document.createElement("div"); b.className = "msg-actions"; const l = document.createElement("button"); l.className = "msg-action-btn"; l.textContent = "🔊"; l.onclick = () => speakText(t, l); const c = document.createElement("button"); c.className = "msg-action-btn"; c.innerHTML = ICON_COPY; c.onclick = () => { navigator.clipboard.writeText(t); c.innerHTML = ICON_OK; c.classList.add("copied"); setTimeout(() => { c.innerHTML = ICON_COPY; c.classList.remove("copied"); }, 1500); }; b.append(l, c); return b; }
+    function renderMessages(msgs) { el.chatContainer.innerHTML = ""; if (!msgs || !msgs.length) { el.chatContainer.appendChild(el.welcomeScreen); el.welcomeScreen.style.display = "flex"; return; } msgs.forEach(m => appendMessageDOM(m)); scrollToBottom(true); }
+    async function upscaleAndSharpenImage(srcUrl, maxEdge = 2048, amount = 0.34) { const img = await loadImgElement(srcUrl), r = img.width / img.height; let tw = img.width, th = img.height; if (Math.max(tw, th) < maxEdge) { if (r >= 1) { tw = maxEdge; th = Math.round(maxEdge / r); } else { th = maxEdge; tw = Math.round(maxEdge * r); } } const c = document.createElement("canvas"); c.width = tw; c.height = th; const ctx = c.getContext("2d"); ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = "high"; ctx.drawImage(img, 0, 0, tw, th); const id = ctx.getImageData(0, 0, tw, th), d = id.data, cp = new Uint8ClampedArray(d), st = tw * 4; for (let y = 1; y < th - 1; y++) for (let x = 1; x < tw - 1; x++) { const i = y * st + x * 4; for (let ch = 0; ch < 3; ch++) { const bl = (cp[i - 4 + ch] + cp[i + 4 + ch] + cp[i - st + ch] + cp[i + st + ch]) * 0.25; d[i + ch] = Math.max(0, Math.min(255, cp[i + ch] + (cp[i + ch] - bl) * amount)); } } ctx.putImageData(id, 0, 0); return new Promise(res => c.toBlob(b => res(URL.createObjectURL(b)), "image/png")); }
     function appendMessageDOM(m, skipActions = false) {
       if (el.welcomeScreen.parentNode === el.chatContainer) el.welcomeScreen.style.display = "none";
       const div = document.createElement("div"); div.className = `msg ${m.role === "user" ? "user" : "ai"}`;
       const av = document.createElement("div"); av.className = "avatar"; av.textContent = m.role === "user" ? "VC" : "✦";
-      const bw = document.createElement("div"); bw.className = "msg-body";
-      const bb = document.createElement("div"); bb.className = "bubble"; if (m.text) bb.innerHTML = formatRichText(m.text);
-
+      const bw = document.createElement("div"); bw.className = "msg-body"; const bb = document.createElement("div"); bb.className = "bubble"; if (m.text) bb.innerHTML = formatRichText(m.text);
       if (m.imageUrl) {
-        const w = document.createElement("div"); w.className = "media-output";
-        const im = document.createElement("img"); im.src = m.imageUrl; w.appendChild(im);
+        const w = document.createElement("div"); w.className = "media-output"; const im = document.createElement("img"); im.src = m.imageUrl; w.appendChild(im);
         if (m.role !== "user") {
-          const ac = document.createElement("div"); ac.className = "media-actions";
-          const dl = document.createElement("a"); dl.className = "download-btn"; dl.href = m.imageUrl; dl.download = `foto-${Date.now()}.png`; dl.textContent = "⬇ Baixar Foto HD";
-          const up = document.createElement("button"); up.className = "secondary-btn"; up.textContent = "🔍 Nitidez 2x";
-          up.onclick = async () => {
-            up.disabled = true; up.textContent = "⏳...";
-            try { const h = await upscaleImageDataUrl(im.src); im.src = h; dl.href = h; up.textContent = "✓ 2x"; }
-            catch { up.disabled = false; up.textContent = "🔍 Nitidez 2x"; }
-          };
-          ac.append(dl, up);
-          if (m.originalPrompt) {
-            const rg = document.createElement("button"); rg.className = "secondary-btn"; rg.textContent = "🔄 Nova Variação";
-            rg.onclick = () => { if (!state.isLoading) { setMode("image"); el.promptInput.value = m.originalPrompt; handleSend(); } };
-            ac.appendChild(rg);
-          }
+          const ac = document.createElement("div"); ac.className = "media-actions", dl = document.createElement("a"); dl.className = "download-btn"; dl.href = m.imageUrl; dl.download = `foto-hd-${Date.now()}.png`; dl.textContent = "⬇ Baixar PNG HD";
+          const up = document.createElement("button"); up.className = "secondary-btn"; up.textContent = "🔍 Nitidez 4K"; up.onclick = async () => { up.disabled = true; up.textContent = "⏳..."; try { const h = await upscaleAndSharpenImage(im.src, 2560, 0.42); im.src = h; dl.href = h; up.textContent = "✓ 4K"; } catch { up.disabled = false; up.textContent = "🔍 Nitidez 4K"; } }; ac.append(dl, up);
+          if (m.originalPrompt) { const rg = document.createElement("button"); rg.className = "secondary-btn"; rg.textContent = "🔄 Nova Variação"; rg.onclick = () => { if (!state.isLoading) { setMode("image"); el.promptInput.value = m.originalPrompt; handleSend(); } }; ac.appendChild(rg); }
           w.appendChild(ac);
         }
         bb.appendChild(w);
       }
-
       if (m.videoSegments?.length) {
-        const w = document.createElement("div"); w.className = "media-output";
-        const v = document.createElement("video"); v.controls = true; v.autoplay = true; v.playsInline = true; v.src = m.videoSegments[0];
-        let ci = 0; const bar = document.createElement("div"); bar.className = "playlist-bar"; const pills = [];
-        const ext = m.videoExt || "mp4", dl = document.createElement("a"); dl.className = "download-btn";
-        dl.href = m.videoSegments[0]; dl.download = `video-1.${ext}`; dl.target = "_blank"; dl.textContent = `⬇ Baixar Vídeo (${ext.toUpperCase()})`;
-        const sel = idx => { ci = idx; v.src = m.videoSegments[idx]; v.play().catch(() => {}); pills.forEach((p, i) => p.classList.toggle("active", i === idx)); dl.href = m.videoSegments[idx]; };
-        v.onended = () => { if (ci + 1 < m.videoSegments.length) sel(ci + 1); };
-        m.videoSegments.forEach((_, idx) => { const p = document.createElement("button"); p.className = "scene-pill" + (idx === 0 ? " active" : ""); p.textContent = `Parte ${idx + 1}`; p.onclick = () => sel(idx); pills.push(p); bar.appendChild(p); });
-        const ac = document.createElement("div"); ac.className = "media-actions"; ac.appendChild(dl);
-        w.append(v); if (m.videoSegments.length > 1) w.appendChild(bar); w.appendChild(ac); bb.appendChild(w);
+        const w = document.createElement("div"); w.className = "media-output"; const v = document.createElement("video"); v.controls = true; v.autoplay = true; v.playsInline = true; v.src = m.videoSegments[0];
+        let ci = 0; const bar = document.createElement("div"); bar.className = "playlist-bar"; const pills = [], ext = m.videoExt || "mp4", dl = document.createElement("a"); dl.className = "download-btn"; dl.href = m.videoSegments[0]; dl.download = `video-1.${ext}`; dl.target = "_blank"; dl.textContent = `⬇ Baixar Vídeo (${ext.toUpperCase()})`;
+        const sel = idx => { ci = idx; v.src = m.videoSegments[idx]; v.play().catch(() => {}); pills.forEach((p, i) => p.classList.toggle("active", i === idx)); dl.href = m.videoSegments[idx]; dl.download = `video-${idx + 1}.${ext}`; };
+        v.onended = () => { if (ci + 1 < m.videoSegments.length) sel(ci + 1); }; m.videoSegments.forEach((_, idx) => { const p = document.createElement("button"); p.className = "scene-pill" + (idx === 0 ? " active" : ""); p.textContent = `Cena ${idx + 1}`; p.onclick = () => sel(idx); pills.push(p); bar.appendChild(p); });
+        const ac = document.createElement("div"); ac.className = "media-actions"; ac.appendChild(dl); w.append(v); if (m.videoSegments.length > 1) w.appendChild(bar); w.appendChild(ac); bb.appendChild(w);
       }
-
-      bw.appendChild(bb);
-      if (!skipActions && m.role !== "user" && m.text && !m.isMediaSummary) bw.appendChild(createActionBar(m.text));
-      div.append(av, bw); el.chatContainer.appendChild(div); scrollToBottom(false);
-      return { div, bubble: bb, bodyWrap: bw };
+      bw.appendChild(bb); if (!skipActions && m.role !== "user" && m.text && !m.isMediaSummary) bw.appendChild(createActionBar(m.text)); div.append(av, bw); el.chatContainer.appendChild(div); scrollToBottom(false); return { div, bubble: bb, bodyWrap: bw };
     }
-
-    function showTyping(statusText = "") {
-      const ex = $("typingIndicator");
-      if (ex) {
-        const s = ex.querySelector(".typing-status");
-        if (s) s.textContent = statusText;
-        else if (statusText) { const d = document.createElement("div"); d.className = "typing-status"; d.style.cssText = "font-size:.82rem;color:var(--text-gray);margin-top:4px;"; d.textContent = statusText; ex.querySelector(".bubble").appendChild(d); }
-        scrollToBottom(true); return;
-      }
-      const div = document.createElement("div"); div.className = "msg ai"; div.id = "typingIndicator";
-      div.innerHTML = `<div class="avatar">✦</div><div class="msg-body"><div class="bubble"><div class="typing"><span></span><span></span><span></span></div>${statusText ? `<div class="typing-status" style="font-size:.82rem;color:var(--text-gray);margin-top:4px;">${escapeHtml(statusText)}</div>` : ""}</div></div>`;
-      el.chatContainer.appendChild(div); scrollToBottom(true);
-    }
+    function showTyping(st = "") { const ex = $("typingIndicator"); if (ex) { const s = ex.querySelector(".typing-status"); if (s) s.textContent = st; else if (st) { const d = document.createElement("div"); d.className = "typing-status"; d.style.cssText = "font-size:.82rem;color:var(--text-gray);margin-top:4px;"; d.textContent = st; ex.querySelector(".bubble").appendChild(d); } scrollToBottom(true); return; } const d = document.createElement("div"); d.className = "msg ai"; d.id = "typingIndicator"; d.innerHTML = `<div class="avatar">✦</div><div class="msg-body"><div class="bubble"><div class="typing"><span></span><span></span><span></span></div>${st ? `<div class="typing-status" style="font-size:.82rem;color:var(--text-gray);margin-top:4px;">${escapeHtml(st)}</div>` : ""}</div></div>`; el.chatContainer.appendChild(d); scrollToBottom(true); }
     const removeTyping = () => { const t = $("typingIndicator"); if (t) t.remove(); };
     const scrollToBottom = (f = false) => { if (f || el.chatScroll.scrollHeight - el.chatScroll.scrollTop - el.chatScroll.clientHeight < 140) el.chatScroll.scrollTop = el.chatScroll.scrollHeight; };
     const autoResizeTextarea = () => { el.promptInput.style.height = "auto"; el.promptInput.style.height = Math.min(el.promptInput.scrollHeight, 160) + "px"; };
-    el.promptInput.oninput = autoResizeTextarea;
-    el.promptInput.onkeydown = e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); } };
+    el.promptInput.oninput = autoResizeTextarea; el.promptInput.onkeydown = e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); } };
     el.sendBtn.onclick = () => { if (state.isLoading && state.abortController) state.abortController.abort(new DOMException("Cancelado", "AbortError")); else handleSend(); };
     const setLoading = l => { state.isLoading = l; el.sendBtn.textContent = l ? "■" : "↑"; el.sendBtn.classList.toggle("stop", l); };
-
-    async function fetchWithTimeout(url, options, timeoutMs = 45000) {
-      const lc = new AbortController(), p = state.abortController?.signal; let to = false;
-      const onA = () => lc.abort(new DOMException("Cancelado", "AbortError"));
-      if (p) { if (p.aborted) onA(); else p.addEventListener("abort", onA, { once: true }); }
-      const tm = setTimeout(() => { to = true; lc.abort(); }, timeoutMs);
-      try { return await fetch(url, { ...options, signal: lc.signal }); }
-      catch (e) { if (to) throw new Error("Tempo limite atingido."); if (e.name === "AbortError") throw e; throw new Error("Falha de rede no Worker."); }
-      finally { clearTimeout(tm); if (p) p.removeEventListener("abort", onA); }
-    }
-
-    async function fetchWithRetry(url, opts, ms = 45000, max = 1) {
-      let last;
-      for (let i = 0; i <= max; i++) {
-        try {
-          const r = await fetchWithTimeout(url, opts, ms);
-          if ((r.status === 502 || r.status === 503 || r.status === 504) && i < max) { await new Promise(x => setTimeout(x, 700)); continue; }
-          return r;
-        } catch (e) { last = e; if (e.name === "AbortError" || i >= max) throw e; await new Promise(x => setTimeout(x, 700)); }
-      }
-      throw last;
-    }
-
-    async function readSseStream(res, onPart) {
-      const rd = res.body.getReader(), dec = new TextDecoder("utf-8"); let buf = "";
-      const proc = l => {
-        const t = l.trim(); if (!t.startsWith("data:")) return;
-        const j = t.slice(5).trim(); if (!j || j === "[DONE]") return;
-        let c; try { c = JSON.parse(j); } catch { return; }
-        if (c.error) throw new Error(formatApiError(c.error.code || 500, c));
-        for (const p of c.candidates?.[0]?.content?.parts || []) onPart(p);
-      };
-      while (true) {
-        const { value, done } = await rd.read(); if (done) break;
-        buf += dec.decode(value, { stream: true });
-        const ls = buf.split(/\r?\n/); buf = ls.pop() || ""; ls.forEach(proc);
-      }
-      if (buf.trim()) proc(buf);
-    }
-
+    async function fetchWithTimeout(url, options, timeoutMs = 45000) { const lc = new AbortController(), p = state.abortController?.signal; let to = false; const onA = () => lc.abort(new DOMException("Cancelado", "AbortError")); if (p) { if (p.aborted) onA(); else p.addEventListener("abort", onA, { once: true }); } const tm = setTimeout(() => { to = true; lc.abort(); }, timeoutMs); try { return await fetch(url, { ...options, signal: lc.signal }); } catch (e) { if (to) throw new Error("Tempo limite atingido."); if (e.name === "AbortError") throw e; throw new Error("Falha de rede."); } finally { clearTimeout(tm); if (p) p.removeEventListener("abort", onA); } }
+    async function fetchWithRetry(url, opts, ms = 45000, max = 1) { let last; for (let i = 0; i <= max; i++) { try { const r = await fetchWithTimeout(url, opts, ms); if ((r.status === 502 || r.status === 503 || r.status === 504) && i < max) { await new Promise(x => setTimeout(x, 700)); continue; } return r; } catch (e) { last = e; if (e.name === "AbortError" || i >= max) throw e; await new Promise(x => setTimeout(x, 700)); } } throw last; }
+    async function readSseStream(res, onPart) { const rd = res.body.getReader(), dec = new TextDecoder("utf-8"); let buf = ""; const proc = l => { const t = l.trim(); if (!t.startsWith("data:")) return; const j = t.slice(5).trim(); if (!j || j === "[DONE]") return; let c; try { c = JSON.parse(j); } catch { return; } if (c.error) throw new Error(formatApiError(c.error.code || 500, c)); for (const p of c.candidates?.[0]?.content?.parts || []) onPart(p); }; while (true) { const { value, done } = await rd.read(); if (done) break; buf += dec.decode(value, { stream: true }); const ls = buf.split(/\r?\n/); buf = ls.pop() || ""; ls.forEach(proc); } if (buf.trim()) proc(buf); }
     async function safeJson(res) { const r = await res.text(); try { return JSON.parse(r); } catch { return { error: { message: r ? r.slice(0, 220) : `HTTP ${res.status}` } }; } }
-
-    function formatApiError(status, data) {
-      const msg = data?.error?.message || `Erro HTTP ${status}`;
-      if (status === 401 && /Senha/i.test(msg)) { sRem("gp_site_pass"); state.sitePassword = ""; el.lockModal.classList.add("active"); return "Senha necessária."; }
-      if (/leaked/i.test(msg)) return "Chave bloqueada pelo Google. Crie uma nova no Cloudflare.";
-      if (/limit:\s*0|free_tier|billing|quota|exceeded/i.test(msg) || status === 429) return `Cota do Google sem Billing (${msg}).`;
-      if (status === 401 || status === 403 || /API_KEY|ACCESS_TOKEN/i.test(msg)) return `Chave recusada no Worker (${msg}).`;
-      return msg;
-    }
-
-    function detectVisualIntent(text, prevMsgs = []) {
-      const t = (text || "").trim(); if (!t) return null;
-      if (/\b(essa imagem|esse vídeo|esse video|tente|tenta|ultima|última|faz agora|gera agora|de novo|novamente|pfvr|por favor)\b/i.test(t) && t.length < 70) {
-        const wV = /\b(vídeo|video)\b/i.test(t), wI = /\b(imagem|foto)\b/i.test(t);
-        if (wV || wI || /\b(tente|tenta|de novo|faz agora|gera agora)\b/i.test(t)) {
-          for (let i = prevMsgs.length - 1; i >= 0; i--) {
-            const m = prevMsgs[i];
-            if (m.role === "user" && m.text && m.text !== text && !/\b(essa imagem|esse vídeo|tente|de novo)\b/i.test(m.text)) {
-              if (wV || /\b(vídeo|video|clipe|animação|filme|minuto)\b/i.test(m.text)) return { mode: "video", prompt: m.text };
-              if (wI || /\b(imagem|foto|desenho|arte|gera|gere|crie|cria|faça|faz|neymar|leão)\b/i.test(m.text)) return { mode: "image", prompt: m.text };
-            }
-          }
-        }
-      }
-      if (/\b(código|codigo|html|css|js|javascript|python|site|app|programa|texto|resumo|redação|email|lista|plano|tabela|script|poema|conta|cálculo|receita|dieta|treino|roteiro)\b/i.test(t)) return null;
-      if (/\b(vídeo|video|vídeos|videos|animação|animacao|clipe|curta|filmagem|filme|reels|shorts|1 minuto|2 minutos|3 minutos)\b/i.test(t)) return { mode: "video", prompt: t };
-      if (/\b(imagem|imagens|foto|fotos|fotografia|ilustração|desenho|arte|wallpaper|retrato|logo|pintura)\b/i.test(t)) return { mode: "image", prompt: t };
-      if (/^\s*(desenhe|desenha|pinte|ilustre|faça|faca|faz|crie|cria|gere|gera|manda)\b/i.test(t) && t.length < 180) return { mode: "image", prompt: t };
-      return null;
-    }
-
+    function isNeuronLimitMsg(msg = "") { return /4006|neurons|daily free allocation|upgrade to cloudflare/i.test(String(msg)); }
+    function markNeuronsExhausted() { state.workerNeuronsExhausted = true; el.securityBadge.textContent = "🆓 AI Horde + Puter (Sem Marca d'Água)"; el.securityBadge.className = "pill-tag warn"; }
+    function formatApiError(status, data) { const msg = data?.error?.message || `Erro HTTP ${status}`; if (isNeuronLimitMsg(msg)) markNeuronsExhausted(); if (status === 401 && /Senha/i.test(msg)) { sRem("gp_site_pass"); state.sitePassword = ""; el.lockModal.classList.add("active"); return "Senha necessária."; } if (/leaked/i.test(msg)) return "Chave bloqueada pelo Google."; if (/limit:\s*0|free_tier|billing|quota|exceeded/i.test(msg) || status === 429) return `Cota do Google sem Billing (${msg}).`; if (status === 401 || status === 403 || /API_KEY|ACCESS_TOKEN/i.test(msg)) return `Chave recusada (${msg}).`; return msg; }
+    function detectVisualIntent(text, prevMsgs = []) { const t = (text || "").trim(); if (!t) return null; if (/\b(código|codigo|html|css|js|javascript|python|site|app|programa|texto|resumo|redação|email|lista|plano|tabela|script|poema|conta|cálculo|receita|dieta|treino|roteiro)\b/i.test(t)) return null; if (/\b(vídeo|video|vídeos|videos|animação|animacao|clipe|curta|filmagem|filme|reels|shorts|1 minuto|2 minutos|3 minutos)\b/i.test(t)) return { mode: "video", prompt: t }; if (/\b(imagem|imagens|foto|fotos|fotografia|ilustração|desenho|arte|wallpaper|retrato|logo|pintura)\b/i.test(t)) return { mode: "image", prompt: t }; if (/^\s*(desenhe|desenha|pinte|ilustre|faça|faca|faz|crie|cria|gere|gera|manda)\b/i.test(t) && t.length < 180) return { mode: "image", prompt: t }; return null; }
+    async function ensurePuterSignedIn() { if (typeof puter === "undefined" || !puter.ai) throw new Error("SDK Puter offline."); if (puter.auth && !puter.auth.isSignedIn()) { showTyping("Conecte sua conta Puter na janela que abriu..."); await puter.auth.signIn(); updatePuterButton(); } }
     async function handleSend() {
-      if (state.isLoading) return;
-      const text = el.promptInput.value.trim(); if (!text && !state.attachedImage) return;
-      const myToken = ++state.activeRequestToken, msgs = getCurrentMessages();
-      const detected = state.mode === "chat" ? detectVisualIntent(text, msgs) : null;
-      const effMode = detected ? detected.mode : state.mode, effPrompt = detected ? detected.prompt : text;
+      if (state.isLoading) return; const text = el.promptInput.value.trim(); if (!text && !state.attachedImage) return;
+      const myToken = ++state.activeRequestToken, msgs = getCurrentMessages(), det = state.mode === "chat" ? detectVisualIntent(text, msgs) : null, effMode = det ? det.mode : state.mode, effPrompt = det ? det.prompt : text;
       const userMsg = { role: "user", text, imageUrl: state.attachedImage?.dataUrl || null, attachedBase64: state.attachedImage?.base64 || null, attachedMime: state.attachedImage?.mimeType || null, isMediaRequest: effMode !== "chat" };
-
-      msgs.push(userMsg);
-      if (!state.temporal) {
-        const c = state.chats.find(x => x.id === state.currentChatId);
-        if (c && c.title === "Nova conversa" && text) { c.title = text.slice(0, 36); renderHistory(); }
-        saveChats();
-      }
-      appendMessageDOM(userMsg);
-      const att = state.attachedImage ? { ...state.attachedImage } : null;
-      el.promptInput.value = ""; autoResizeTextarea(); clearAttachment();
-      state.abortController = new AbortController(); setLoading(true); showTyping();
-
+      msgs.push(userMsg); if (!state.temporal) { const c = state.chats.find(x => x.id === state.currentChatId); if (c && c.title === "Nova conversa" && text) { c.title = text.slice(0, 36); renderHistory(); } saveChats(); }
+      appendMessageDOM(userMsg); const att = state.attachedImage ? { ...state.attachedImage } : null; el.promptInput.value = ""; autoResizeTextarea(); clearAttachment(); state.abortController = new AbortController(); setLoading(true); showTyping();
       try {
-        let aiMsg;
-        if (effMode === "chat") aiMsg = await callGeminiChatStream(msgs, myToken);
-        else if (effMode === "image") aiMsg = await callGeminiImage(effPrompt, att, myToken);
-        else aiMsg = await callSmartVideo(effPrompt, att, myToken);
-        if (myToken !== state.activeRequestToken) return;
-        removeTyping();
+        if ((effMode === "chat" && el.chatModel.value === "puter-chat") || (effMode === "image" && el.imageModel.value.startsWith("puter-")) || (effMode === "video" && el.videoEngine.value.startsWith("puter-"))) await ensurePuterSignedIn();
+        let aiMsg; if (effMode === "chat") aiMsg = await callGeminiChatStream(msgs, myToken); else if (effMode === "image") aiMsg = await callGeminiImage(effPrompt, att, myToken); else aiMsg = await callSmartVideo(effPrompt, att, myToken);
+        if (myToken !== state.activeRequestToken) return; removeTyping();
         if (aiMsg) { msgs.push(aiMsg); if (!state.temporal) saveChats(); if (!aiMsg._alreadyMounted) appendMessageDOM(aiMsg); if (state.autoVoice && aiMsg.text && !aiMsg.isMediaSummary) speakText(aiMsg.text); }
       } catch (err) {
-        if (myToken !== state.activeRequestToken) return;
-        removeTyping();
-        const st = err.name === "AbortError" && state.abortController?.signal.aborted;
-        const em = { role: "ai", text: st ? "Geração interrompida." : `**Erro:** ${err.message || "Falha de conexão."}`, isError: true };
+        if (myToken !== state.activeRequestToken) return; removeTyping();
+        const st = err.name === "AbortError" && state.abortController?.signal.aborted, em = { role: "ai", text: st ? "Geração interrompida." : `**Erro:** ${err?.message || "Falha de conexão."}`, isError: true };
         msgs.push(em); if (!state.temporal) saveChats(); appendMessageDOM(em);
       } finally { if (myToken === state.activeRequestToken) { state.abortController = null; setLoading(false); } }
     }
-
-    function buildContents(msgs) {
-      const recent = msgs.slice(-14), contents = [];
-      for (let i = 0; i < recent.length; i++) {
-        const m = recent[i], isLast = i === recent.length - 1;
-        if (m.role === "user") {
-          if (!isLast && m.isMediaRequest) continue;
-          const parts = []; if (m.text) parts.push({ text: m.text });
-          if (m.attachedBase64 && m.attachedMime) parts.push({ inlineData: { mimeType: m.attachedMime, data: m.attachedBase64 } });
-          const safe = parts.length ? parts : [{ text: " " }];
-          if (contents.length && contents[contents.length - 1].role === "user") contents[contents.length - 1].parts.push(...safe);
-          else contents.push({ role: "user", parts: safe });
-        } else {
-          if (m.isError || m.text?.startsWith("**Erro:**") || m.text === "Geração interrompida.") {
-            if (contents.length && contents[contents.length - 1].role === "user") contents.push({ role: "model", parts: [{ text: "Entendido." }] });
-            continue;
-          }
-          if (m.isMediaSummary || m.imageUrl || m.videoSegments) {
-            if (contents.length && contents[contents.length - 1].role === "user") contents.push({ role: "model", parts: [{ text: "Mídia gerada." }] });
-            continue;
-          }
-          const safe = m.text ? [{ text: m.text }] : [{ text: " " }];
-          if (contents.length && contents[contents.length - 1].role === "model") contents[contents.length - 1].parts.push(...safe);
-          else contents.push({ role: "model", parts: safe });
-        }
-      }
-      while (contents.length && contents[0].role !== "user") contents.shift();
-      return contents;
-    }
-
-    function pickChatCandidates() {
-      const sel = el.chatModel.value, base = ["gemini-4-hydrogen", "gemini-3.6-flash", "gemini-3.5-flash-lite", "gemini-2.5-flash", "workers-gemma"];
-      return sel === "auto-turbo" ? base : [sel, ...base.filter(m => m !== sel)];
-    }
+    function buildContents(msgs) { const rec = msgs.slice(-14), cts = []; for (let i = 0; i < rec.length; i++) { const m = rec[i], il = i === rec.length - 1; if (m.role === "user") { if (!il && m.isMediaRequest) continue; const ps = []; if (m.text) ps.push({ text: m.text }); if (m.attachedBase64 && m.attachedMime) ps.push({ inlineData: { mimeType: m.attachedMime, data: m.attachedBase64 } }); const sf = ps.length ? ps : [{ text: " " }]; if (cts.length && cts[cts.length - 1].role === "user") cts[cts.length - 1].parts.push(...sf); else cts.push({ role: "user", parts: sf }); } else { if (m.isError || m.text?.startsWith("**Erro:**") || m.isMediaSummary || m.imageUrl || m.videoSegments) { if (cts.length && cts[cts.length - 1].role === "user") cts.push({ role: "model", parts: [{ text: "Entendido." }] }); continue; } const sf = m.text ? [{ text: m.text }] : [{ text: " " }]; if (cts.length && cts[cts.length - 1].role === "model") cts[cts.length - 1].parts.push(...sf); else cts.push({ role: "model", parts: sf }); } } while (cts.length && cts[0].role !== "user") cts.shift(); return cts; }
+    function pickChatCandidates() { const sel = el.chatModel.value, wm = ["gemini-4-hydrogen", "gemini-3.6-flash", "gemini-3.5-flash-lite", "gemini-2.5-flash", "workers-gemma"]; if (sel === "pollinations-text") return ["pollinations-text", "horde-text", "puter-chat"]; if (sel === "horde-text") return ["horde-text", "pollinations-text", "puter-chat"]; if (sel === "puter-chat") return ["puter-chat", "horde-text", "pollinations-text"]; const l = []; if (getGeminiKey()) l.push("direct-gemini"); l.push(...(state.workerNeuronsExhausted ? ["gemini-3.6-flash", "gemini-2.5-flash"] : wm), "pollinations-text", "horde-text", "puter-chat"); return sel === "auto-turbo" ? l : [sel, ...l.filter(m => m !== sel)]; }
     const getThinkingLevel = m => m === "gemini-3.5-flash-lite" ? ({ instant:"MINIMAL", balanced:"LOW", deep:"HIGH" }[el.chatSpeed.value] || "LOW") : ({ instant:"LOW", balanced:"MEDIUM", deep:"HIGH" }[el.chatSpeed.value] || "HIGH");
-
+    async function callDirectGeminiChat(msgs, sysFull) { const k = getGeminiKey(); const r = await fetchWithTimeout(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(k)}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ contents: buildContents(msgs), systemInstruction: { parts: [{ text: sysFull }] } }) }, 45000); const d = await safeJson(r); if (!r.ok) throw new Error(d?.error?.message || `Gemini HTTP ${r.status}`); return (d?.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "").trim() || "Sem resposta."; }
+    async function callPollinationsChat(msgs, sysFull) { const o = [{ role: "system", content: sysFull }]; for (const m of msgs.slice(-10)) if (!m.isError && !m.isMediaSummary) o.push({ role: m.role === "user" ? "user" : "assistant", content: m.text || " " }); const pk = getPolliKey(), r = await fetchWithTimeout(pk ? "https://gen.pollinations.ai/v1/chat/completions" : "https://text.pollinations.ai/", { method: "POST", headers: pk ? { "Content-Type": "application/json", "Authorization": `Bearer ${pk}` } : { "Content-Type": "application/json" }, body: JSON.stringify({ messages: o, model: "openai", private: true }) }, 45000); if (!r.ok) throw new Error(`Pollinations HTTP ${r.status}`); const raw = await r.text(); try { const j = JSON.parse(raw); if (j?.choices?.[0]?.message?.content) return j.choices[0].message.content.trim(); } catch {} return raw.trim(); }
+    async function callHordeChat(msgs, sysFull, myToken) { const c = [`System: ${sysFull}`]; for (const m of msgs.slice(-8)) if (!m.isError && !m.isMediaSummary) c.push(`${m.role === "user" ? "User" : "Assistant"}: ${m.text || ""}`); c.push("Assistant:"); const r = await fetchWithTimeout(`${HORDE_API}/generate/text/async`, { method: "POST", headers: { "Content-Type": "application/json", "apikey": getHordeKey(), "Client-Agent": HORDE_AGENT }, body: JSON.stringify({ prompt: c.join("\n"), params: { max_context_length: 2048, max_length: 512, temperature: 0.7 } }) }, 25000); const d = await safeJson(r); if (!r.ok || !d.id) throw new Error(d?.message || `AI Horde HTTP ${r.status}`); for (let t = 0; t < 30; t++) { if (myToken !== state.activeRequestToken) return ""; await new Promise(x => setTimeout(x, 2000)); const sd = await safeJson(await fetchWithTimeout(`${HORDE_API}/generate/text/status/${d.id}`, { headers: { "Client-Agent": HORDE_AGENT } }, 15000)); if (sd.done && sd.generations?.[0]?.text) return sd.generations[0].text.trim(); if (sd.faulted || sd.is_possible === false) throw new Error("AI Horde falhou."); } throw new Error("Tempo limite AI Horde."); }
+    async function callPuterChat(msgs, sysFull) { await ensurePuterSignedIn(); const o = [{ role: "system", content: sysFull }]; for (const m of msgs.slice(-10)) if (!m.isError && !m.isMediaSummary) o.push({ role: m.role === "user" ? "user" : "assistant", content: m.text || " " }); const r = await puter.ai.chat(o); return String(r?.message?.content || r?.text || r || "").trim(); }
     async function callGeminiChatStream(msgs, myToken) {
-      const cands = pickChatCandidates(), contents = buildContents(msgs), uSys = el.systemPrompt.value.trim();
-      const guard = "DIRETRIZ: Este app gera imagens e vídeos nas abas 'Foto Real' e 'Vídeo +1m'. NUNCA diga que não gera imagens/vídeos nem indique sites externos. Responda diretamente à última pergunta do usuário.";
-      const sysFull = uSys ? `${uSys}\n\n${guard}` : guard;
-
+      const cands = pickChatCandidates(), contents = buildContents(msgs), uSys = el.systemPrompt.value.trim(), sysFull = (uSys ? uSys + "\n\n" : "") + "DIRETRIZ: Este app gera imagens e vídeos nas abas 'Foto Real' e 'Vídeo IA Real'. Responda diretamente.";
       for (let i = 0; i < cands.length; i++) {
-        if (myToken !== state.activeRequestToken) return null;
-        const model = cands[i];
-        let res;
-        try {
-          res = await fetchWithRetry(`${WORKER_URL}/api/chat`, {
-            method: "POST", headers: workerHeaders(),
-            body: JSON.stringify({ model, payload: { contents, systemInstruction: { parts: [{ text: sysFull }] }, generationConfig: { thinkingConfig: { thinkingLevel: getThinkingLevel(model) } } } })
-          }, 45000, 1);
-        } catch (err) { if (myToken !== state.activeRequestToken || (err.name === "AbortError" && state.abortController?.signal.aborted)) throw err; if (i < cands.length - 1) continue; throw err; }
-
-        if (!res.ok) {
-          const ed = await safeJson(res), em = formatApiError(res.status, ed);
-          const isAuth = res.status === 401 || res.status === 403 || /API_KEY|leaked|Senha/i.test(ed?.error?.message || "");
-          if (!isAuth && i < cands.length - 1) continue;
-          throw new Error(em);
-        }
-
-        let fullText = "", mounted = null, queued = false;
-        const flush = () => { queued = false; if (mounted && fullText) { mounted.bubble.innerHTML = formatRichText(fullText); scrollToBottom(false); } };
-        try {
-          await readSseStream(res, p => {
-            if (myToken !== state.activeRequestToken || p.thought || !p.text) return;
-            fullText += p.text;
-            if (!mounted) { removeTyping(); mounted = appendMessageDOM({ role:"ai", text:fullText }, true); }
-            else if (!queued) { queued = true; requestAnimationFrame(flush); }
-          });
-        } catch (e) { if (!(e.name === "AbortError" && mounted && fullText.trim())) throw e; }
-
-        if (myToken !== state.activeRequestToken) return null;
-        const ft = fullText.trim() || "Sem resposta.";
-        if (mounted) { mounted.bubble.innerHTML = formatRichText(ft); mounted.bodyWrap.appendChild(createActionBar(ft)); scrollToBottom(false); }
-        return { role: "ai", text: ft, _alreadyMounted: Boolean(mounted) };
+        if (myToken !== state.activeRequestToken) return null; const model = cands[i];
+        try { if (model === "direct-gemini") return { role: "ai", text: await callDirectGeminiChat(msgs, sysFull) }; if (model === "pollinations-text") return { role: "ai", text: await callPollinationsChat(msgs, sysFull) }; if (model === "horde-text") { showTyping("AI Horde Texto (Grátis)..."); return { role: "ai", text: await callHordeChat(msgs, sysFull, myToken) }; } if (model === "puter-chat") return { role: "ai", text: await callPuterChat(msgs, sysFull) }; } catch (e) { if (e.name === "AbortError") throw e; if (i < cands.length - 1) continue; throw e; }
+        if (model === "workers-gemma" && state.workerNeuronsExhausted) continue;
+        let res; try { res = await fetchWithRetry(`${WORKER_URL}/api/chat`, { method: "POST", headers: workerHeaders(), body: JSON.stringify({ model, payload: { contents, systemInstruction: { parts: [{ text: sysFull }] }, generationConfig: { thinkingConfig: { thinkingLevel: getThinkingLevel(model) } } } }) }, 45000, 1); } catch (err) { if (myToken !== state.activeRequestToken || (err.name === "AbortError" && state.abortController?.signal.aborted)) throw err; if (i < cands.length - 1) continue; throw err; }
+        if (!res.ok) { const ed = await safeJson(res), em = formatApiError(res.status, ed); if (!(res.status === 401 && /Senha/i.test(ed?.error?.message || "")) && i < cands.length - 1) continue; throw new Error(em); }
+        let fullText = "", mounted = null, queued = false; const flush = () => { queued = false; if (mounted && fullText) { mounted.bubble.innerHTML = formatRichText(fullText); scrollToBottom(false); } };
+        try { await readSseStream(res, p => { if (myToken !== state.activeRequestToken || p.thought || !p.text) return; fullText += p.text; if (!mounted) { removeTyping(); mounted = appendMessageDOM({ role:"ai", text:fullText }, true); } else if (!queued) { queued = true; requestAnimationFrame(flush); } }); } catch (e) { if (!(e.name === "AbortError" && mounted && fullText.trim())) throw e; }
+        if (myToken !== state.activeRequestToken) return null; const ft = fullText.trim() || "Sem resposta."; if (mounted) { mounted.bubble.innerHTML = formatRichText(ft); mounted.bodyWrap.appendChild(createActionBar(ft)); scrollToBottom(false); } return { role: "ai", text: ft, _alreadyMounted: Boolean(mounted) };
       }
     }
-
-    async function quickAiText(sys, prompt, ms = 15000) {
-      for (const model of ["gemini-3.6-flash", "gemini-3.5-flash-lite", "gemini-2.5-flash", "workers-gemma"]) {
-        try {
-          const r = await fetchWithTimeout(`${WORKER_URL}/api/chat`, {
-            method: "POST", headers: workerHeaders(),
-            body: JSON.stringify({ model, payload: { systemInstruction: { parts: [{ text: sys }] }, contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { temperature: 0.65 } } })
-          }, ms);
-          if (!r.ok) continue;
-          let txt = ""; await readSseStream(r, p => { if (!p.thought && p.text) txt += p.text; });
-          if (txt.trim()) return txt.trim();
-        } catch (e) { if (e.name === "AbortError") throw e; }
-      }
-      return null;
+    async function quickAiText(sys, prompt, ms = 14000) {
+      if (!state.workerNeuronsExhausted) for (const model of ["gemini-3.6-flash", "gemini-3.5-flash-lite", "gemini-2.5-flash"]) { try { const r = await fetchWithTimeout(`${WORKER_URL}/api/chat`, { method: "POST", headers: workerHeaders(), body: JSON.stringify({ model, payload: { systemInstruction: { parts: [{ text: sys }] }, contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { temperature: 0.6 } } }) }, ms); if (!r.ok) { formatApiError(r.status, await safeJson(r)); continue; } let txt = ""; await readSseStream(r, p => { if (!p.thought && p.text) txt += p.text; }); if (txt.trim()) return txt.trim(); } catch (e) { if (e.name === "AbortError") throw e; } }
+      try { const pk = getPolliKey(), r = await fetchWithTimeout(pk ? "https://gen.pollinations.ai/v1/chat/completions" : "https://text.pollinations.ai/", { method: "POST", headers: pk ? { "Content-Type": "application/json", "Authorization": `Bearer ${pk}` } : { "Content-Type": "application/json" }, body: JSON.stringify({ messages: [{ role: "system", content: sys }, { role: "user", content: prompt }], model: "openai", private: true }) }, ms); if (r.ok) { const raw = await r.text(); try { const j = JSON.parse(raw); if (j?.choices?.[0]?.message?.content) return j.choices[0].message.content.trim(); } catch {} if (raw.trim()) return raw.trim(); } } catch {} return null;
     }
-
-    function sanitizePromptForSafety(s) {
-      return (s || "").replace(/\b(naked|nude|nsfw|sexy|sensual|lingerie|bikini|underwear|skin|pores|sweat|sweaty|flesh|body|bodies|chest|bare|undressed|blood|bloody|gore|kill|killing|murder|attack|attacking|violent|violence|dead|death|weapon|gun|knife|chasing|chase|hunt|hunting)\b/gi, m => ({
-        skin:"complexion", pores:"natural texture", sweat:"natural sheen", body:"figure", bodies:"figures", bare:"open",
-        chasing:"running beside", chase:"running quickly", attack:"confront", attacking:"moving toward", hunt:"explore", hunting:"exploring"
-      }[m.toLowerCase()] || "")).replace(/\s{2,}/g, " ").trim();
+    const sanitizePromptForSafety = s => (s || "").replace(/\b(naked|nude|nsfw|sexy|sensual|lingerie|bikini|underwear|skin|pores|sweat|sweaty|flesh|body|bodies|chest|bare|undressed|blood|bloody|gore|kill|killing|murder|attack|attacking|violent|violence|dead|death|weapon|gun|knife|chasing|chase|hunt|hunting)\b/gi, m => ({ skin:"complexion", pores:"natural texture", sweat:"natural sheen", body:"figure", bodies:"figures", bare:"open", chasing:"running beside", chase:"running quickly", attack:"confront", attacking:"moving toward", hunt:"explore", hunting:"exploring" }[m.toLowerCase()] || "")).replace(/\s{2,}/g, " ").trim();
+    function buildStrictDomainRules(u) { const p = (u || "").toLowerCase(); let e = ""; if (/\b(argentina|afa)\b/i.test(p)) e += " Wearing authentic Argentina national football team jersey with vertical sky-blue and white stripes, gold AFA crest and three gold stars embroidered on the chest."; if (/\b(neymar)\b/i.test(p)) e += " Featuring Brazilian football star Neymar Jr with his recognizable facial features, short dark tapered hair, trimmed beard."; if (/\b(futebol|soccer|football|neymar|messi|gol|estádio|estadio|chute|bola|argentina)\b/i.test(p)) e += " STRICT SPORT LOCK: Association football (soccer) ONLY on lush green grass stadium pitch with soccer goalposts. Anatomically accurate hands with five fingers. NEVER basketball."; return e.trim() || "Realistic proportions, natural five-fingered hands, crisp focus."; }
+    const getStyleDirective = () => ({ photoreal: "authentic candid DSLR documentary photograph, Canon EOS R5 50mm f/1.8, crisp sharp focus", cinema: "35mm live-action film frame, ARRI Alexa, natural cinematic lighting", portrait: "editorial press portrait, 85mm f/1.8, sharp eyes", concept: "detailed atmospheric scene, crisp clarity" }[el.imageStyle.value] || "authentic DSLR photograph");
+    async function craftMasterPrompt(u, type = "image") { const st = type === "image" ? getStyleDirective() : "live-action sports broadcast / 35mm cinema footage, realistic physics, dynamic tracking", dl = buildStrictDomainRules(u), sys = `Photo/Film Director. Translate to ONE realistic English prompt (max 95 words). ${dl}. Keep accurate hands, crests and likeness. Style: ${st}. Return ONLY the prompt.`; const ai = await quickAiText(sys, u, 13000).catch(e => { if (e.name === "AbortError") throw e; return null; }); return sanitizePromptForSafety(ai ? ai.replace(/^["'\x60]+|["'\x60]+$/g, "").trim() : `${u}. ${dl}. ${st}`); }
+    function getDimsFromRatio(r, q) { return q === "4K" ? ({ "16:9":[1920,1088], "9:16":[1088,1920], "4:3":[1440,1088], "1:1":[1536,1536] }[r] || [1536,1536]) : q === "2K" ? ({ "16:9":[1536,864], "9:16":[864,1536], "4:3":[1280,960], "1:1":[1280,1280] }[r] || [1280,1280]) : ({ "16:9":[1280,720], "9:16":[720,1280], "4:3":[1024,768], "1:1":[1024,1024] }[r] || [1024,1024]); }
+    async function pickBestHordeModel() { const pref = ["Juggernaut XL", "AlbedoBase XL (SDXL)", "EpicRealism", "ICBINP - I Can't Believe It's Not Photography", "FLUX.1-Schnell", "Deliberate"]; try { const r = await fetchWithTimeout(`${HORDE_API}/status/models?type=image`, { headers: { "Client-Agent": HORDE_AGENT } }, 8000); if (r.ok) { const list = await r.json(), on = new Set((list || []).filter(m => m.count > 0).map(m => m.name)); for (const p of pref) if (on.has(p)) return p; if (list?.length) { list.sort((a, b) => (b.count || 0) - (a.count || 0)); return list[0].name; } } } catch {} return "AlbedoBase XL (SDXL)"; }
+    async function requestAiHordeImage(promptText, ratio, myToken) {
+      const key = getHordeKey(), isAnon = key === "0000000000", dims = isAnon ? ({ "16:9":[576, 320], "9:16":[320, 576], "4:3":[576, 448], "1:1":[576, 576] }[ratio] || [576, 576]) : ({ "16:9":[1024, 576], "9:16":[576, 1024], "4:3":[896, 640], "1:1":[1024, 1024] }[ratio] || [1024, 576]);
+      showTyping("Escolhendo GPU realista no AI Horde..."); const modelName = await pickBestHordeModel();
+      const sr = await fetchWithTimeout(`${HORDE_API}/generate/async`, { method: "POST", headers: { "Content-Type": "application/json", "apikey": key, "Client-Agent": HORDE_AGENT }, body: JSON.stringify({ prompt: `${sanitizePromptForSafety(promptText)} ### ${NEG_PROMPT}`, models: [modelName], params: { width: dims[0], height: dims[1], steps: isAnon ? 26 : 32, n: 1, cfg_scale: 6.5, sampler_name: "k_dpmpp_2m", karras: true }, nsfw: false, censor_nsfw: true, r2: true }) }, 25000);
+      const sd = await safeJson(sr); if (!sr.ok || !sd.id) throw new Error(sd?.message || `AI Horde HTTP ${sr.status}`);
+      for (let t = 0; t < 48; t++) { if (myToken !== state.activeRequestToken) return null; await new Promise(x => setTimeout(x, 2500)); const ck = await safeJson(await fetchWithTimeout(`${HORDE_API}/generate/check/${sd.id}`, { headers: { "Client-Agent": HORDE_AGENT } }, 15000)); if (ck.faulted || ck.is_possible === false) throw new Error("Sem GPU no AI Horde."); if (ck.done) break; showTyping(`AI Horde (${modelName}): ${ck.queue_position ? `fila #${ck.queue_position}` : "gerando"}${ck.wait_time ? ` (~${ck.wait_time}s)` : ""}...`); }
+      const st = await safeJson(await fetchWithTimeout(`${HORDE_API}/generate/status/${sd.id}`, { headers: { "Client-Agent": HORDE_AGENT } }, 20000)), gen = st?.generations?.[0]; if (!gen?.img) throw new Error("AI Horde vazio.");
+      let imgUrl = gen.img.startsWith("http") ? gen.img : `data:image/webp;base64,${gen.img}`; if (imgUrl.startsWith("http")) try { const ib = await fetchWithTimeout(imgUrl, {}, 25000); if (ib.ok) imgUrl = URL.createObjectURL(await ib.blob()); } catch {} return { url: imgUrl, model: modelName };
     }
-
-    const getStyleDirective = () => ({
-      photoreal: "authentic candid DSLR documentary photograph, Canon EOS R5 50mm f/1.8, natural daylight, unretouched editorial photojournalism",
-      cinema: "35mm live-action film frame, ARRI Alexa, natural cinematic lighting, shallow depth of field, subtle film grain",
-      portrait: "editorial press portrait photograph, 85mm f/1.8, soft key light, authentic facial proportions, blurred background",
-      concept: "detailed atmospheric scene, natural lighting depth, crisp clarity, balanced colors"
-    }[el.imageStyle.value] || "authentic DSLR photograph, natural daylight");
-
-    async function craftMasterPrompt(promptUser, type = "image") {
-      const style = type === "image" ? getStyleDirective() : "35mm live-action cinema shot, natural daylight, dynamic movement, documentary realism";
-      const sys = `Photojournalist writing FLUX.2 prompts. Translate to ONE natural English photo prompt (max 85 words). If a famous person is named (e.g. Neymar Jr.), describe their real facial features, hair, facial hair, jersey and setting accurately. NEVER use buzzwords (8K, 4K, masterpiece, hyperrealistic, 3D, octane) or trigger words (skin, pores, sweat, naked, bare, blood, kill, attack). Style: ${style}. Return ONLY the prompt.`;
-      const ai = await quickAiText(sys, promptUser, 12000).catch(e => { if (e.name === "AbortError") throw e; return null; });
-      if (ai) return sanitizePromptForSafety(ai.replace(/^["'`]+|["'`]+$/g, "").trim());
-      try {
-        const r = await fetchWithTimeout(`${WORKER_URL}/api/enhance`, { method: "POST", headers: workerHeaders(), body: JSON.stringify({ prompt: promptUser, type, motionLevel: el.videoMotion.value }) }, 10000);
-        if (r.ok) { const d = await r.json(); if (d.prompt) return sanitizePromptForSafety(`${d.prompt}, ${style}`); }
-      } catch {}
-      return sanitizePromptForSafety(`${promptUser}, ${style}`);
-    }
-
-    function getDimsFromRatio(ratio, q) {
-      if (q === "4K") return { "16:9":[1920,1088], "9:16":[1088,1920], "4:3":[1440,1088], "1:1":[1536,1536] }[ratio] || [1536,1536];
-      if (q === "2K") return { "16:9":[1536,864], "9:16":[864,1536], "4:3":[1280,960], "1:1":[1280,1280] }[ratio] || [1280,1280];
-      return { "16:9":[1280,720], "9:16":[720,1280], "4:3":[1024,768], "1:1":[1024,1024] }[ratio] || [1024,1024];
-    }
-
-    async function requestWorkerImage(promptText, att, engine, w, h, fb = "") {
-      const sizes = [[w, h]]; if (w > 1280 || h > 1280) sizes.push([1280, 720]); if (w !== 1024 || h !== 1024) sizes.push([1024, 1024]);
-      const pVars = [sanitizePromptForSafety(promptText)]; if (fb) pVars.push(sanitizePromptForSafety(fb)); pVars.push("scenic nature photography, calm daylight, crisp realistic lens");
-      let last = { ok: false, status: 500, data: { error: { message: "Erro ao gerar imagem" } } };
-      for (const cp of pVars) {
-        if (!cp) continue;
-        for (const [tw, th] of sizes) {
-          const r = await fetchWithTimeout(`${WORKER_URL}/api/image`, {
-            method: "POST", headers: workerHeaders(),
-            body: JSON.stringify({ engine, prompt: cp, width: tw, height: th, aspectRatio: el.imageRatio.value, imageSize: el.imageSize.value, attachment: att ? { mimeType: att.mimeType, base64: att.base64 } : null })
-          }, 65000);
-          const d = await safeJson(r); last = { ok: r.ok, status: r.status, data: d };
-          if (r.ok && d.imageUrl) return last;
-          if (/8007|NSFW|safety|blocked/i.test(String(d?.error?.message || ""))) break;
-          if (r.status === 401 || r.status === 403 || r.status === 429) return last;
-        }
-      }
-      return last;
-    }
-
+    async function requestPollinationsApiImage(p, w, h) { const pk = getPolliKey(); if (!pk) throw new Error("Sem chave Pollinations."); const r = await fetchWithTimeout(`https://gen.pollinations.ai/image/${encodeURIComponent(sanitizePromptForSafety(p))}?width=${w}&height=${h}&model=flux&nologo=true&seed=${Math.floor(Math.random()*9999999)}`, { headers: { "Authorization": `Bearer ${pk}` } }, 65000); if (!r.ok) throw new Error(`Pollinations HTTP ${r.status}`); return URL.createObjectURL(await r.blob()); }
+    async function requestPuterImage(p, mId, att) { await ensurePuterSignedIn(); const o = { model: mId }; if (att?.dataUrl) o.input_reference = att.dataUrl; const im = await puter.ai.txt2img(sanitizePromptForSafety(p), o); if (!im?.src) throw new Error("Puter vazio."); return im.src; }
+    async function requestWorkerImage(p, att, eng, w, h) { const sizes = [[w, h]]; if (w > 1280 || h > 1280) sizes.push([1280, 720]); let last = { ok: false, status: 500, data: {} }; for (const [tw, th] of sizes) { const r = await fetchWithTimeout(`${WORKER_URL}/api/image`, { method: "POST", headers: workerHeaders(), body: JSON.stringify({ engine: eng, prompt: sanitizePromptForSafety(p), width: tw, height: th, aspectRatio: el.imageRatio.value, imageSize: el.imageSize.value, attachment: att ? { mimeType: att.mimeType, base64: att.base64 } : null }) }, 65000); const d = await safeJson(r); last = { ok: r.ok, status: r.status, data: d }; if (r.ok && d.imageUrl) return last; if (isNeuronLimitMsg(d?.error?.message || "")) { markNeuronsExhausted(); return last; } if (r.status === 401 || r.status === 403 || r.status === 429) return last; } return last; }
+    async function postProcessImage(u) { if (!el.autoUpscaleToggle.checked) return u; try { showTyping("Aplicando Auto-Upscale & Nitidez HD..."); return await upscaleAndSharpenImage(u, el.imageSize.value === "4K" ? 2240 : el.imageSize.value === "2K" ? 1600 : 1280, 0.34); } catch { return u; } }
     async function callGeminiImage(promptText, att, myToken) {
-      const sel = el.imageModel.value, [w, h] = getDimsFromRatio(el.imageRatio.value, el.imageSize.value);
-      showTyping("Preparando fotografia realista...");
-      const enhanced = await craftMasterPrompt(promptText, "image");
-      if (myToken !== state.activeRequestToken) return null;
-      const engines = sel === "workers-flux" ? ["workers-flux"] : sel === "auto-smart" ? (state.googleImageBlocked ? ["workers-flux"] : ["gemini-nano-banana-2.1", "workers-flux"]) : [sel, "workers-flux"];
+      const sel = el.imageModel.value, [w, h] = getDimsFromRatio(el.imageRatio.value, el.imageSize.value); showTyping("Preparando prompt detalhado..."); const enh = await craftMasterPrompt(promptText, "image"); if (myToken !== state.activeRequestToken) return null;
+      let order = sel === "ai-horde" ? ["ai-horde"] : sel === "pollinations-api" ? ["pollinations-api", "ai-horde"] : sel === "puter-nano-banana" ? ["puter-nano-banana", "ai-horde"] : sel === "puter-flux" ? ["puter-flux", "ai-horde"] : sel === "workers-flux" ? ["workers-flux", "ai-horde"] : [...(getPolliKey() ? ["pollinations-api"] : []), ...(!state.workerNeuronsExhausted ? ["workers-flux"] : []), "ai-horde"];
       let lastErr = null;
-      for (const eng of engines) {
+      for (const eng of order) {
         if (myToken !== state.activeRequestToken) return null;
-        showTyping(eng === "workers-flux" ? "Gerando fotografia HD (FLUX.2)..." : "Gerando fotografia HD (Nano Banana 2.1)...");
-        const { ok, status, data } = await requestWorkerImage(enhanced, att, eng, w, h, `${promptText}, outdoor daylight photography, clean lens`);
-        if (ok && data.imageUrl) return { role: "ai", text: `Imagem gerada (**${data.provider || eng}**).`, imageUrl: data.imageUrl, originalPrompt: promptText, isMediaSummary: true };
-        if (eng !== "workers-flux") state.googleImageBlocked = true;
-        lastErr = new Error(formatApiError(status, data));
+        try {
+          if (eng === "pollinations-api") { showTyping("Gerando imagem (Pollinations API)..."); return { role: "ai", text: "Imagem (**Pollinations API** • Zero marca d'água).", imageUrl: await postProcessImage(await requestPollinationsApiImage(enh, w, h)), originalPrompt: promptText, isMediaSummary: true }; }
+          if (eng === "ai-horde") { const rH = await requestAiHordeImage(enh, el.imageRatio.value, myToken); if (!rH) return null; return { role: "ai", text: `Imagem (**AI Horde • ${rH.model}** • Zero marca d'água).`, imageUrl: await postProcessImage(rH.url), originalPrompt: promptText, isMediaSummary: true }; }
+          if (eng.startsWith("puter-")) { const mId = eng === "puter-nano-banana" ? "google/gemini-nano-banana-2.1" : "black-forest-labs/FLUX.2-pro"; showTyping(`Gerando (${mId})...`); return { role: "ai", text: `Imagem (**${mId}** • Zero marca d'água).`, imageUrl: await postProcessImage(await requestPuterImage(enh, mId, att)), originalPrompt: promptText, isMediaSummary: true }; }
+          showTyping("Gerando (Cloudflare FLUX.2)..."); const { ok, status, data } = await requestWorkerImage(enh, att, eng, w, h); if (ok && data.imageUrl) return { role: "ai", text: `Imagem (**${data.provider || eng}** • Zero marca d'água).`, imageUrl: await postProcessImage(data.imageUrl), originalPrompt: promptText, isMediaSummary: true }; lastErr = new Error(formatApiError(status, data));
+        } catch (err) { if (err.name === "AbortError") throw err; lastErr = err; }
       }
-      throw lastErr || new Error("Não foi possível gerar a imagem.");
+      throw lastErr || new Error("Erro ao gerar imagem.");
     }
-
-    function extractOmniVideo(d) {
-      if (d.output_video?.data) return `data:video/mp4;base64,${d.output_video.data}`;
-      for (const o of d.outputs || []) {
-        if ((o.type === "video" || o.mime_type?.startsWith("video/")) && o.data) return `data:${o.mime_type || "video/mp4"};base64,${o.data}`;
-        if (o.uri?.startsWith("http")) return o.uri;
-      }
-      return null;
-    }
-
-    async function runOmniInteraction(payload, myToken) {
-      const sr = await fetchWithTimeout(`${WORKER_URL}/api/video/start`, { method: "POST", headers: workerHeaders(), body: JSON.stringify(payload) }, 35000);
-      const sd = await safeJson(sr); if (!sr.ok) throw new Error(formatApiError(sr.status, sd));
-      let cur = sd; const dir = extractOmniVideo(cur); if (dir) return { videoUrl: dir, interactionId: cur.id };
-      if (!cur.id) throw new Error("Sem ID de geração.");
-      for (let t = 0; t < 90 && cur.status !== "completed" && cur.status !== "failed"; t++) {
-        if (myToken !== state.activeRequestToken) return null;
-        await new Promise(r => setTimeout(r, 2500));
-        const p = await fetchWithTimeout(`${WORKER_URL}/api/video/status?id=${encodeURIComponent(cur.id)}`, { headers: workerHeaders() }, 25000);
-        if (p.ok) cur = await safeJson(p);
-      }
-      if (cur.status === "failed") throw new Error(cur.error?.message || "Falha no Omni.");
-      const vp = extractOmniVideo(cur); if (!vp) throw new Error("Vídeo vazio.");
-      return { videoUrl: vp, interactionId: cur.id };
-    }
-
     const loadImgElement = src => new Promise((res, rej) => { const i = new Image(); i.crossOrigin = "anonymous"; i.onload = () => res(i); i.onerror = rej; i.src = src; });
-
-    async function generateVideoStoryboard(prompt, count, motion) {
-      const pace = { normal:"smooth sweeping shots", high:"dynamic tracking action", extreme:"fast-paced cinematic angles" }[motion] || "dynamic progression";
-      const sys = `Film Director: break the idea into EXACTLY ${count} sequential live-action shots (${pace}, 35mm documentary). Keep subjects consistent, vary angles/lighting. NEVER use skin/pores/sweat/naked/blood/kill/attack/chase/8K. Return ONLY a JSON array of ${count} English strings.`;
-      const raw = await quickAiText(sys, prompt, 18000).catch(e => { if (e.name === "AbortError") throw e; return null; });
-      if (raw) {
-        try {
-          const arr = JSON.parse((raw.match(/\[[\s\S]*\]/) || [raw])[0]);
-          if (Array.isArray(arr) && arr.length >= 4) {
-            const cl = arr.map(s => sanitizePromptForSafety(String(s).trim())).filter(Boolean);
-            while (cl.length < count) cl.push(cl[cl.length - 1]);
-            return cl.slice(0, count);
-          }
-        } catch {}
-      }
-      const m = await craftMasterPrompt(prompt, "video");
-      const prog = ["wide establishing shot at golden hour", "medium tracking shot forward", "low-angle dynamic shot", "side tracking camera shot", "expressive close-up focus", "over-the-shoulder advancing", "aerial drone view", "diagonal sunlight rays", "evening twilight shot", "high-energy climax shot", "orbit camera shot", "epic wide closing horizon"];
-      return Array.from({ length: count }, (_, i) => sanitizePromptForSafety(`${m}, ${prog[i % prog.length]}`));
-    }
-
-    const createParticles = (n, w, h) => Array.from({ length: n }, () => ({ x: Math.random() * w, y: Math.random() * h, r: 1 + Math.random() * 2.2, vx: (Math.random() - 0.5) * 16, vy: -8 - Math.random() * 20, a: 0.08 + Math.random() * 0.2 }));
+    async function generateVideoStoryboard(prompt, count, motion) { const dl = buildStrictDomainRules(prompt), raw = await quickAiText(`Director: break into EXACTLY ${count} sequential scenes (${motion}). ${dl} Return ONLY JSON array of ${count} English strings.`, prompt, 16000).catch(() => null); if (raw) try { const arr = JSON.parse((raw.match(/\[[\s\S]*\]/) || [raw])[0]); if (Array.isArray(arr) && arr.length >= 2) { const cl = arr.map(s => sanitizePromptForSafety(`${s}. ${dl}`)); while (cl.length < count) cl.push(cl[cl.length - 1]); return cl.slice(0, count); } } catch {} const m = await craftMasterPrompt(prompt, "video"); return Array.from({ length: count }, (_, i) => sanitizePromptForSafety(`${m}, scene ${i + 1}. ${dl}`)); }
     const ease = x => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
-
-    function drawShot(ctx, img, w, h, t, seed, alpha, mm) {
-      ctx.save(); ctx.globalAlpha = alpha;
-      const e = ease(Math.max(0, Math.min(1, t))), m = seed % 4;
-      let sc = 1.06, px = 0, py = 0;
-      if (m === 0) { sc = 1.04 + e * 0.13 * mm; px = (e - 0.5) * w * 0.05 * mm; }
-      else if (m === 1) { sc = 1.04 + (1 - e) * 0.13 * mm; px = (0.5 - e) * w * 0.05 * mm; }
-      else if (m === 2) { sc = 1.08 + Math.sin(e * Math.PI) * 0.06 * mm; px = (e - 0.5) * w * 0.08 * mm; py = Math.sin(e * Math.PI) * h * 0.025; }
-      else { sc = 1.06 + e * 0.1 * mm; py = (0.5 - e) * h * 0.05 * mm; }
-      const sh = mm > 1.05 ? 1.6 : 0.6; px += Math.sin(t * 17 + seed) * sh; py += Math.cos(t * 13 + seed) * sh;
-      const ir = img.width / img.height, cr = w / h;
-      let dw, dh; if (ir > cr) { dh = h * sc; dw = dh * ir; } else { dw = w * sc; dh = dw / ir; }
-      ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = "high";
-      ctx.drawImage(img, (w - dw) / 2 + px, (h - dh) / 2 + py, dw, dh);
-      ctx.restore();
+    function drawShot(ctx, img, w, h, t, seed, alpha, mm) { ctx.save(); ctx.globalAlpha = alpha; const e = ease(Math.max(0, Math.min(1, t))), m = seed % 4; let sc = 1.06, px = 0, py = 0; if (m === 0) { sc = 1.04 + e * 0.12 * mm; px = (e - 0.5) * w * 0.05 * mm; } else if (m === 1) { sc = 1.04 + (1 - e) * 0.12 * mm; px = (0.5 - e) * w * 0.05 * mm; } else { sc = 1.07; py = (0.5 - e) * h * 0.04 * mm; } const ir = img.width / img.height, cr = w / h, dw = ir > cr ? h * sc * ir : w * sc, dh = ir > cr ? h * sc : (w * sc) / ir; ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = "high"; ctx.drawImage(img, (w - dw) / 2 + px, (h - dh) / 2 + py, dw, dh); ctx.restore(); }
+    async function encodeMp4(imgs, rw, rh, tot, mm, myToken) {
+      if (typeof VideoEncoder === "undefined" || typeof VideoFrame === "undefined") return null; let Muxer, ArrayBufferTarget; try { ({ Muxer, ArrayBufferTarget } = await import("https://cdn.jsdelivr.net/npm/mp4-muxer@5/build/mp4-muxer.mjs")); } catch { return null; }
+      const fps = 24, w = Math.min(1280, rw), h = Math.min(1280, rh); let codec = null; for (const c of ["avc1.4d002a", "avc1.420028", "avc1.42001f"]) { try { if ((await VideoEncoder.isConfigSupported({ codec: c, width: w, height: h, bitrate: 4_000_000, framerate: fps }))?.supported) { codec = c; break; } } catch {} } if (!codec) return null;
+      const muxer = new Muxer({ target: new ArrayBufferTarget(), video: { codec: "avc", width: w, height: h }, fastStart: "in-memory" }), ve = new VideoEncoder({ output: (c, m) => muxer.addVideoChunk(c, m), error: () => {} }); ve.configure({ codec, width: w, height: h, bitrate: 4_000_000, framerate: fps });
+      const cv = document.createElement("canvas"); cv.width = w; cv.height = h; const ctx = cv.getContext("2d", { alpha: false }), tf = tot * fps, dur = Math.round(1_000_000 / fps), sd = tot / imgs.length;
+      for (let f = 0; f < tf; f++) { if (myToken !== state.activeRequestToken) { ve.close(); return null; } const sec = f / fps, idx = Math.min(imgs.length - 1, Math.floor(sec / sd)), ni = Math.min(imgs.length - 1, idx + 1), lt = Math.min(1, (sec - idx * sd) / sd); ctx.fillStyle = "#000"; ctx.fillRect(0, 0, w, h); drawShot(ctx, imgs[idx], w, h, lt, idx, 1, mm); if (lt > 0.82 && ni !== idx) drawShot(ctx, imgs[ni], w, h, ease((lt - 0.82) / 0.18) * 0.14, ni, ease((lt - 0.82) / 0.18), mm); const fr = new VideoFrame(cv, { timestamp: f * dur, duration: dur }); ve.encode(fr, { keyFrame: f % 48 === 0 }); fr.close(); while (ve.encodeQueueSize > 6) await new Promise(r => setTimeout(r, 10)); if (f % 16 === 0) { showTyping(`Renderizando MP4 (${Math.round((f / tf) * 100)}%)...`); await new Promise(r => setTimeout(r, 0)); } }
+      await ve.flush(); ve.close(); muxer.finalize(); return { videoUrl: URL.createObjectURL(new Blob([muxer.target.buffer], { type: "video/mp4" })), ext: "mp4", resLabel: `${w}x${h}` };
     }
-
-    function renderFrame(ctx, imgs, pts, w, h, sec, tot, mm) {
-      const sd = tot / imgs.length, idx = Math.min(imgs.length - 1, Math.floor(sec / sd)), ni = Math.min(imgs.length - 1, idx + 1), lt = Math.min(1, (sec - idx * sd) / sd);
-      ctx.fillStyle = "#000"; ctx.fillRect(0, 0, w, h);
-      drawShot(ctx, imgs[idx], w, h, lt, idx, 1, mm);
-      if (lt > 0.82 && ni !== idx) {
-        const fd = ease((lt - 0.82) / 0.18);
-        drawShot(ctx, imgs[ni], w, h, fd * 0.14, ni, fd, mm);
-        const g = ctx.createRadialGradient(w * 0.5, h * 0.5, 10, w * 0.5, h * 0.5, w * 0.7);
-        g.addColorStop(0, `rgba(255,232,195,${Math.sin(fd * Math.PI) * 0.12})`); g.addColorStop(1, "rgba(0,0,0,0)");
-        ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
-      }
-      ctx.save();
-      for (const p of pts) {
-        ctx.fillStyle = `rgba(255,248,230,${p.a})`;
-        ctx.beginPath(); ctx.arc(((p.x + sec * p.vx) % w + w) % w, ((p.y + sec * p.vy) % h + h) % h, p.r, 0, Math.PI * 2); ctx.fill();
-      }
-      ctx.restore();
-      const vg = ctx.createRadialGradient(w * 0.5, h * 0.5, w * 0.32, w * 0.5, h * 0.5, w * 0.78);
-      vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0,0.34)");
-      ctx.fillStyle = vg; ctx.fillRect(0, 0, w, h);
+    async function callPuterRealVideo(p, att, key, tot, ratio, res, mot, myToken) {
+      await ensurePuterSignedIn(); const map = { "puter-vidu-q3": ["vidu/vidu-q3", "Vidu Q3", 12], "puter-veo-3.1": ["google/veo-3.1", "Google Veo 3.1", 8], "puter-wan-2.7": ["wan-ai/wan2.7-t2v", "Wan 2.7", 8], "puter-kling-2.1": ["kwaivgi/kling-2.1-master", "Kling 2.1", 10], "puter-pixverse-v6": ["pixverse/pixverse-v6", "PixVerse v6", 8] }[key] || ["vidu/vidu-q3", "Vidu Q3", 12];
+      const cc = tot <= 16 ? 1 : tot <= 30 ? 3 : 5, sz = res === "1080p" ? (ratio === "9:16" ? "1080x1920" : "1920x1080") : (ratio === "9:16" ? "720x1280" : "1280x720");
+      showTyping(`Dirigindo ${cc} cena(s) real(is) com ${map[1]}...`); const prompts = cc === 1 ? [await craftMasterPrompt(p, "video")] : await generateVideoStoryboard(p, cc, mot), segs = [];
+      for (let i = 0; i < prompts.length; i++) { if (myToken !== state.activeRequestToken) return null; showTyping(`Gerando vídeo REAL ${i + 1}/${prompts.length} (${map[1]})...`); const o = { model: map[0], seconds: map[2], size: sz }; if (i === 0 && att?.dataUrl) o.input_reference = att.dataUrl; const vel = await puter.ai.txt2vid(prompts[i], o), vu = vel?.src || vel?.currentSrc || vel?.querySelector?.("source")?.src; if (!vu) throw new Error("Vídeo vazio."); segs.push(vu); }
+      return { role: "ai", text: `Vídeo REAL (**${map[1]}** • ${segs.length} cena(s) • Zero marca d'água).`, videoSegments: segs, videoExt: "mp4", isMediaSummary: true };
     }
-
-    function synthAudio(tot, sr = 48000) {
-      const n = Math.floor(tot * sr), L = new Float32Array(n), R = new Float32Array(n), f = [110, 164.81, 220, 277.18];
-      for (let i = 0; i < n; i++) {
-        const t = i / sr, env = Math.min(1, t / 2.5) * Math.min(1, (tot - t) / 2.5) * 0.14, sw = 0.7 + 0.3 * Math.sin(t * 0.45);
-        let l = 0, r = 0; for (let k = 0; k < 4; k++) { const d = (k - 1.5) * 0.35; l += Math.sin(2 * Math.PI * (f[k] + d) * t) / 4; r += Math.sin(2 * Math.PI * (f[k] - d) * t) / 4; }
-        L[i] = l * env * sw; R[i] = r * env * sw;
-      }
-      return { L, R, sr, n };
-    }
-
-    async function encodeMp4(imgs, rw, rh, tot, mm, incAudio, myToken) {
-      if (typeof VideoEncoder === "undefined" || typeof VideoFrame === "undefined") return null;
-      let Muxer, ArrayBufferTarget;
-      try { ({ Muxer, ArrayBufferTarget } = await import("https://cdn.jsdelivr.net/npm/mp4-muxer@5/build/mp4-muxer.mjs")); } catch { return null; }
-      const fps = 24, sizes = [[rw, rh]]; if (rw > 1280 || rh > 1280) sizes.push(rw > rh ? [1280, 720] : [720, 1280]);
-      let codec = null, w = rw, h = rh, br = 5_000_000;
-      outer: for (const [cw, ch] of sizes) {
-        const b = cw >= 1920 ? 7_000_000 : 4_500_000;
-        for (const c of ["avc1.64002a", "avc1.4d002a", "avc1.420028", "avc1.42001f"]) {
-          try { if ((await VideoEncoder.isConfigSupported({ codec: c, width: cw, height: ch, bitrate: b, framerate: fps }))?.supported) { codec = c; w = cw; h = ch; br = b; break outer; } } catch {}
-        }
-      }
-      if (!codec) return null;
-      let useAudio = false;
-      if (incAudio && typeof AudioEncoder !== "undefined" && typeof AudioData !== "undefined") {
-        try { useAudio = Boolean((await AudioEncoder.isConfigSupported({ codec: "mp4a.40.2", numberOfChannels: 2, sampleRate: 48000, bitrate: 128000 }))?.supported); } catch {}
-      }
-      const muxer = new Muxer({ target: new ArrayBufferTarget(), video: { codec: "avc", width: w, height: h }, audio: useAudio ? { codec: "aac", numberOfChannels: 2, sampleRate: 48000 } : undefined, fastStart: "in-memory" });
-      let encErr = null;
-      const ve = new VideoEncoder({ output: (c, m) => muxer.addVideoChunk(c, m), error: e => { encErr = e; } });
-      ve.configure({ codec, width: w, height: h, bitrate: br, framerate: fps });
-      let ae = null;
-      if (useAudio) { ae = new AudioEncoder({ output: (c, m) => muxer.addAudioChunk(c, m), error: () => {} }); ae.configure({ codec: "mp4a.40.2", numberOfChannels: 2, sampleRate: 48000, bitrate: 128000 }); }
-
-      const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
-      const ctx = cv.getContext("2d", { alpha: false }), pts = createParticles(32, w, h), tf = tot * fps, dur = Math.round(1_000_000 / fps);
-      for (let f = 0; f < tf; f++) {
-        if (myToken !== state.activeRequestToken) { try { ve.close(); } catch {} if (ae) try { ae.close(); } catch {} return null; }
-        if (encErr) throw encErr;
-        renderFrame(ctx, imgs, pts, w, h, f / fps, tot, mm);
-        const fr = new VideoFrame(cv, { timestamp: f * dur, duration: dur });
-        ve.encode(fr, { keyFrame: f % (fps * 2) === 0 }); fr.close();
-        while (ve.encodeQueueSize > 6) await new Promise(r => setTimeout(r, 10));
-        if (f % 16 === 0) { showTyping(`Renderizando vídeo MP4 de ${tot}s (${Math.min(99, Math.round((f / tf) * 100))}%)...`); await new Promise(r => setTimeout(r, 0)); }
-      }
-      if (ae) {
-        showTyping("Finalizando áudio do MP4...");
-        const { L, R, sr, n } = synthAudio(tot, 48000);
-        for (let off = 0; off < n; off += 4800) {
-          const len = Math.min(4800, n - off), pl = new Float32Array(len * 2);
-          pl.set(L.subarray(off, off + len), 0); pl.set(R.subarray(off, off + len), len);
-          const ad = new AudioData({ format: "f32-planar", sampleRate: sr, numberOfFrames: len, numberOfChannels: 2, timestamp: Math.round((off / sr) * 1_000_000), data: pl });
-          ae.encode(ad); ad.close(); if (ae.encodeQueueSize > 8) await new Promise(r => setTimeout(r, 8));
-        }
-        await ae.flush(); ae.close();
-      }
-      await ve.flush(); ve.close(); muxer.finalize();
-      return { videoUrl: URL.createObjectURL(new Blob([muxer.target.buffer], { type: "video/mp4" })), ext: "mp4", resLabel: `${w}x${h}` };
-    }
-
-    async function encodeWebmFallback(imgs, w, h, tot, mm, myToken) {
-      const mt = ["video/webm;codecs=vp9", "video/webm;codecs=vp8", "video/webm"].find(t => window.MediaRecorder && MediaRecorder.isTypeSupported(t));
-      if (!mt || !HTMLCanvasElement.prototype.captureStream) throw new Error("Navegador sem suporte a gravação de vídeo.");
-      const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
-      const ctx = cv.getContext("2d", { alpha: false }), pts = createParticles(28, w, h);
-      const rec = new MediaRecorder(cv.captureStream(24), { mimeType: mt, videoBitsPerSecond: 4500000 }), ch = [];
-      rec.ondataavailable = e => { if (e.data?.size) ch.push(e.data); };
-      const done = new Promise(res => { rec.onstop = () => res(URL.createObjectURL(new Blob(ch, { type: mt }))); });
-      const wu = URL.createObjectURL(new Blob([`setInterval(()=>postMessage(1),41);`], { type: "application/javascript" })), wk = new Worker(wu);
-      rec.start(500); const st = performance.now(), ms = tot * 1000;
-      try {
-        await new Promise(res => {
-          let lp = -1;
-          wk.onmessage = () => {
-            if (myToken !== state.activeRequestToken) { try { rec.stop(); } catch {} res(); return; }
-            const elp = performance.now() - st; if (elp >= ms) { try { rec.stop(); } catch {} res(); return; }
-            renderFrame(ctx, imgs, pts, w, h, elp / 1000, tot, mm);
-            const pct = Math.floor((elp / ms) * 100); if (pct !== lp && pct % 5 === 0) { lp = pct; showTyping(`Gravando vídeo contínuo (${pct}%)...`); }
-          };
-        });
-      } finally { wk.terminate(); URL.revokeObjectURL(wu); }
-      if (myToken !== state.activeRequestToken) return null;
-      return { videoUrl: await done, ext: "webm", resLabel: `${w}x${h}` };
-    }
-
-    async function renderFluxCinemaVideo(prompt, tot, ratio, res, motion, myToken) {
-      const count = Math.max(8, Math.min(28, Math.round(tot / 4.5)));
-      showTyping(`Criando roteiro de ${count} cenas (${tot}s)...`);
-      const sb = await generateVideoStoryboard(prompt, count, motion);
-      if (myToken !== state.activeRequestToken) return null;
-      const [w, h] = res === "720p" ? (ratio === "9:16" ? [720, 1280] : [1280, 720]) : (ratio === "9:16" ? [1080, 1920] : [1920, 1080]);
-      const gw = ratio === "9:16" ? 768 : 1280, gh = ratio === "9:16" ? 1280 : 720;
-      const imgs = new Array(sb.length).fill(null); let done = 0;
-      for (let i = 0; i < sb.length; i += 2) {
-        if (myToken !== state.activeRequestToken) return null;
-        const batch = [i, i + 1].filter(x => x < sb.length);
-        showTyping(`Gerando cenas HD (${done}/${sb.length})...`);
-        await Promise.all(batch.map(async idx => {
-          try { const { ok, data } = await requestWorkerImage(sb[idx], null, "workers-flux", gw, gh, `${prompt}, scene ${idx + 1}, outdoor daylight`); if (ok && data.imageUrl) imgs[idx] = await loadImgElement(data.imageUrl); } catch {}
-          done++; if (myToken === state.activeRequestToken) showTyping(`Gerando cenas HD (${done}/${sb.length})...`);
-        }));
-      }
-      const valid = imgs.filter(Boolean); if (!valid.length) throw new Error("Falha ao gerar cenas no Worker.");
-      const mm = { normal: 0.75, high: 1.05, extreme: 1.4 }[motion] || 1.05;
-      showTyping(`Montando vídeo MP4 (${tot}s)...`);
-      let enc = await encodeMp4(valid, w, h, tot, mm, Boolean(el.videoAudioToggle.checked), myToken);
-      if (myToken !== state.activeRequestToken) return null;
-      if (!enc) enc = await encodeWebmFallback(valid, ratio === "9:16" ? 720 : 1280, ratio === "9:16" ? 1280 : 720, tot, mm, myToken);
-      if (!enc || myToken !== state.activeRequestToken) return null;
-      return { videoUrl: enc.videoUrl, ext: enc.ext, sceneCount: valid.length, resLabel: enc.resLabel };
-    }
-
-    async function callSmartVideo(promptText, att, myToken) {
+    async function callSmartVideo(p, att, myToken) {
       const tot = parseInt(el.videoTotalDuration.value, 10), eng = el.videoEngine.value, mot = el.videoMotion.value, res = el.videoRes.value, rat = el.videoRatio.value;
-      if (eng !== "flux-cinema" && (!state.googleVideoBlocked || eng === "gemini-omni-1.2-flash")) {
-        try {
-          showTyping("Preparando direção cinematográfica...");
-          const enh = await craftMasterPrompt(promptText, "video"); if (myToken !== state.activeRequestToken) return null;
-          const fd = Math.min(15, tot); showTyping(`Tentando vídeo no Omni (${fd}s)...`);
-          const fp = { model: "gemini-omni-1.2-flash", input: att ? [{ type:"text", text:enh }, { type:"image", data:att.base64, mime_type:att.mimeType }] : enh, response_format: { type:"video", aspect_ratio:rat, resolution:res, duration:`${fd}s` } };
-          const segs = [], fr = await runOmniInteraction(fp, myToken); if (!fr) return null; segs.push(fr.videoUrl);
-          let rem = tot - fd, pid = fr.interactionId, pi = 2;
-          while (rem > 0 && pid) {
-            if (myToken !== state.activeRequestToken) return null;
-            const ed = Math.min(15, Math.max(5, rem)); showTyping(`Continuando vídeo (Parte ${pi})...`);
-            try {
-              const er = await runOmniInteraction({ model:"gemini-omni-1.2-flash", previous_interaction_id:pid, input:`Continue scene smoothly: ${enh}`, response_format:{ type:"video", aspect_ratio:rat, resolution:res, duration:`${ed}s` } }, myToken);
-              if (!er) break; segs.push(er.videoUrl); pid = er.interactionId; rem -= ed; pi++;
-            } catch {
-              const nc = await runOmniInteraction({ ...fp, input:`Next scene: ${enh}` }, myToken);
-              if (!nc) break; segs.push(nc.videoUrl); pid = nc.interactionId; rem -= fd; pi++;
-            }
-          }
-          return { role: "ai", text: `Vídeo concluído (**${tot}s** • **${segs.length} capítulo(s)**).`, videoSegments: segs, videoExt: "mp4", isMediaSummary: true };
-        } catch (err) {
-          if (err.name === "AbortError" && state.abortController?.signal.aborted) throw err;
-          if (eng === "gemini-omni-1.2-flash") throw err;
-          state.googleVideoBlocked = true;
-        }
-      }
-      if (myToken !== state.activeRequestToken) return null;
-      const r = await renderFluxCinemaVideo(promptText, tot, rat, res, mot, myToken); if (!r) return null;
-      const m = Math.floor(tot / 60), s = tot % 60, dl = m > 0 ? `${m}m ${String(s).padStart(2, "0")}s` : `${tot}s`;
-      return { role: "ai", text: `Vídeo pronto (**${dl}** • **${r.sceneCount} cenas** • **${r.resLabel} ${r.ext.toUpperCase()}**).`, videoSegments: [r.videoUrl], videoExt: r.ext, isMediaSummary: true };
+      if (eng.startsWith("puter-")) return await callPuterRealVideo(p, att, eng, tot, rat, res, mot, myToken);
+      if (eng === "pollinations-video") { const pk = getPolliKey(); if (!pk) throw new Error("Informe chave Pollinations nas Chaves Extras."); showTyping("Gerando vídeo Seedance..."); const r = await fetchWithTimeout(`https://gen.pollinations.ai/image/${encodeURIComponent(await craftMasterPrompt(p, "video"))}?model=seedance&duration=${Math.min(8,tot)}&aspectRatio=${rat}&nologo=true`, { headers: { "Authorization": `Bearer ${pk}` } }, 180000); if (!r.ok) throw new Error(`HTTP ${r.status}`); return { role: "ai", text: "Vídeo REAL (**Pollinations Seedance**).", videoSegments: [URL.createObjectURL(await r.blob())], videoExt: "mp4", isMediaSummary: true }; }
+      if (eng === "gemini-omni-1.2-flash") { const enh = await craftMasterPrompt(p, "video"), sr = await fetchWithTimeout(`${WORKER_URL}/api/video/start`, { method: "POST", headers: workerHeaders(), body: JSON.stringify({ model: "gemini-omni-1.2-flash", input: enh, response_format: { type:"video", aspect_ratio:rat, resolution:res, duration:`${Math.min(15,tot)}s` } }) }, 35000), sd = await safeJson(sr); if (!sr.ok) throw new Error(formatApiError(sr.status, sd)); throw new Error("Use Puter ou Slideshow para vídeo gratuito."); }
+      const sb = await generateVideoStoryboard(p, 4, mot), imgs = []; for (let i = 0; i < sb.length; i++) { if (myToken !== state.activeRequestToken) return null; showTyping(`Cena ${i + 1}/${sb.length} via AI Horde...`); try { const r = await requestAiHordeImage(sb[i], rat, myToken); if (r?.url) imgs.push(await loadImgElement(r.url)); } catch {} }
+      if (!imgs.length) throw new Error("Falha ao gerar cenas."); const enc = await encodeMp4(imgs, rat === "9:16" ? 720 : 1280, rat === "9:16" ? 1280 : 720, tot, { normal:0.75, high:1.05, extreme:1.4 }[mot] || 1.05, myToken);
+      if (!enc) throw new Error("Navegador sem suporte a MP4."); return { role: "ai", text: `Slideshow AI Horde (**${tot}s** • Zero marca d'água).`, videoSegments: [enc.videoUrl], videoExt: "mp4", isMediaSummary: true };
     }
-
     init();
   </script>
 </body>
-                                                                                                                                                     </html>
+</html>
