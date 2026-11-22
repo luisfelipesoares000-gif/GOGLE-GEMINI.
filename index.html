@@ -179,7 +179,7 @@
         <div class="section-title">Modo</div>
         <div class="mode-grid">
           <button class="mode-btn active" data-mode="chat">Chat Pro</button>
-          <button class="mode-btn" data-mode="image">Foto 4K</button>
+          <button class="mode-btn" data-mode="image">Foto Pro</button>
           <button class="mode-btn" data-mode="video">Vídeo 4K</button>
         </div>
 
@@ -187,20 +187,20 @@
           <div>
             <label class="field-label">Modelo</label>
             <select id="chatModel">
-              <option value="auto-turbo" selected>⚡ Auto Turbo (~1s / Pro em código)</option>
-              <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite (Grátis Rápido)</option>
+              <option value="auto-turbo" selected>⚡ Auto Pro (Gemini 4 / 3.6 + Worker)</option>
+              <option value="gemini-4-hydrogen">Gemini 4 Hydrogen (Pro)</option>
               <option value="gemini-3.6-flash">Gemini 3.6 Flash (Grátis)</option>
+              <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite (Ultra Rápido)</option>
               <option value="gemini-2.5-flash">Gemini 2.5 Flash (Estável)</option>
-              <option value="gemini-4-hydrogen">Gemini 4 Hydrogen (Melhor)</option>
               <option value="workers-gemma">Cloudflare Gemma 4 (Sem limite Google)</option>
             </select>
           </div>
           <div>
             <label class="field-label">Velocidade / Raciocínio</label>
             <select id="chatSpeed">
-              <option value="instant" selected>⚡ Instantâneo (1s)</option>
               <option value="balanced">⚖️ Equilibrado</option>
-              <option value="deep">🧠 Profundo (Pro)</option>
+              <option value="deep" selected>🧠 Profundo (Pro Máximo)</option>
+              <option value="instant">⚡ Instantâneo (1s)</option>
             </select>
           </div>
         </div>
@@ -209,9 +209,9 @@
           <div>
             <label class="field-label">Motor de Imagem (Automático sem Erro)</label>
             <select id="imageModel">
-              <option value="gemini-nano-banana-2.1" selected>✨ Auto (Nano Banana 2.1 → FLUX.2 Grátis)</option>
-              <option value="gemini-3-pro-image">👑 Nano Banana Pro (Billing / Fallback FLUX.2)</option>
-              <option value="workers-flux2">📸 Cloudflare FLUX.2 Pro (Grátis Direto)</option>
+              <option value="auto-smart" selected>✨ Auto Pro (Nano Banana → FLUX.2 Grátis)</option>
+              <option value="workers-flux">📸 Cloudflare FLUX.2 Pro (Grátis Direto)</option>
+              <option value="gemini-nano-banana-2.1">👑 Google Nano Banana 2.1 (Requer Billing)</option>
             </select>
           </div>
           <div class="grid-2">
@@ -237,7 +237,7 @@
 
         <div id="videoOptions" style="display:none;flex-direction:column;gap:8px;">
           <div>
-            <label class="field-label">Motor de Vídeo (Gemini Oficial)</label>
+            <label class="field-label">Motor de Vídeo (Requer Billing no Google)</label>
             <select id="videoEngine">
               <option value="gemini-omni-1.2-flash" selected>🎬 Gemini Omni 1.2 Flash (4K + Áudio)</option>
             </select>
@@ -281,7 +281,7 @@
 
       <div class="section-box">
         <div class="section-title">Personalidade da IA</div>
-        <textarea class="sys-prompt" id="systemPrompt" rows="3">Você é o Gemini Pro. Responda em português do Brasil com naturalidade, agilidade, clareza e códigos completos sem cortes.</textarea>
+        <textarea class="sys-prompt" id="systemPrompt" rows="3">Você é o Gemini Pro. Responda em português do Brasil com máxima inteligência, clareza e códigos completos sem cortes.</textarea>
       </div>
 
       <div class="section-box">
@@ -301,7 +301,7 @@
         <div class="topbar-title">
           Gemini
           <span class="pill-tag" id="modeBadge">Pro ⚡</span>
-          <span class="pill-tag secure" id="securityBadge">🔒 Gemini + Worker</span>
+          <span class="pill-tag secure" id="securityBadge">🔒 Gemini + FLUX.2 OK</span>
           <span class="pill-tag temporal" id="temporalBadge" style="display:none;">Temporal</span>
         </div>
       </div>
@@ -311,15 +311,15 @@
       <div class="chat-inner" id="chatContainer">
         <div class="welcome" id="welcomeScreen">
           <h1>Olá! Como posso ajudar hoje?</h1>
-          <p>Conectado ao seu Worker seguro: chat instantâneo sem bloqueios, fotos realistas sem marca d'água (Gemini com fallback automático no FLUX.2) e botão <b>✨</b> para criar prompts perfeitos.</p>
+          <p>Modo Pro ativo: chat inteligente sem cortes, criação automática de fotos realistas sem marca d'água (com fallback grátis direto no seu Cloudflare) e botão <b>✨</b> de prompt.</p>
           <div class="quick-cards">
-            <div class="quick-card" data-mode-jump="image" data-prompt="Gere uma imagem realista de um rato cinza curioso em uma cozinha de madeira com luz natural da manhã">
+            <div class="quick-card" data-mode-jump="image" data-prompt="Gere uma imagem realista de um rato misturado com um leão em luz natural da savana">
               <strong>Foto Realista 📸</strong>
-              <span>Sem marca d'água e sem erro de cota.</span>
+              <span>Sem marca d'água e sem erro 429.</span>
             </div>
             <div class="quick-card" data-mode-jump="video" data-prompt="Uma pessoa dançando com muita energia em uma rua movimentada à noite com luzes neon">
               <strong>Vídeo Gemini 4K 🎬</strong>
-              <span>Gemini Omni 1.2 Flash direto com áudio nativo.</span>
+              <span>Gemini Omni 1.2 Flash (exige Billing ativo no Google).</span>
             </div>
             <div class="quick-card" data-mode-jump="chat" data-prompt="Crie um prompt perfeito de fotografia realista e também um site completo em HTML.">
               <strong>Prompts & Programação 💻</strong>
@@ -399,6 +399,7 @@
       abortController: null,
       activeRequestToken: 0,
       isRecording: false,
+      googleImageBlocked: false,
       confirmClearTimer: null
     };
 
@@ -526,7 +527,7 @@
       el.promptInput.placeholder =
         mode === "chat" ? "Peça ao Gemini..." :
         mode === "image" ? "Descreva a foto realista (sem marca d'água)..." :
-        "Descreva o vídeo com ação para o Gemini Omni 4K...";
+        "Descreva o vídeo com ação (requer Billing no Google)...";
     }
     el.modeBtns.forEach(btn => btn.addEventListener("click", () => setMode(btn.dataset.mode)));
     el.qmodePills.forEach(btn => btn.addEventListener("click", () => setMode(btn.dataset.mode)));
@@ -963,8 +964,8 @@
         return "Senha incorreta ou necessária.";
       }
       if (/leaked/i.test(msg)) return "Chave antiga bloqueada pelo Google. Crie uma chave nova e salve no Cloudflare.";
-      if (/limit:\s*0|free_tier|billing|quota/i.test(msg) || status === 429) {
-        return `A chave GEMINI_API_KEY no Cloudflare está no plano gratuito do Google (sem Billing ativado para este recurso). Para fotos, ative a ligação 'AI' no Cloudflare Workers para gerar grátis no FLUX.2!`;
+      if (/limit:\s*0|free_tier|billing|quota|exceeded/i.test(msg) || status === 429) {
+        return `O Google bloqueou este recurso porque sua chave GEMINI_API_KEY está no plano gratuito (sem Billing ativo no Google AI Studio).`;
       }
       if (status === 401 || status === 403 || /API_KEY|ACCESS_TOKEN/i.test(msg)) return `Chave recusada no Worker (${msg}).`;
       return msg;
@@ -1062,18 +1063,15 @@
 
     function pickChatCandidates(userText, hasAttachment) {
       const sel = el.chatModel.value;
-      const freeChain = ["gemini-3.5-flash-lite", "gemini-3.6-flash", "gemini-2.5-flash", "workers-gemma"];
-      if (sel === "auto-turbo") {
-        const complex = hasAttachment || userText.length > 140 || /\b(código|codigo|html|css|js|javascript|python|site|app|programa|projeto|analise|arquitetura|sistema|jogo|script)\b/i.test(userText);
-        return complex ? ["gemini-4-hydrogen", ...freeChain] : freeChain;
-      }
-      return [sel, ...freeChain.filter(m => m !== sel)];
+      const proAndFree = ["gemini-4-hydrogen", "gemini-3.6-flash", "gemini-3.5-flash-lite", "gemini-2.5-flash", "workers-gemma"];
+      if (sel === "auto-turbo") return proAndFree;
+      return [sel, ...proAndFree.filter(m => m !== sel)];
     }
 
     function getThinkingLevel(model) {
       const s = el.chatSpeed.value;
-      if (model === "gemini-3.5-flash-lite") return { instant:"MINIMAL", balanced:"LOW", deep:"HIGH" }[s] || "MINIMAL";
-      return { instant:"LOW", balanced:"MEDIUM", deep:"HIGH" }[s] || "LOW";
+      if (model === "gemini-3.5-flash-lite") return { instant:"MINIMAL", balanced:"LOW", deep:"HIGH" }[s] || "LOW";
+      return { instant:"LOW", balanced:"MEDIUM", deep:"HIGH" }[s] || "HIGH";
     }
 
     async function callGeminiChatStream(msgs, myToken, userText, hasAttachment) {
@@ -1160,30 +1158,52 @@
       const enhanced = await enhanceVisualPrompt(promptText, "image");
       if (myToken !== state.activeRequestToken) return null;
 
-      showTyping("Gerando foto realista sem marca d'água...");
-      const res = await fetchWithTimeout(`${WORKER_URL}/api/image`, {
-        method: "POST",
-        headers: workerHeaders(),
-        body: JSON.stringify({
-          engine: selectedModel,
-          prompt: enhanced,
-          width: w,
-          height: h,
-          aspectRatio: el.imageRatio.value,
-          imageSize: el.imageSize.value,
-          attachment: attachment ? { mimeType: attachment.mimeType, base64: attachment.base64 } : null
-        })
-      }, 65000);
+      let enginesToTry;
+      if (selectedModel === "workers-flux") enginesToTry = ["workers-flux"];
+      else if (selectedModel === "auto-smart") enginesToTry = state.googleImageBlocked ? ["workers-flux"] : ["gemini-nano-banana-2.1", "workers-flux"];
+      else enginesToTry = [selectedModel, "workers-flux"];
 
-      const data = await safeJson(res);
-      if (!res.ok) throw new Error(formatApiError(res.status, data));
-      if (!data.imageUrl) throw new Error("Nenhuma imagem retornada.");
+      let lastErr = null;
+      for (let i = 0; i < enginesToTry.length; i++) {
+        if (myToken !== state.activeRequestToken) return null;
+        const eng = enginesToTry[i];
+        showTyping(eng === "workers-flux"
+          ? "Gerando foto realista grátis (Cloudflare FLUX sem marca d'água)..."
+          : `Gerando foto no Google (${eng})...`);
 
-      return {
-        role: "ai",
-        text: `Foto gerada (**${data.provider || selectedModel}**):\n> *Prompt usado:* \`${enhanced}\``,
-        imageUrl: data.imageUrl
-      };
+        try {
+          const res = await fetchWithTimeout(`${WORKER_URL}/api/image`, {
+            method: "POST",
+            headers: workerHeaders(),
+            body: JSON.stringify({
+              engine: eng,
+              prompt: enhanced,
+              width: w,
+              height: h,
+              aspectRatio: el.imageRatio.value,
+              imageSize: el.imageSize.value,
+              attachment: attachment ? { mimeType: attachment.mimeType, base64: attachment.base64 } : null
+            })
+          }, 65000);
+
+          const data = await safeJson(res);
+          if (res.ok && data.imageUrl) {
+            return {
+              role: "ai",
+              text: `Foto gerada (**${data.provider || eng}**):\n> *Prompt usado:* \`${enhanced}\``,
+              imageUrl: data.imageUrl
+            };
+          }
+          if (eng !== "workers-flux" && (res.status === 429 || res.status === 403 || /limit:\s*0|quota|billing/i.test(data?.error?.message || ""))) {
+            state.googleImageBlocked = true;
+          }
+          lastErr = new Error(formatApiError(res.status, data));
+        } catch (err) {
+          lastErr = err;
+        }
+      }
+
+      throw lastErr || new Error("Não foi possível gerar a imagem.");
     }
 
     function extractOmniVideo(data) {
@@ -1298,4 +1318,4 @@
     init();
   </script>
 </body>
-  </html>
+</html>
