@@ -155,7 +155,7 @@
 
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <div class="brand">Gemini <span class="brand-badge">PRO</span></div>
+      <div class="brand">Gemini <span class="brand-badge">PRO v5</span></div>
       <button class="close-sidebar-btn" id="closeSidebarBtn">✕</button>
     </div>
 
@@ -179,8 +179,8 @@
         <div class="section-title">Modo</div>
         <div class="mode-grid">
           <button class="mode-btn active" data-mode="chat">Chat Pro</button>
-          <button class="mode-btn" data-mode="image">Foto Pro</button>
-          <button class="mode-btn" data-mode="video">Vídeo 4K</button>
+          <button class="mode-btn" data-mode="image">Foto Real</button>
+          <button class="mode-btn" data-mode="video">Vídeo +1m</button>
         </div>
 
         <div id="chatOptions" style="display:flex;flex-direction:column;gap:8px;">
@@ -198,8 +198,8 @@
           <div>
             <label class="field-label">Velocidade / Raciocínio</label>
             <select id="chatSpeed">
-              <option value="balanced">⚖️ Equilibrado</option>
               <option value="deep" selected>🧠 Profundo (Pro Máximo)</option>
+              <option value="balanced">⚖️ Equilibrado</option>
               <option value="instant">⚡ Instantâneo (1s)</option>
             </select>
           </div>
@@ -207,10 +207,10 @@
 
         <div id="imageOptions" style="display:none;flex-direction:column;gap:8px;">
           <div>
-            <label class="field-label">Motor de Imagem (Automático sem Erro)</label>
+            <label class="field-label">Motor de Imagem</label>
             <select id="imageModel">
-              <option value="auto-smart" selected>✨ Auto Pro (Nano Banana → FLUX.2 Grátis)</option>
-              <option value="workers-flux">📸 Cloudflare FLUX.2 Pro (Grátis Direto)</option>
+              <option value="workers-flux" selected>📸 Cloudflare FLUX.2 Pro (Grátis Direto)</option>
+              <option value="auto-smart">✨ Auto (Nano Banana → FLUX.2 Grátis)</option>
               <option value="gemini-nano-banana-2.1">👑 Google Nano Banana 2.1 (Requer Billing)</option>
             </select>
           </div>
@@ -237,18 +237,21 @@
 
         <div id="videoOptions" style="display:none;flex-direction:column;gap:8px;">
           <div>
-            <label class="field-label">Motor de Vídeo (Requer Billing no Google)</label>
-            <select id="videoEngine">
-              <option value="gemini-omni-1.2-flash" selected>🎬 Gemini Omni 1.2 Flash (4K + Áudio)</option>
+            <label class="field-label">Duração do Vídeo</label>
+            <select id="videoTotalDuration">
+              <option value="15">15 segundos</option>
+              <option value="30">30 segundos</option>
+              <option value="60" selected>1 minuto (60s completos)</option>
+              <option value="90">1 min 30s (90s completos)</option>
+              <option value="120">2 minutos (120s completos)</option>
             </select>
           </div>
           <div>
-            <label class="field-label">Duração total</label>
-            <select id="videoTotalDuration">
-              <option value="8">8 segundos (1 cena)</option>
-              <option value="15" selected>15 segundos (1 cena completa)</option>
-              <option value="25">25 segundos (cena + extensão contínua)</option>
-              <option value="30">30 segundos (máximo contínuo)</option>
+            <label class="field-label">Motor de Vídeo</label>
+            <select id="videoEngine">
+              <option value="auto" selected>⚡ Auto (Gemini Omni → Cinema FLUX.2 Grátis)</option>
+              <option value="gemini-omni-1.2-flash">🎬 Somente Gemini Omni (Exige Billing)</option>
+              <option value="flux-cinema">🎞️ Cinema FLUX.2 1m+ (Grátis direto em WebM)</option>
             </select>
           </div>
           <div>
@@ -256,7 +259,7 @@
             <select id="videoMotion">
               <option value="normal">🎬 Cinematográfico Suave</option>
               <option value="high" selected>⚡ Dinâmico (Alta Atividade)</option>
-              <option value="extreme">🔥 Ação Extrema (Dança / Movimento Rápido)</option>
+              <option value="extreme">🔥 Ação Extrema (Movimento Rápido)</option>
             </select>
           </div>
           <div class="grid-2">
@@ -264,8 +267,8 @@
               <label class="field-label">Resolução</label>
               <select id="videoRes">
                 <option value="720p">720p (Rápido)</option>
-                <option value="1080p">1080p Full HD</option>
-                <option value="4k" selected>4K Ultra HD</option>
+                <option value="1080p" selected>1080p Full HD</option>
+                <option value="4k">4K Ultra HD</option>
               </select>
             </div>
             <div>
@@ -301,7 +304,7 @@
         <div class="topbar-title">
           Gemini
           <span class="pill-tag" id="modeBadge">Pro ⚡</span>
-          <span class="pill-tag secure" id="securityBadge">🔒 Gemini + FLUX.2 OK</span>
+          <span class="pill-tag secure" id="securityBadge">🔒 Gemini + FLUX.2 v5</span>
           <span class="pill-tag temporal" id="temporalBadge" style="display:none;">Temporal</span>
         </div>
       </div>
@@ -311,19 +314,19 @@
       <div class="chat-inner" id="chatContainer">
         <div class="welcome" id="welcomeScreen">
           <h1>Olá! Como posso ajudar hoje?</h1>
-          <p>Modo Pro ativo: chat inteligente sem cortes, criação automática de fotos realistas sem marca d'água (com fallback grátis direto no seu Cloudflare) e botão <b>✨</b> de prompt.</p>
+          <p>Modo Pro v5 ativo: chat inteligente, fotos realistas grátis sem marca d'água no FLUX.2 e geração de vídeos longos de <b>1 minuto ou mais</b>.</p>
           <div class="quick-cards">
-            <div class="quick-card" data-mode-jump="image" data-prompt="Gere uma imagem realista de um rato misturado com um leão em luz natural da savana">
+            <div class="quick-card" data-mode-jump="image" data-prompt="Um rato misturado com um leão na savana em luz natural da manhã, foto real">
               <strong>Foto Realista 📸</strong>
-              <span>Sem marca d'água e sem erro 429.</span>
+              <span>Sem marca d'água direto pelo Cloudflare FLUX.2.</span>
             </div>
-            <div class="quick-card" data-mode-jump="video" data-prompt="Uma pessoa dançando com muita energia em uma rua movimentada à noite com luzes neon">
-              <strong>Vídeo Gemini 4K 🎬</strong>
-              <span>Gemini Omni 1.2 Flash (exige Billing ativo no Google).</span>
+            <div class="quick-card" data-mode-jump="video" data-prompt="Uma pessoa dançando com energia em uma rua iluminada à noite com luzes neon">
+              <strong>Vídeo 1 Minuto+ 🎬</strong>
+              <span>Gera vídeos longos de 60s a 2 minutos com download.</span>
             </div>
             <div class="quick-card" data-mode-jump="chat" data-prompt="Crie um prompt perfeito de fotografia realista e também um site completo em HTML.">
               <strong>Prompts & Programação 💻</strong>
-              <span>Cria prompts profissionais e códigos ao vivo.</span>
+              <span>Códigos completos com visualização HTML ao vivo.</span>
             </div>
           </div>
         </div>
@@ -334,7 +337,7 @@
       <div class="quick-mode-bar">
         <button class="qmode-pill active" data-mode="chat">💬 Chat Pro</button>
         <button class="qmode-pill" data-mode="image">📸 Foto Real</button>
-        <button class="qmode-pill" data-mode="video">🎬 Vídeo Gemini 4K</button>
+        <button class="qmode-pill" data-mode="video">🎬 Vídeo +1m</button>
       </div>
       <div class="composer">
         <div class="attachment-preview" id="attachmentPreview">
@@ -400,6 +403,7 @@
       activeRequestToken: 0,
       isRecording: false,
       googleImageBlocked: false,
+      googleVideoBlocked: false,
       confirmClearTimer: null
     };
 
@@ -465,9 +469,9 @@
         const res = await fetch(`${WORKER_URL}/health`);
         if (!res.ok) throw new Error();
         const data = await res.json();
-        if (data.hasGemini && data.hasWorkersAI) el.securityBadge.textContent = "🔒 Gemini + FLUX.2 OK";
-        else if (data.hasWorkersAI) el.securityBadge.textContent = "🔒 Worker AI OK";
-        else if (data.hasGemini) el.securityBadge.textContent = "🔒 Gemini (Sem AI)";
+        if (data.hasGemini && data.hasWorkersAI) el.securityBadge.textContent = "🔒 Gemini + FLUX.2 v5";
+        else if (data.hasWorkersAI) el.securityBadge.textContent = "🔒 Worker AI v5";
+        else if (data.hasGemini) el.securityBadge.textContent = "🔒 Gemini v5 (Sem AI)";
         else el.securityBadge.textContent = "⚠️ Configurar Worker";
         if (data.locked && !state.sitePassword) el.lockModal.classList.add("active");
       } catch {
@@ -523,11 +527,11 @@
       el.chatOptions.style.display = mode === "chat" ? "flex" : "none";
       el.imageOptions.style.display = mode === "image" ? "flex" : "none";
       el.videoOptions.style.display = mode === "video" ? "flex" : "none";
-      el.modeBadge.textContent = { chat: "Pro ⚡", image: "Foto Real", video: "Vídeo 4K" }[mode];
+      el.modeBadge.textContent = { chat: "Pro ⚡", image: "Foto Real", video: "Vídeo +1m" }[mode];
       el.promptInput.placeholder =
         mode === "chat" ? "Peça ao Gemini..." :
         mode === "image" ? "Descreva a foto realista (sem marca d'água)..." :
-        "Descreva o vídeo com ação (requer Billing no Google)...";
+        "Descreva a cena do vídeo de 1 minuto ou mais...";
     }
     el.modeBtns.forEach(btn => btn.addEventListener("click", () => setMode(btn.dataset.mode)));
     el.qmodePills.forEach(btn => btn.addEventListener("click", () => setMode(btn.dataset.mode)));
@@ -823,12 +827,13 @@
         const bar = document.createElement("div"); bar.className = "playlist-bar";
         const pills = [];
         const dlBtn = document.createElement("a"); dlBtn.className = "download-btn";
-        dlBtn.href = m.videoSegments[0]; dlBtn.download = "gemini-video-4k-1.mp4"; dlBtn.target = "_blank"; dlBtn.textContent = "⬇ Baixar Vídeo";
+        const ext = m.videoExt || "mp4";
+        dlBtn.href = m.videoSegments[0]; dlBtn.download = `video-1.${ext}`; dlBtn.target = "_blank"; dlBtn.textContent = "⬇ Baixar Vídeo";
 
         function selectScene(idx) {
           currentIndex = idx; video.src = m.videoSegments[idx]; video.play().catch(() => {});
           pills.forEach((p, i) => p.classList.toggle("active", i === idx));
-          dlBtn.href = m.videoSegments[idx]; dlBtn.download = `gemini-video-4k-${idx + 1}.mp4`;
+          dlBtn.href = m.videoSegments[idx]; dlBtn.download = `video-${idx + 1}.${ext}`;
         }
         video.addEventListener("ended", () => { if (currentIndex + 1 < m.videoSegments.length) selectScene(currentIndex + 1); });
 
@@ -965,20 +970,33 @@
       }
       if (/leaked/i.test(msg)) return "Chave antiga bloqueada pelo Google. Crie uma chave nova e salve no Cloudflare.";
       if (/limit:\s*0|free_tier|billing|quota|exceeded/i.test(msg) || status === 429) {
-        return `O Google bloqueou este recurso porque sua chave GEMINI_API_KEY está no plano gratuito (sem Billing ativo no Google AI Studio).`;
+        return `Cota do Google sem Billing para este modelo (${msg}).`;
       }
       if (status === 401 || status === 403 || /API_KEY|ACCESS_TOKEN/i.test(msg)) return `Chave recusada no Worker (${msg}).`;
       return msg;
     }
 
-    function detectVisualIntent(text) {
+    function detectVisualIntent(text, prevMsgs = []) {
       const t = (text || "").trim();
       if (!t) return null;
-      const isCodeOrPromptOnly = /\b(código|codigo|html|css|js|javascript|python|site|app|programa|texto|resumo|redação|redacao|email|e-mail|lista|plano|tabela|função|funcao|script|poema|letra|conta|cálculo|calculo|receita|dieta|treino|roteiro|prompt)\b/i.test(t);
-      if (isCodeOrPromptOnly) return null;
-      if (/\b(vídeo|video|vídeos|videos|animação|animacao|clipe|curta|filmagem|cena)\b/i.test(t)) return "video";
-      if (/\b(imagem|imagens|foto|fotos|fotografia|ilustração|ilustracao|desenho|arte|wallpaper|retrato|logo|pintura)\b/i.test(t)) return "image";
-      if (/^\s*(desenhe|desenha|pinte|ilustre|faça|faca|faz|crie|cria|gere|gera|manda)\s+(um|uma|o|a|uns|umas)\b/i.test(t) && t.length < 120) return "image";
+
+      // Se o usuário pediu "tente de novo / última tentativa / faz agora", olha o pedido anterior
+      if (/\b(tente|tenta|ultima|última|tentativa|faz agora|gera agora|de novo|novamente)\b/i.test(t) && t.length < 80) {
+        for (let i = prevMsgs.length - 1; i >= 0; i--) {
+          const m = prevMsgs[i];
+          if (m.role === "user" && m.text && m.text !== text) {
+            if (/\b(vídeo|video|clipe|animação|animacao|minuto)\b/i.test(m.text)) return { mode: "video", prompt: m.text };
+            if (/\b(imagem|foto|desenho|arte|gera|gere|crie|cria|faça|faz|rato|leão|leao)\b/i.test(m.text)) return { mode: "image", prompt: m.text };
+          }
+        }
+      }
+
+      const isCodeOrDoc = /\b(código|codigo|html|css|js|javascript|python|site|app|programa|texto|resumo|redação|redacao|email|e-mail|lista|plano|tabela|função|funcao|script|poema|letra|conta|cálculo|calculo|receita|dieta|treino|roteiro)\b/i.test(t);
+      if (isCodeOrDoc) return null;
+
+      if (/\b(vídeo|video|vídeos|videos|animação|animacao|clipe|curta|filmagem)\b/i.test(t)) return { mode: "video", prompt: t };
+      if (/\b(imagem|imagens|foto|fotos|fotografia|ilustração|ilustracao|desenho|arte|wallpaper|retrato|logo|pintura)\b/i.test(t)) return { mode: "image", prompt: t };
+      if (/^\s*(desenhe|desenha|pinte|ilustre|faça|faca|faz|crie|cria|gere|gera|manda)\b/i.test(t) && t.length < 150) return { mode: "image", prompt: t };
       return null;
     }
 
@@ -996,6 +1014,7 @@
         attachedMime: state.attachedImage?.mimeType || null
       };
 
+      const detected = state.mode === "chat" ? detectVisualIntent(text, msgs) : null;
       msgs.push(userMsg);
       if (!state.temporal) {
         const chat = state.chats.find(c => c.id === state.currentChatId);
@@ -1012,16 +1031,13 @@
       showTyping();
 
       try {
-        let effectiveMode = state.mode;
-        if (state.mode === "chat") {
-          const detected = detectVisualIntent(text);
-          if (detected) effectiveMode = detected;
-        }
+        let effectiveMode = detected ? detected.mode : state.mode;
+        let effectivePrompt = detected ? detected.prompt : text;
 
         let aiMsg;
         if (effectiveMode === "chat") aiMsg = await callGeminiChatStream(msgs, myToken, text, Boolean(attachmentCopy));
-        else if (effectiveMode === "image") aiMsg = await callGeminiImage(text, attachmentCopy, myToken);
-        else aiMsg = await callGeminiVideo(text, attachmentCopy, myToken);
+        else if (effectiveMode === "image") aiMsg = await callGeminiImage(effectivePrompt, attachmentCopy, myToken);
+        else aiMsg = await callSmartVideo(effectivePrompt, attachmentCopy, myToken);
 
         if (myToken !== state.activeRequestToken) return;
         removeTyping();
@@ -1061,7 +1077,7 @@
       return contents;
     }
 
-    function pickChatCandidates(userText, hasAttachment) {
+    function pickChatCandidates() {
       const sel = el.chatModel.value;
       const proAndFree = ["gemini-4-hydrogen", "gemini-3.6-flash", "gemini-3.5-flash-lite", "gemini-2.5-flash", "workers-gemma"];
       if (sel === "auto-turbo") return proAndFree;
@@ -1074,8 +1090,8 @@
       return { instant:"LOW", balanced:"MEDIUM", deep:"HIGH" }[s] || "HIGH";
     }
 
-    async function callGeminiChatStream(msgs, myToken, userText, hasAttachment) {
-      const candidates = pickChatCandidates(userText, hasAttachment);
+    async function callGeminiChatStream(msgs, myToken) {
+      const candidates = pickChatCandidates();
       const contents = buildContents(msgs);
       const sysBase = el.systemPrompt.value.trim();
 
@@ -1151,6 +1167,24 @@
       return { "16:9":[1280,720], "9:16":[720,1280], "4:3":[1024,768], "1:1":[1024,1024] }[ratio] || [1024,1024];
     }
 
+    async function requestWorkerImage(promptText, attachment, engine, w, h) {
+      const res = await fetchWithTimeout(`${WORKER_URL}/api/image`, {
+        method: "POST",
+        headers: workerHeaders(),
+        body: JSON.stringify({
+          engine,
+          prompt: promptText,
+          width: w,
+          height: h,
+          aspectRatio: el.imageRatio.value,
+          imageSize: el.imageSize.value,
+          attachment: attachment ? { mimeType: attachment.mimeType, base64: attachment.base64 } : null
+        })
+      }, 65000);
+      const data = await safeJson(res);
+      return { ok: res.ok, status: res.status, data };
+    }
+
     async function callGeminiImage(promptText, attachment, myToken) {
       const selectedModel = el.imageModel.value;
       const [w, h] = getDimsFromRatio(el.imageRatio.value, el.imageSize.value);
@@ -1164,45 +1198,25 @@
       else enginesToTry = [selectedModel, "workers-flux"];
 
       let lastErr = null;
-      for (let i = 0; i < enginesToTry.length; i++) {
+      for (const eng of enginesToTry) {
         if (myToken !== state.activeRequestToken) return null;
-        const eng = enginesToTry[i];
         showTyping(eng === "workers-flux"
-          ? "Gerando foto realista grátis (Cloudflare FLUX sem marca d'água)..."
+          ? "Gerando foto realista (Cloudflare FLUX.2 sem marca d'água)..."
           : `Gerando foto no Google (${eng})...`);
 
-        try {
-          const res = await fetchWithTimeout(`${WORKER_URL}/api/image`, {
-            method: "POST",
-            headers: workerHeaders(),
-            body: JSON.stringify({
-              engine: eng,
-              prompt: enhanced,
-              width: w,
-              height: h,
-              aspectRatio: el.imageRatio.value,
-              imageSize: el.imageSize.value,
-              attachment: attachment ? { mimeType: attachment.mimeType, base64: attachment.base64 } : null
-            })
-          }, 65000);
-
-          const data = await safeJson(res);
-          if (res.ok && data.imageUrl) {
-            return {
-              role: "ai",
-              text: `Foto gerada (**${data.provider || eng}**):\n> *Prompt usado:* \`${enhanced}\``,
-              imageUrl: data.imageUrl
-            };
-          }
-          if (eng !== "workers-flux" && (res.status === 429 || res.status === 403 || /limit:\s*0|quota|billing/i.test(data?.error?.message || ""))) {
-            state.googleImageBlocked = true;
-          }
-          lastErr = new Error(formatApiError(res.status, data));
-        } catch (err) {
-          lastErr = err;
+        const { ok, status, data } = await requestWorkerImage(enhanced, attachment, eng, w, h);
+        if (ok && data.imageUrl) {
+          return {
+            role: "ai",
+            text: `Foto gerada (**${data.provider || eng}**):\n> *Prompt usado:* \`${enhanced}\``,
+            imageUrl: data.imageUrl
+          };
         }
+        if (eng !== "workers-flux" && (status === 429 || status === 403 || /limit:\s*0|quota|billing/i.test(data?.error?.message || ""))) {
+          state.googleImageBlocked = true;
+        }
+        lastErr = new Error(formatApiError(status, data));
       }
-
       throw lastErr || new Error("Não foi possível gerar a imagem.");
     }
 
@@ -1229,7 +1243,6 @@
       let current = startData;
       const direct = extractOmniVideo(current);
       if (direct) return { videoUrl: direct, interactionId: current.id };
-
       if (!current.id) throw new Error("O Gemini Omni não retornou o ID da geração.");
 
       for (let t = 0; t < 90 && current.status !== "completed" && current.status !== "failed"; t++) {
@@ -1240,78 +1253,218 @@
         }, 25000);
         if (poll.ok) current = await safeJson(poll);
       }
-
-      if (current.status === "failed") {
-        throw new Error(current.error?.message || "A geração do vídeo falhou no Gemini Omni.");
-      }
-
+      if (current.status === "failed") throw new Error(current.error?.message || "Falha no Gemini Omni.");
       const vp = extractOmniVideo(current);
-      if (!vp) throw new Error("O Gemini Omni concluiu sem retornar os bytes do vídeo.");
+      if (!vp) throw new Error("O Gemini Omni não retornou os bytes do vídeo.");
       return { videoUrl: vp, interactionId: current.id };
     }
 
-    async function callGeminiVideo(promptText, attachment, myToken) {
+    function loadImgElement(src) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = src;
+      });
+    }
+
+    // Fallback gratuito quando a chave Google não tem Billing: gera múltiplas cenas no FLUX.2 e grava um vídeo .webm de 60s+ com movimento de câmera
+    async function renderFluxCinemaVideo(basePrompt, totalSeconds, ratioVal, myToken) {
+      const sceneCount = totalSeconds >= 90 ? 8 : 6;
+      const angles = [
+        "wide dynamic establishing shot, full action movement",
+        "medium tracking shot, energetic body motion and wind",
+        "dramatic low angle action shot, vivid lighting",
+        "close-up expressive shot, sharp detail and motion blur",
+        "side tracking camera shot, continuous movement",
+        "over-the-shoulder dynamic perspective, lively atmosphere",
+        "high energy action climax shot, dramatic shadows",
+        "cinematic wide closing shot, glowing atmosphere"
+      ];
+
+      const [w, h] = ratioVal === "9:16" ? [720, 1280] : [1280, 720];
+      const loadedImages = [];
+
+      for (let i = 0; i < sceneCount; i++) {
+        if (myToken !== state.activeRequestToken) return null;
+        showTyping(`Gerando cena ${i + 1}/${sceneCount} do vídeo de ${totalSeconds}s (FLUX.2)...`);
+        const scenePrompt = `${basePrompt}, ${angles[i % angles.length]}`;
+        const { ok, data } = await requestWorkerImage(scenePrompt, null, "workers-flux", w, h);
+        if (ok && data.imageUrl) {
+          loadedImages.push(await loadImgElement(data.imageUrl));
+        }
+      }
+
+      if (loadedImages.length === 0) {
+        throw new Error("Não foi possível gerar as cenas do vídeo no Worker.");
+      }
+
+      const mimeType = ["video/webm;codecs=vp9", "video/webm;codecs=vp8", "video/webm"].find(t => window.MediaRecorder && MediaRecorder.isTypeSupported(t));
+      if (!mimeType || !HTMLCanvasElement.prototype.captureStream) {
+        throw new Error("Este navegador não suporta gravação MediaRecorder de vídeo WebM.");
+      }
+
+      const canvas = document.createElement("canvas");
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext("2d");
+
+      const stream = canvas.captureStream(24);
+      const recorder = new MediaRecorder(stream, { mimeType, videoBitsPerSecond: 3500000 });
+      const chunks = [];
+      recorder.ondataavailable = (e) => { if (e.data && e.data.size > 0) chunks.push(e.data); };
+
+      const donePromise = new Promise(resolve => {
+        recorder.onstop = () => resolve(URL.createObjectURL(new Blob(chunks, { type: mimeType })));
+      });
+
+      recorder.start(500);
+      const startTime = performance.now();
+      const totalMs = totalSeconds * 1000;
+      const sceneMs = totalMs / loadedImages.length;
+
+      await new Promise((resolve) => {
+        let lastPct = -1;
+        function drawFrame() {
+          if (myToken !== state.activeRequestToken) {
+            try { recorder.stop(); } catch {}
+            resolve();
+            return;
+          }
+          const elapsed = performance.now() - startTime;
+          if (elapsed >= totalMs) {
+            try { recorder.stop(); } catch {}
+            resolve();
+            return;
+          }
+
+          const pct = Math.floor((elapsed / totalMs) * 100);
+          if (pct !== lastPct && pct % 5 === 0) {
+            lastPct = pct;
+            showTyping(`Gravando vídeo contínuo de ${totalSeconds}s (${pct}%)...`);
+          }
+
+          const idx = Math.min(loadedImages.length - 1, Math.floor(elapsed / sceneMs));
+          const nextIdx = Math.min(loadedImages.length - 1, idx + 1);
+          const localT = (elapsed - idx * sceneMs) / sceneMs;
+
+          drawKenBurns(ctx, loadedImages[idx], w, h, localT, idx, 1);
+          if (localT > 0.85 && nextIdx !== idx) {
+            const fadeAlpha = (localT - 0.85) / 0.15;
+            drawKenBurns(ctx, loadedImages[nextIdx], w, h, 0, nextIdx, fadeAlpha);
+          }
+
+          requestAnimationFrame(drawFrame);
+        }
+        requestAnimationFrame(drawFrame);
+      });
+
+      if (myToken !== state.activeRequestToken) return null;
+      const videoUrl = await donePromise;
+      return { videoUrl, sceneCount: loadedImages.length };
+    }
+
+    function drawKenBurns(ctx, img, w, h, t, seed, alpha) {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      const dir = seed % 2 === 0 ? 1 : -1;
+      const scale = 1.05 + (dir > 0 ? t * 0.12 : (1 - t) * 0.12);
+      const panX = (dir > 0 ? (t - 0.5) : (0.5 - t)) * w * 0.06;
+      const panY = Math.sin(t * Math.PI) * h * 0.025 * (seed % 3 === 0 ? 1 : -1);
+
+      const imgRatio = img.width / img.height;
+      const canRatio = w / h;
+      let drawW, drawH;
+      if (imgRatio > canRatio) {
+        drawH = h * scale;
+        drawW = drawH * imgRatio;
+      } else {
+        drawW = w * scale;
+        drawH = drawW / imgRatio;
+      }
+      const x = (w - drawW) / 2 + panX;
+      const y = (h - drawH) / 2 + panY;
+      ctx.drawImage(img, x, y, drawW, drawH);
+      ctx.restore();
+    }
+
+    async function callSmartVideo(promptText, attachment, myToken) {
       const totalSeconds = parseInt(el.videoTotalDuration.value, 10);
+      const engineChoice = el.videoEngine.value;
       const motionLevel = el.videoMotion.value;
       const resVal = el.videoRes.value;
       const ratioVal = el.videoRatio.value;
 
-      showTyping("Gemini criando roteiro de ação para o vídeo...");
+      showTyping("Criando roteiro de ação para vídeo longo...");
       const enhanced = await enhanceVisualPrompt(promptText, "video", motionLevel);
       if (myToken !== state.activeRequestToken) return null;
 
-      const firstDur = Math.min(15, totalSeconds);
-      showTyping(`Gerando vídeo no Gemini Omni 1.2 Flash (${firstDur}s • ${resVal})...`);
+      // 1) Tenta Gemini Omni oficial primeiro (se não estiver bloqueado por falta de Billing)
+      if (engineChoice !== "flux-cinema" && (!state.googleVideoBlocked || engineChoice === "gemini-omni-1.2-flash")) {
+        try {
+          const firstDur = Math.min(15, totalSeconds);
+          showTyping(`Tentando vídeo oficial no Gemini Omni (${firstDur}s)...`);
+          const firstPayload = {
+            model: "gemini-omni-1.2-flash",
+            input: attachment
+              ? [{ type: "text", text: enhanced }, { type: "image", data: attachment.base64, mime_type: attachment.mimeType }]
+              : enhanced,
+            response_format: { type: "video", aspect_ratio: ratioVal, resolution: resVal, duration: `${firstDur}s` }
+          };
 
-      const firstPayload = {
-        model: "gemini-omni-1.2-flash",
-        input: attachment
-          ? [{ type: "text", text: enhanced }, { type: "image", data: attachment.base64, mime_type: attachment.mimeType }]
-          : enhanced,
-        response_format: {
-          type: "video",
-          aspect_ratio: ratioVal,
-          resolution: resVal,
-          duration: `${firstDur}s`
-        }
-      };
+          const segments = [];
+          const firstResult = await runOmniInteraction(firstPayload, myToken);
+          if (!firstResult) return null;
+          segments.push(firstResult.videoUrl);
 
-      const segments = [];
-      const firstResult = await runOmniInteraction(firstPayload, myToken);
-      if (!firstResult) return null;
-      segments.push(firstResult.videoUrl);
+          let remaining = totalSeconds - firstDur;
+          let prevId = firstResult.interactionId;
+          let partIdx = 2;
 
-      let remaining = totalSeconds - firstDur;
-      let prevId = firstResult.interactionId;
-      let partIdx = 2;
-
-      while (remaining > 0 && prevId) {
-        if (myToken !== state.activeRequestToken) return null;
-        const extDur = Math.min(10, Math.max(3, remaining));
-        showTyping(`Estendendo vídeo continuamente (Parte ${partIdx} • +${extDur}s)...`);
-        const extPayload = {
-          model: "gemini-omni-1.2-flash",
-          previous_interaction_id: prevId,
-          input: `Continue the exact same scene smoothly with dynamic action and fluid camera movement: ${enhanced}`,
-          response_format: {
-            type: "video",
-            aspect_ratio: ratioVal,
-            resolution: resVal,
-            duration: `${extDur}s`
+          while (remaining > 0 && prevId) {
+            if (myToken !== state.activeRequestToken) return null;
+            const extDur = Math.min(10, Math.max(3, remaining));
+            showTyping(`Estendendo vídeo no Gemini Omni (Parte ${partIdx} • +${extDur}s)...`);
+            const extPayload = {
+              model: "gemini-omni-1.2-flash",
+              previous_interaction_id: prevId,
+              input: `Continue the exact same scene smoothly with dynamic action: ${enhanced}`,
+              response_format: { type: "video", aspect_ratio: ratioVal, resolution: resVal, duration: `${extDur}s` }
+            };
+            const extResult = await runOmniInteraction(extPayload, myToken);
+            if (!extResult) break;
+            segments.push(extResult.videoUrl);
+            prevId = extResult.interactionId;
+            remaining -= extDur;
+            partIdx++;
           }
-        };
-        const extResult = await runOmniInteraction(extPayload, myToken);
-        if (!extResult) break;
-        segments.push(extResult.videoUrl);
-        prevId = extResult.interactionId;
-        remaining -= extDur;
-        partIdx++;
+
+          return {
+            role: "ai",
+            text: `Vídeo Gemini Omni concluído (**${totalSeconds}s** • **${segments.length} parte(s)**):\n> *Prompt:* \`${enhanced}\``,
+            videoSegments: segments,
+            videoExt: "mp4"
+          };
+        } catch (err) {
+          if (engineChoice === "gemini-omni-1.2-flash") throw err;
+          if (/Billing|Cota|429|limit:\s*0|quota/i.test(err.message || "")) {
+            state.googleVideoBlocked = true;
+          } else {
+            throw err;
+          }
+        }
       }
+
+      // 2) Fallback gratuito: Vídeo longo animado (60s-120s) montado com múltiplas cenas reais do FLUX.2
+      if (myToken !== state.activeRequestToken) return null;
+      const result = await renderFluxCinemaVideo(enhanced, totalSeconds, ratioVal, myToken);
+      if (!result) return null;
 
       return {
         role: "ai",
-        text: `Vídeo Gemini Omni 1.2 Flash concluído (**${segments.length} parte(s)** • **${resVal.toUpperCase()}**):\n> *Prompt usado:* \`${enhanced}\``,
-        videoSegments: segments
+        text: `Vídeo concluído (**${totalSeconds}s** • **${result.sceneCount} cenas FLUX.2**):\n*(Nota: o Google Omni exige Billing na chave para vídeo nativo; por isso montei automaticamente este vídeo contínuo gratuito com cenas reais do Cloudflare FLUX.2 e movimento de câmera.)*\n> *Prompt:* \`${enhanced}\``,
+        videoSegments: [result.videoUrl],
+        videoExt: "webm"
       };
     }
 
